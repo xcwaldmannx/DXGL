@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ProjectOutputs>
+    <ProjectOutput>
+      <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\DXL.exe</FullPath>
+    </ProjectOutput>
+  </ProjectOutputs>
+  <ContentFiles>
+    <ContentFile>
+      <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\BlurComposite.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\BlurHorizontal.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\BlurThreshold.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\BlurVertical.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\LinePixelShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\LineVertexShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\PixelShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\ShadowPixelShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\ShadowVertexShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\VertexLayoutShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\VertexShader.cso</FullPath>
+    </ContentFile>
+  </ContentFiles>
+  <SatelliteDlls />
+  <NonRecipeFileRefs />
+</Project>

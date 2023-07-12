@@ -1,0 +1,23 @@
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(520,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(534,5): warning MSB8028: The intermediate directory (x64\Release\) contains files shared from another project (DXL.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Generating code
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLInputManager.cpp(54): warning C4172: returning address of local variable or temporary: output
+  3563 of 7367 functions (48.4%) were compiled, the rest were copied from previous compilation.
+    1505 functions were new in current compilation
+    808 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  DXL.vcxproj -> C:\Users\xcwal\source\repos\DXL\x64\Release\DXGL.exe
+  C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\DomainShader.cso
+  C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\HullShader.cso
+  C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\PS_DrunkVision.cso
+  C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\PS_Instance.cso
+  C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\PS_NightVision.cso
+  C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\PS_Pixelated.cso
+  C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\PS_PostProcess.cso
+  C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\PS_Skybox.cso
+  C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\PS_Tessellation.cso
+  C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\VS_Instance.cso
+  C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\VS_MousePick.cso
+  C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\VS_PostProcess.cso
+  C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\VS_Tessellation.cso
+  13 File(s) copied

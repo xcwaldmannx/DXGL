@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\xcwal\source\repos\DXL\DXL\</FILEPATH>
+      <FILENAME>DXGLSwapChain.h</FILENAME>
+      <LINE>26</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'dxgl::RESOURCE_VIEW_DESC::format' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>dxgl::RESOURCE_VIEW_DESC::{ctor}</FUNCTION>
+    <DECORATED>??0RESOURCE_VIEW_DESC@dxgl@@QEAA@XZ</DECORATED>
+    <FUNCLINE>26</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>dxgl::RESOURCE_VIEW_DESC::format</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\xcwal\source\repos\DXL\DXL\</FILEPATH>
+      <FILENAME>DXGLSwapChain.h</FILENAME>
+      <LINE>36</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'dxgl::DepthStencilData::target' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>dxgl::DepthStencilData::{ctor}</FUNCTION>
+    <DECORATED>??0DepthStencilData@dxgl@@QEAA@XZ</DECORATED>
+    <FUNCLINE>36</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>dxgl::DepthStencilData::target</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\xcwal\source\repos\DXL\DXL\</FILEPATH>
+      <FILENAME>DXGLSwapChain.h</FILENAME>
+      <LINE>31</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'dxgl::RenderTargetData::target' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>dxgl::RenderTargetData::{ctor}</FUNCTION>
+    <DECORATED>??0RenderTargetData@dxgl@@QEAA@XZ</DECORATED>
+    <FUNCLINE>31</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>dxgl::RenderTargetData::target</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

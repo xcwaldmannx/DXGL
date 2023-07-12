@@ -1,0 +1,75 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "PREfast Code Analysis",
+          "version": "14.33.31629.0",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglentitymanager.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "98edd545a5e7b09d8b05cf78db7c46f3b418c81fd625ea67b097dc5b8bc760c5"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglentitymanager.h"
+          },
+          "hashes": {
+            "sha-256": "2e25900166cf32c6663243d1aae4732592c4990e9db7db17c6efba7b10e9210c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglgovernordefinitions.h"
+          },
+          "hashes": {
+            "sha-256": "235e9627afc8108af105345c601914f521bdb3c13c4914aad1bcfdb14d60ce43"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglcomponentmanager.h"
+          },
+          "hashes": {
+            "sha-256": "d588bc850a926a6407c478d48596173f495374e01d3b16726543880467389687"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglcomponentlist.h"
+          },
+          "hashes": {
+            "sha-256": "5683fb409bdcd41d8c32799ce43298a4d422e2d44e145e7522efc40a628c1205"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglgroup.h"
+          },
+          "hashes": {
+            "sha-256": "292da2496fd3ef7c3496a3eb7f1d719f694cf93fd5f71ed4e6a69fa1f1cf6f4b"
+          }
+        }
+      ]
+    }
+  ]
+}

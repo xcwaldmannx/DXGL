@@ -1,0 +1,697 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="App">
+      <UniqueIdentifier>{181e6d2a-ad56-47ac-943f-a868198b153d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{ad7bcb0e-01ca-45c7-bdcd-9a8ce453f1cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Graphics">
+      <UniqueIdentifier>{cd9a9fd5-1c1d-48f9-8ce4-672636e7e148}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Graphics\Renderer">
+      <UniqueIdentifier>{1ffb2b14-083f-43e8-8386-e1c47ca3d27c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Graphics\Renderer\ShaderManager">
+      <UniqueIdentifier>{ee863622-491d-4716-8cd9-037c03c7b9a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Shaders">
+      <UniqueIdentifier>{f19b134a-98dd-4ce1-8fdb-c4ce7e7c0d3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Shaders\Line">
+      <UniqueIdentifier>{06350e27-3208-4706-acb0-6d9c3e6b51d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Shaders\Shadow">
+      <UniqueIdentifier>{0f266909-5d32-4360-9224-4ed34d023038}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Shaders\Light">
+      <UniqueIdentifier>{4ab1d18f-c7a6-4036-95d2-2540ea205c2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Graphics\Renderer\ShaderManager\ComputeShader">
+      <UniqueIdentifier>{cef70d01-5793-4e58-93e1-d9246a51d496}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Shaders\Blur">
+      <UniqueIdentifier>{cbd69fda-fea3-45ae-b45f-22efada0f938}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL">
+      <UniqueIdentifier>{3e24f373-1acc-4a61-a22f-97d784b91fe2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLApp">
+      <UniqueIdentifier>{4700f76f-3d78-4a66-b381-c0f0f983cd0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLApp\Shaders">
+      <UniqueIdentifier>{d0b0ff90-2d9c-41f0-b417-ea6fa4656b19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLApp\Shaders\PostProcess">
+      <UniqueIdentifier>{3ce13e78-87ce-4b31-ac93-c206ae8c642f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLApp\Shaders\NormalMap">
+      <UniqueIdentifier>{1c989cd0-d16b-4c31-918d-a5d646c94dc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLApp\Shaders\PBR">
+      <UniqueIdentifier>{303f8fc4-f110-4586-9d34-6ce20e8b2f4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLApp\Shaders\Shadows">
+      <UniqueIdentifier>{54beef95-2cc7-4c85-b98b-ff12d94d0440}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLApp\Shaders\Current">
+      <UniqueIdentifier>{5f66cf13-616d-486e-bc65-e6e32ac78e28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLApp\Shaders\Current\Instanced">
+      <UniqueIdentifier>{63a55010-1de6-4846-a13f-553cdfeeebd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLApp\Shaders\Current\Tessellation">
+      <UniqueIdentifier>{36757fa4-0b78-430c-98ed-887dbb62c060}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLApp\Shaders\Current\Simple">
+      <UniqueIdentifier>{712fef6e-f975-4b25-b6a2-c38ffa03af6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLApp\Shaders\Current\Skybox">
+      <UniqueIdentifier>{22728977-e655-42fa-8591-4aa0e640bab8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLApp\Shaders\Current\MousePick">
+      <UniqueIdentifier>{e6baaff2-74b9-44ee-a222-e5fce4aa9222}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLApp\RenderQueue">
+      <UniqueIdentifier>{e1171d60-d63d-4130-bdde-a1ecae7e9904}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLApp\PostProcessor">
+      <UniqueIdentifier>{fee9e82e-8bd5-47b0-ba9e-185108f29958}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource">
+      <UniqueIdentifier>{421313c1-b63c-456d-b64d-5da8d6f3ce3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics">
+      <UniqueIdentifier>{09f66a4c-9777-4076-ac49-92c4a571814b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLSwapChain">
+      <UniqueIdentifier>{a90b53ef-3ff1-4bf1-ad1f-b1dec8040b52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLMousePicker">
+      <UniqueIdentifier>{07a3e320-be25-40df-bf38-a9ef4a1d95ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager">
+      <UniqueIdentifier>{c3e17bbf-a8a2-40fa-a9b7-e56531b76a41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources">
+      <UniqueIdentifier>{67d248fe-eaa8-41f4-98ab-60703ec68cb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers">
+      <UniqueIdentifier>{1b24097d-9481-4af8-aa89-e85843cf3672}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLVertexBuffer">
+      <UniqueIdentifier>{720b6a13-6a48-427f-85ea-97859325f4a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLIndexBuffer">
+      <UniqueIdentifier>{0f2d0bb0-9f7e-49ec-8e26-f566013670c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLCBuffer">
+      <UniqueIdentifier>{64b0ddd4-3446-4ff9-8d1b-f7673a2d1c80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLInstanceBuffer">
+      <UniqueIdentifier>{c802e37e-cb83-4d44-8058-2eab0f883e14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Assets">
+      <UniqueIdentifier>{78ecd767-5d73-478b-8e62-ce28e054beea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Assets\DXGLTexture">
+      <UniqueIdentifier>{83d6084e-c8ff-4c04-897f-22f4020cf3a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Assets\DXGLMaterial">
+      <UniqueIdentifier>{0a01adb2-f646-42fe-a026-d40e4b2853e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Assets\DXGLMesh">
+      <UniqueIdentifier>{5350deeb-fb80-434b-abcb-4a2c21dd4034}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\InputLayouts">
+      <UniqueIdentifier>{1b3ed19d-9baa-4d35-8d4d-b2f4daa0e9d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\InputLayouts\DXGLInputLayout">
+      <UniqueIdentifier>{9453aa38-949a-4098-b998-0a7b6e17944d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\PipelineStates">
+      <UniqueIdentifier>{0449f173-3a8d-421b-acc4-cd7f27e3c429}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\PipelineStates\DXGLSamplerState">
+      <UniqueIdentifier>{2f4fb73f-6c0d-4420-88b8-cb45bd396ef2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Views">
+      <UniqueIdentifier>{dda24b9b-1588-4b1c-acb0-6f5a62eb5e9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Views\DXGLShaderResourceView">
+      <UniqueIdentifier>{f2ac9f3c-71d5-4aa3-9ddd-11f5c4fd0c7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Views\DXGLRenderTargetView">
+      <UniqueIdentifier>{e97e9cd8-4a68-46bd-ac93-55d49d42c145}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Views\DXGLDepthStencilView">
+      <UniqueIdentifier>{efc22efc-fa51-4331-bcdd-90a4d84188e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLUserInput">
+      <UniqueIdentifier>{80d996ae-b347-4b75-a7e1-ef2ddd8c310c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\Util">
+      <UniqueIdentifier>{fe413602-b7d5-4b38-b3f1-465efc812225}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\Util\DXGLImage">
+      <UniqueIdentifier>{362dabea-3da5-40a6-90a6-d6758e608d38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\Util\DXGLTimer">
+      <UniqueIdentifier>{ec911b3f-c994-4029-b874-ceb1921860ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\Util\Math">
+      <UniqueIdentifier>{60bb912d-ae7e-43e6-818b-9ac420cf95af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGovernor">
+      <UniqueIdentifier>{59c86368-0f0d-438d-aa54-1430fef1809a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGovernor\DXGLEntity">
+      <UniqueIdentifier>{0d200be4-70d1-46e7-94ea-b5e314bb5214}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGovernor\DXGLComponent">
+      <UniqueIdentifier>{4ca2f682-c7b7-4767-be6f-857d2e3d7e4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGovernor\DXGLGroup">
+      <UniqueIdentifier>{17b9cbd8-ffd6-48b2-81dc-fa2252dde7c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLApp\Skybox">
+      <UniqueIdentifier>{6586f091-0c49-4f08-85c6-92b2779fec8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLMain">
+      <UniqueIdentifier>{05b5b543-d51a-4905-a0c4-cdda74387091}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLMain\DXGLWindow">
+      <UniqueIdentifier>{c6cc9b9f-0f97-4d00-8ddb-8b00872706bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLRenderer">
+      <UniqueIdentifier>{a6bfcfaf-6284-4bd3-8c03-71822ecf77b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLCamera">
+      <UniqueIdentifier>{afcd8d9f-14c5-4391-ad82-61f7df57940f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLShadow">
+      <UniqueIdentifier>{cf116397-0c4f-4f57-81c4-4187a7c9b8cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLLight">
+      <UniqueIdentifier>{1e53c0e9-5337-4114-b973-1afcc1b82072}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLInput">
+      <UniqueIdentifier>{53fa77e8-8627-48e2-996d-5417edaa7866}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLRaster">
+      <UniqueIdentifier>{95be12fb-590b-41ea-b805-a1964a37bd6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLShader">
+      <UniqueIdentifier>{e01b9f8a-84fa-4bb2-baf3-c638691e4cea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLShader\DXGLVertexShader">
+      <UniqueIdentifier>{9a35dd5a-0551-4f08-b846-20ac8197cb18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLShader\DXGLPixelShader">
+      <UniqueIdentifier>{4a8533b3-ed97-4c7c-8f27-467036bbb57c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLShader\DXGLHullShader">
+      <UniqueIdentifier>{b927183c-fe8f-4212-bbd6-18deff62c1f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLShader\DXGLDomainShader">
+      <UniqueIdentifier>{fd578411-8fa8-4065-819c-f485a85fb1b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLOutputMerger">
+      <UniqueIdentifier>{5da7e2ad-8768-47db-b2f3-c94188c97faa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLApp\Shaders\Current\Lighting">
+      <UniqueIdentifier>{8b4a2678-9c44-4817-aa47-6dba1a10f4d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLFoliageManager">
+      <UniqueIdentifier>{920ffc7f-8e56-4e7d-bcae-f811c103aaa4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ComputeShader.cpp">
+      <Filter>Core\Graphics\Renderer\ShaderManager\ComputeShader</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLGraphics.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLWindow.cpp">
+      <Filter>DXGL\DXGLSource\DXGLMain\DXGLWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLSwapChain.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLSwapChain</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLRenderer.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLMain.cpp">
+      <Filter>DXGL\DXGLSource\DXGLMain</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLInputManager.cpp">
+      <Filter>DXGL\DXGLSource\DXGLUserInput</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLInputSystem.cpp">
+      <Filter>DXGL\DXGLSource\DXGLUserInput</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLInput.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLInput</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLVertexBuffer.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLVertexBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLIndexBuffer.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLIndexBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLInputLayout.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\InputLayouts\DXGLInputLayout</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLApp.cpp">
+      <Filter>DXGL\DXGLApp</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLShader.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLShader</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLPixelShader.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLShader\DXGLPixelShader</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLVertexShader.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLShader\DXGLVertexShader</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLTexture2D.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Assets\DXGLTexture</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLCamera.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLCBuffer.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLCBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLCBufferManager.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLCBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLMesh.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Assets\DXGLMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLCameraManager.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLShadow.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLShadow</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLImage.cpp">
+      <Filter>DXGL\DXGLSource\Util\DXGLImage</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLTimer.cpp">
+      <Filter>DXGL\DXGLSource\Util\DXGLTimer</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLHullShader.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLShader\DXGLHullShader</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLDomainShader.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLShader\DXGLDomainShader</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLRaster.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLRaster</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLLight.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLLight</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLGovernor.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGovernor</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLEntityManager.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGovernor\DXGLEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLComponentManager.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGovernor\DXGLComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLComponentList.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGovernor\DXGLComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLGroup.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGovernor\DXGLGroup</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLInstanceBuffer.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLInstanceBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLTextureCube.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Assets\DXGLTexture</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLOutputMerger.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLOutputMerger</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLMousePicker.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLMousePicker</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderQueue.cpp">
+      <Filter>DXGL\DXGLApp\RenderQueue</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLSamplerState.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\PipelineStates\DXGLSamplerState</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLResourceManager.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLMaterial.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Assets\DXGLMaterial</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>DXGL\DXGLApp</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLShaderResourceView.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Views\DXGLShaderResourceView</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLRenderTargetView.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Views\DXGLRenderTargetView</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLDepthStencilView.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Views\DXGLDepthStencilView</Filter>
+    </ClCompile>
+    <ClCompile Include="PostProcessor.cpp">
+      <Filter>DXGL\DXGLApp\PostProcessor</Filter>
+    </ClCompile>
+    <ClCompile Include="Skybox.cpp">
+      <Filter>DXGL\DXGLApp\Skybox</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLBasicMesh.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Assets\DXGLMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLFoliageManager.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLFoliageManager</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Point2f.h">
+      <Filter>DXGL\DXGLSource\Util\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec2f.h">
+      <Filter>DXGL\DXGLSource\Util\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec3f.h">
+      <Filter>DXGL\DXGLSource\Util\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Mat4f.h">
+      <Filter>DXGL\DXGLSource\Util\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec4f.h">
+      <Filter>DXGL\DXGLSource\Util\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="ComputeShader.h">
+      <Filter>Core\Graphics\Renderer\ShaderManager\ComputeShader</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLGraphics.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLWindow.h">
+      <Filter>DXGL\DXGLSource\DXGLMain\DXGLWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLSwapChain.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLSwapChain</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLRenderer.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLMain.h">
+      <Filter>DXGL\DXGLSource\DXGLMain</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLInputManager.h">
+      <Filter>DXGL\DXGLSource\DXGLUserInput</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLInputListener.h">
+      <Filter>DXGL\DXGLSource\DXGLUserInput</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLInputSystem.h">
+      <Filter>DXGL\DXGLSource\DXGLUserInput</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLInput.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLInput</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLVertexBuffer.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLVertexBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLIndexBuffer.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLIndexBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLInputLayout.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\InputLayouts\DXGLInputLayout</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLApp.h">
+      <Filter>DXGL\DXGLApp</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLShader.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLShader</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLPixelShader.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLShader\DXGLPixelShader</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLVertexShader.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLShader\DXGLVertexShader</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLTexture2D.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Assets\DXGLTexture</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLCamera.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLCBuffer.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLCBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLCBufferManager.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLCBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLMesh.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Assets\DXGLMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLCameraManager.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLShadow.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLShadow</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLImage.h">
+      <Filter>DXGL\DXGLSource\Util\DXGLImage</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLTimer.h">
+      <Filter>DXGL\DXGLSource\Util\DXGLTimer</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLHullShader.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLShader\DXGLHullShader</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLDomainShader.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLShader\DXGLDomainShader</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLRaster.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLRaster</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLLight.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLLight</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLGovernor.h">
+      <Filter>DXGL\DXGLSource\DXGLGovernor</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLEntityManager.h">
+      <Filter>DXGL\DXGLSource\DXGLGovernor\DXGLEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLComponentManager.h">
+      <Filter>DXGL\DXGLSource\DXGLGovernor\DXGLComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLComponentList.h">
+      <Filter>DXGL\DXGLSource\DXGLGovernor\DXGLComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLGovernorDefinitions.h">
+      <Filter>DXGL\DXGLSource\DXGLGovernor</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLGroup.h">
+      <Filter>DXGL\DXGLSource\DXGLGovernor\DXGLGroup</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLComponentTypes.h">
+      <Filter>DXGL\DXGLApp</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLDefinitions.h">
+      <Filter>DXGL</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLInstanceBuffer.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLInstanceBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLTextureCube.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Assets\DXGLTexture</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLOutputMerger.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLOutputMerger</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLMousePicker.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLMousePicker</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderQueue.h">
+      <Filter>DXGL\DXGLApp\RenderQueue</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLSamplerState.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\PipelineStates\DXGLSamplerState</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLResourceManager.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLMaterial.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Assets\DXGLMaterial</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLShaderResourceView.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Views\DXGLShaderResourceView</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>DXGL\DXGLSource\Util\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>DXGL\DXGLSource\Util\DXGLImage</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLRenderTargetView.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Views\DXGLRenderTargetView</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLDepthStencilView.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Views\DXGLDepthStencilView</Filter>
+    </ClInclude>
+    <ClInclude Include="PostProcessor.h">
+      <Filter>DXGL\DXGLApp\PostProcessor</Filter>
+    </ClInclude>
+    <ClInclude Include="Skybox.h">
+      <Filter>DXGL\DXGLApp\Skybox</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLBasicMesh.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Assets\DXGLMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGLFoliageManager.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLFoliageManager</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="VertexShader.hlsl">
+      <Filter>App\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="VertexLayoutShader.hlsl">
+      <Filter>App\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader.hlsl">
+      <Filter>App\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="LinePixelShader.hlsl">
+      <Filter>App\Shaders\Line</Filter>
+    </FxCompile>
+    <FxCompile Include="LineVertexShader.hlsl">
+      <Filter>App\Shaders\Line</Filter>
+    </FxCompile>
+    <FxCompile Include="ShadowVertexShader.hlsl">
+      <Filter>App\Shaders\Shadow</Filter>
+    </FxCompile>
+    <FxCompile Include="ShadowPixelShader.hlsl">
+      <Filter>App\Shaders\Shadow</Filter>
+    </FxCompile>
+    <FxCompile Include="BlurHorizontal.hlsl">
+      <Filter>App\Shaders\Blur</Filter>
+    </FxCompile>
+    <FxCompile Include="BlurThreshold.hlsl">
+      <Filter>App\Shaders\Blur</Filter>
+    </FxCompile>
+    <FxCompile Include="BlurVertical.hlsl">
+      <Filter>App\Shaders\Blur</Filter>
+    </FxCompile>
+    <FxCompile Include="BlurComposite.hlsl">
+      <Filter>App\Shaders\Blur</Filter>
+    </FxCompile>
+    <FxCompile Include="VS.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="PS.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_NightVision.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\PostProcess</Filter>
+    </FxCompile>
+    <FxCompile Include="VS_PostProcess.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\PostProcess</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_PostProcess.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\PostProcess</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_DrunkVision.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\PostProcess</Filter>
+    </FxCompile>
+    <FxCompile Include="VS_NormalMap.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\NormalMap</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_NormalMap.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\NormalMap</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_PBR.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\PBR</Filter>
+    </FxCompile>
+    <FxCompile Include="VS_PBR.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\PBR</Filter>
+    </FxCompile>
+    <FxCompile Include="VS_Shadow.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\Shadows</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_Shadow.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\Shadows</Filter>
+    </FxCompile>
+    <FxCompile Include="VS_Simple.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\Current\Simple</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_Simple.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\Current\Simple</Filter>
+    </FxCompile>
+    <FxCompile Include="HullShader.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\Current\Tessellation</Filter>
+    </FxCompile>
+    <FxCompile Include="DomainShader.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\Current\Tessellation</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_Tessellation.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\Current\Tessellation</Filter>
+    </FxCompile>
+    <FxCompile Include="VS_Tessellation.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\Current\Tessellation</Filter>
+    </FxCompile>
+    <FxCompile Include="VS_Instance.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\Current\Instanced</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_Instance.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\Current\Instanced</Filter>
+    </FxCompile>
+    <FxCompile Include="HS_Simple.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\Current\Simple</Filter>
+    </FxCompile>
+    <FxCompile Include="DS_Simple.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\Current\Simple</Filter>
+    </FxCompile>
+    <FxCompile Include="VS_Skybox.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\Current\Skybox</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_Skybox.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\Current\Skybox</Filter>
+    </FxCompile>
+    <FxCompile Include="VS_MousePick.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\Current\MousePick</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_MousePick.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\Current\MousePick</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_Pixelated.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\PostProcess</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ShaderStructs.hlsli">
+      <Filter>App\Shaders</Filter>
+    </None>
+    <None Include="LightPixelShader.hlsli">
+      <Filter>App\Shaders\Light</Filter>
+    </None>
+    <None Include="SharedShader.hlsli">
+      <Filter>DXGL\DXGLApp\Shaders\Current</Filter>
+    </None>
+    <None Include="SharedPostProcess.hlsli">
+      <Filter>DXGL\DXGLApp\Shaders\PostProcess</Filter>
+    </None>
+    <None Include="LightingShader.hlsli">
+      <Filter>DXGL\DXGLApp\Shaders\Current\Lighting</Filter>
+    </None>
+  </ItemGroup>
+</Project>

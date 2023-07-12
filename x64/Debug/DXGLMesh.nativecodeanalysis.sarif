@@ -1,0 +1,1572 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [
+        {
+          "ruleId": "C26451",
+          "message": {
+            "text": "Arithmetic overflow: Using operator '-' on a 4 byte value and then casting the result to a 8 byte value. Cast the value to the wider type before calling operator '-' to avoid overflow (io.2)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 869,
+                  "startColumn": 46,
+                  "endLine": 869,
+                  "endColumn": 54
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::tryParseDouble",
+                  "decoratedName": "?tryParseDouble@tinyobj@@YA_NPEBD0PEAN@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26451",
+          "message": {
+            "text": "Arithmetic overflow: Using operator '-' on a 4 byte value and then casting the result to a 8 byte value. Cast the value to the wider type before calling operator '-' to avoid overflow (io.2)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 894,
+                  "startColumn": 46,
+                  "endLine": 894,
+                  "endColumn": 54
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::tryParseDouble",
+                  "decoratedName": "?tryParseDouble@tinyobj@@YA_NPEBD0PEAN@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26498",
+          "message": {
+            "text": "The function 'std::numeric_limits<float>::epsilon' is constexpr, mark variable 'epsilon' constexpr if compile-time evaluation is desired (con.5)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 1435,
+                  "startColumn": 38,
+                  "endLine": 1435,
+                  "endColumn": 84
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::exportGroupsToShape",
+                  "decoratedName": "?exportGroupsToShape@tinyobj@@YA_NPEAUshape_t@1@AEBUPrimGroup@1@AEBV?$vector@Utag_t@tinyobj@@V?$allocator@Utag_t@tinyobj@@@std@@@std@@HAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@5@_NAEBV?$vector@MV?$allocator@M@std@@@5@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::texture_option_t::type' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 175,
+                  "startColumn": 5,
+                  "endLine": 175,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::texture_option_t::{ctor}",
+                  "decoratedName": "??0texture_option_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::texture_option_t::type"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::texture_option_t::brightness' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 175,
+                  "startColumn": 5,
+                  "endLine": 175,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::texture_option_t::{ctor}",
+                  "decoratedName": "??0texture_option_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::texture_option_t::brightness"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::texture_option_t::sharpness' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 175,
+                  "startColumn": 5,
+                  "endLine": 175,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::texture_option_t::{ctor}",
+                  "decoratedName": "??0texture_option_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::texture_option_t::sharpness"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::texture_option_t::contrast' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 175,
+                  "startColumn": 5,
+                  "endLine": 175,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::texture_option_t::{ctor}",
+                  "decoratedName": "??0texture_option_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::texture_option_t::contrast"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::texture_option_t::origin_offset' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 175,
+                  "startColumn": 5,
+                  "endLine": 175,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::texture_option_t::{ctor}",
+                  "decoratedName": "??0texture_option_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::texture_option_t::origin_offset"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::texture_option_t::scale' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 175,
+                  "startColumn": 5,
+                  "endLine": 175,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::texture_option_t::{ctor}",
+                  "decoratedName": "??0texture_option_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::texture_option_t::scale"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::texture_option_t::turbulence' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 175,
+                  "startColumn": 5,
+                  "endLine": 175,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::texture_option_t::{ctor}",
+                  "decoratedName": "??0texture_option_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::texture_option_t::turbulence"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::texture_option_t::texture_resolution' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 175,
+                  "startColumn": 5,
+                  "endLine": 175,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::texture_option_t::{ctor}",
+                  "decoratedName": "??0texture_option_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::texture_option_t::texture_resolution"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::texture_option_t::clamp' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 175,
+                  "startColumn": 5,
+                  "endLine": 175,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::texture_option_t::{ctor}",
+                  "decoratedName": "??0texture_option_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::texture_option_t::clamp"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::texture_option_t::imfchan' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 175,
+                  "startColumn": 5,
+                  "endLine": 175,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::texture_option_t::{ctor}",
+                  "decoratedName": "??0texture_option_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::texture_option_t::imfchan"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::texture_option_t::blendu' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 175,
+                  "startColumn": 5,
+                  "endLine": 175,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::texture_option_t::{ctor}",
+                  "decoratedName": "??0texture_option_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::texture_option_t::blendu"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::texture_option_t::blendv' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 175,
+                  "startColumn": 5,
+                  "endLine": 175,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::texture_option_t::{ctor}",
+                  "decoratedName": "??0texture_option_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::texture_option_t::blendv"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::texture_option_t::bump_multiplier' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 175,
+                  "startColumn": 5,
+                  "endLine": 175,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::texture_option_t::{ctor}",
+                  "decoratedName": "??0texture_option_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::texture_option_t::bump_multiplier"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::material_t::diffuse' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 320,
+                  "startColumn": 5,
+                  "endLine": 320,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::material_t::{ctor}",
+                  "decoratedName": "??0material_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::material_t::diffuse"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::material_t::ambient' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 320,
+                  "startColumn": 5,
+                  "endLine": 320,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::material_t::{ctor}",
+                  "decoratedName": "??0material_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::material_t::ambient"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::material_t::specular' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 320,
+                  "startColumn": 5,
+                  "endLine": 320,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::material_t::{ctor}",
+                  "decoratedName": "??0material_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::material_t::specular"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::material_t::transmittance' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 320,
+                  "startColumn": 5,
+                  "endLine": 320,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::material_t::{ctor}",
+                  "decoratedName": "??0material_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::material_t::transmittance"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::material_t::emission' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 320,
+                  "startColumn": 5,
+                  "endLine": 320,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::material_t::{ctor}",
+                  "decoratedName": "??0material_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::material_t::emission"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::material_t::shininess' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 320,
+                  "startColumn": 5,
+                  "endLine": 320,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::material_t::{ctor}",
+                  "decoratedName": "??0material_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::material_t::shininess"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::material_t::ior' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 320,
+                  "startColumn": 5,
+                  "endLine": 320,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::material_t::{ctor}",
+                  "decoratedName": "??0material_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::material_t::ior"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::material_t::dissolve' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 320,
+                  "startColumn": 5,
+                  "endLine": 320,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::material_t::{ctor}",
+                  "decoratedName": "??0material_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::material_t::dissolve"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::material_t::illum' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 320,
+                  "startColumn": 5,
+                  "endLine": 320,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::material_t::{ctor}",
+                  "decoratedName": "??0material_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::material_t::illum"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::material_t::dummy' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 320,
+                  "startColumn": 5,
+                  "endLine": 320,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::material_t::{ctor}",
+                  "decoratedName": "??0material_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::material_t::dummy"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::material_t::roughness' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 320,
+                  "startColumn": 5,
+                  "endLine": 320,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::material_t::{ctor}",
+                  "decoratedName": "??0material_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::material_t::roughness"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::material_t::metallic' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 320,
+                  "startColumn": 5,
+                  "endLine": 320,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::material_t::{ctor}",
+                  "decoratedName": "??0material_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::material_t::metallic"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::material_t::sheen' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 320,
+                  "startColumn": 5,
+                  "endLine": 320,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::material_t::{ctor}",
+                  "decoratedName": "??0material_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::material_t::sheen"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::material_t::clearcoat_thickness' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 320,
+                  "startColumn": 5,
+                  "endLine": 320,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::material_t::{ctor}",
+                  "decoratedName": "??0material_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::material_t::clearcoat_thickness"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::material_t::clearcoat_roughness' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 320,
+                  "startColumn": 5,
+                  "endLine": 320,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::material_t::{ctor}",
+                  "decoratedName": "??0material_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::material_t::clearcoat_roughness"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::material_t::anisotropy' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 320,
+                  "startColumn": 5,
+                  "endLine": 320,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::material_t::{ctor}",
+                  "decoratedName": "??0material_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::material_t::anisotropy"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::material_t::anisotropy_rotation' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 320,
+                  "startColumn": 5,
+                  "endLine": 320,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::material_t::{ctor}",
+                  "decoratedName": "??0material_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::material_t::anisotropy_rotation"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::material_t::pad0' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 320,
+                  "startColumn": 5,
+                  "endLine": 320,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::material_t::{ctor}",
+                  "decoratedName": "??0material_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::material_t::pad0"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'tinyobj::material_t::pad2' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+                },
+                "region": {
+                  "startLine": 320,
+                  "startColumn": 5,
+                  "endLine": 320,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "tinyobj::material_t::{ctor}",
+                  "decoratedName": "??0material_t@tinyobj@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "tinyobj::material_t::pad2"
+          }
+        },
+        {
+          "ruleId": "C26451",
+          "message": {
+            "text": "Arithmetic overflow: Using operator '+' on a 4 byte value and then casting the result to a 8 byte value. Cast the value to the wider type before calling operator '+' to avoid overflow (io.2)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/DXGLMesh.cpp"
+                },
+                "region": {
+                  "startLine": 130,
+                  "startColumn": 37,
+                  "endLine": 130,
+                  "endColumn": 41
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "dxgl::DXGLMesh::computeTangents",
+                  "decoratedName": "?computeTangents@DXGLMesh@dxgl@@AEAAXXZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26451",
+          "message": {
+            "text": "Arithmetic overflow: Using operator '+' on a 4 byte value and then casting the result to a 8 byte value. Cast the value to the wider type before calling operator '+' to avoid overflow (io.2)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/DXGLMesh.cpp"
+                },
+                "region": {
+                  "startLine": 131,
+                  "startColumn": 37,
+                  "endLine": 131,
+                  "endColumn": 41
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "dxgl::DXGLMesh::computeTangents",
+                  "decoratedName": "?computeTangents@DXGLMesh@dxgl@@AEAAXXZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "PREfast Code Analysis",
+          "version": "14.33.31629.0",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/Libs/tinyobjloader/include/tiny_obj_loader.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "b4b60d43f7b93c0b902bdb102fd290ba530c6fc66dc84558086b48ccc1683f03"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///C:/Users/xcwal/source/repos/DXL/DXL/DXGLMesh.cpp"
+          },
+          "roles": [
+            "analysisTarget",
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "d267a987636bd4c97e65778dc74915a76ff550b51ea5076b07bdf2a293ea19ec"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglmesh.h"
+          },
+          "hashes": {
+            "sha-256": "b80212e7511a7873c4b749e75846f7930fd1809313c33cb7ec4b8c6996f917df"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglrenderer.h"
+          },
+          "hashes": {
+            "sha-256": "26c1129e31763dd82ef52e343a8a67d9d98c593fcf711ada144c1ef6e12f8a94"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxgldefinitions.h"
+          },
+          "hashes": {
+            "sha-256": "d7cfe58ec7fb35f5e92951efb269f27b95b5aa63b535a83e98d036e2cdc3d58e"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglgraphics.h"
+          },
+          "hashes": {
+            "sha-256": "58a329a82ac2d9b0c567e2a4f4110235a91c7607709f11334b43312ac90b695c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglswapchain.h"
+          },
+          "hashes": {
+            "sha-256": "6e284dcf19ba5d4e36c6424e590e214ca123279a0f167975dd5c2be7e51af043"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglcore.h"
+          },
+          "hashes": {
+            "sha-256": "8e691c83626a97082c8abc84cacfd63978ea74b3eedf0090735e3ea457f5da57"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglgovernor.h"
+          },
+          "hashes": {
+            "sha-256": "168e0814f7797d5eec3e152bb22ddc91b963b4361e18304645810fa6a14897e1"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglgovernordefinitions.h"
+          },
+          "hashes": {
+            "sha-256": "235e9627afc8108af105345c601914f521bdb3c13c4914aad1bcfdb14d60ce43"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglentitymanager.h"
+          },
+          "hashes": {
+            "sha-256": "2e25900166cf32c6663243d1aae4732592c4990e9db7db17c6efba7b10e9210c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglcomponentmanager.h"
+          },
+          "hashes": {
+            "sha-256": "d588bc850a926a6407c478d48596173f495374e01d3b16726543880467389687"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglcomponentlist.h"
+          },
+          "hashes": {
+            "sha-256": "5683fb409bdcd41d8c32799ce43298a4d422e2d44e145e7522efc40a628c1205"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglgroup.h"
+          },
+          "hashes": {
+            "sha-256": "292da2496fd3ef7c3496a3eb7f1d719f694cf93fd5f71ed4e6a69fa1f1cf6f4b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglresourcemanager.h"
+          },
+          "hashes": {
+            "sha-256": "522eed69c2ea4e978a7f4f0f101ecee859665e623f43f7f868a60e9f71575d1d"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglvertexbuffer.h"
+          },
+          "hashes": {
+            "sha-256": "5dad46f91c9d7b541f4ce481a4cbd5ba8e061b60db9c3d1dc2a987a9464df8b5"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglindexbuffer.h"
+          },
+          "hashes": {
+            "sha-256": "5257e6e4016958996ff173ac8fb75ef373a865f754a9e783714b3a7d56eaf356"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglinstancebuffer.h"
+          },
+          "hashes": {
+            "sha-256": "eb6467eb6bf8f9b3af31c5612eba509c1d3b77c8e2c544f3f794c24559fc1852"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglcbuffer.h"
+          },
+          "hashes": {
+            "sha-256": "eb58ab31b8310960fa7dc35a387764554cfddf92110ffa77dae36598b86be374"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglinputlayout.h"
+          },
+          "hashes": {
+            "sha-256": "361b6072c7cfe9982bd433c31e1dc72a04578ec1969e80e55bdf481c454541c3"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglsamplerstate.h"
+          },
+          "hashes": {
+            "sha-256": "e04093977d418165eed6f2e9cf8c014200f5287ccac6096f93989bdd0638dcd2"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglshaderresourceview.h"
+          },
+          "hashes": {
+            "sha-256": "b0e52d10577a64bbd61d82590863c8ccec73677622316ff2aff21a63d0069026"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxgltexture2d.h"
+          },
+          "hashes": {
+            "sha-256": "43359c31b26944b295cf23410110a9b18c6d7da71ae05d9bde90e88c990a9eaf"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxgltexturecube.h"
+          },
+          "hashes": {
+            "sha-256": "ca1560bd6874f4206df0e1aef83017fae96cfb554829e14748bee2e2495cc73e"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglmaterial.h"
+          },
+          "hashes": {
+            "sha-256": "6e1eac3ab96174802f2cae3029faa3bcef9f476433309fc3fe7b51be40805736"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglwindow.h"
+          },
+          "hashes": {
+            "sha-256": "f6bd0100097ddc2f055aedde0ca68a6e7586579fea99494b75898aabf0fd5b25"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglinputsystem.h"
+          },
+          "hashes": {
+            "sha-256": "0ecc43c78bc9e39eac57a259eb1bf0a9d79c28fb4fecdd367994c5f4e2d3686f"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglinputlistener.h"
+          },
+          "hashes": {
+            "sha-256": "b987ec801dc06352e974312660cbaa4b85ae2f70536cba838dce58db0eb18279"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/point2f.h"
+          },
+          "hashes": {
+            "sha-256": "2b1e59339434dc3154047e1717ce3479487e1e9201f288b987bec1bdf6af39cd"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglinputmanager.h"
+          },
+          "hashes": {
+            "sha-256": "2be7e83736db31089bf3e05ba3c8d044a18ed6477662644f5c77545683c28cda"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglrendertargetview.h"
+          },
+          "hashes": {
+            "sha-256": "6e092ef98c6d6d52146665346f83c8d2781d761b72aea73c47b4df10bedc7106"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxgldepthstencilview.h"
+          },
+          "hashes": {
+            "sha-256": "0ecf7ee9e16b1aeb3d5698e7b0b1dbc6d4986fc8c86efebf743dd73c5c23b185"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglinput.h"
+          },
+          "hashes": {
+            "sha-256": "209a2e2ff39277fbc379c339e421fab2cc91161670eff5c0e585ade094f88f6b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglshader.h"
+          },
+          "hashes": {
+            "sha-256": "6f32e0871bb12da0aea97f06cf1cfc9ae025aa9cd4c57ef2a939d7bdab4bfbd0"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglvertexshader.h"
+          },
+          "hashes": {
+            "sha-256": "8b4abec5cb60aad875b3ec31986df7bbc72a98cb9e1109ac9f17fa1c6e03830e"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglhullshader.h"
+          },
+          "hashes": {
+            "sha-256": "add7066fa04e6a6c2576440fdb1b2a4f53cf6835d207fe759729242434b609d5"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxgldomainshader.h"
+          },
+          "hashes": {
+            "sha-256": "3bec92d4e6577d49adc2dcf3a297ec2c84312904e6aa3c663fcefe832ad3847c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglpixelshader.h"
+          },
+          "hashes": {
+            "sha-256": "014dba4a952143550151681cb61cbbedea5ddd839438be154172bdc480577d9f"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglraster.h"
+          },
+          "hashes": {
+            "sha-256": "e073f19304de04f3629649c4a785ec284d8a8097016018a7cf92f689fa6d696e"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxgloutputmerger.h"
+          },
+          "hashes": {
+            "sha-256": "999e1d4a8d2c67cb7283cd1ec6f3a8678437b0c271ba30201a7e88910a0d4919"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglcbuffermanager.h"
+          },
+          "hashes": {
+            "sha-256": "0917d86acbf5c2dc89dc3575e64bdecf451f85b7c5e0d746b624c822a26334db"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglcameramanager.h"
+          },
+          "hashes": {
+            "sha-256": "cddd771f01021b9293b5f40972b1dbbf2c9436bbb3d488d668822fce2670ee8c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglcamera.h"
+          },
+          "hashes": {
+            "sha-256": "269158a46aad436dc98fd44c94a463897becde604a3e9279e1752e28a614ede1"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/mat4f.h"
+          },
+          "hashes": {
+            "sha-256": "030ba1dd73cd215a11fa3e3b7a3b37c069693efc59436b868eeb211cce6a7a34"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/vec3f.h"
+          },
+          "hashes": {
+            "sha-256": "46dfc073b9fb6e609dc27c9b9320edf7f89795325e15bd4589f55a0253a732b5"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/vec2f.h"
+          },
+          "hashes": {
+            "sha-256": "1bd7e51b43fb543fdc2af7bdd0f9d9941ee261d6123d38ebd75a7f1d64f1d234"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/vec4f.h"
+          },
+          "hashes": {
+            "sha-256": "b7c5d9612d7df396c1d6bf6a0798cb076e9a4975a3228b477be06ca84929bc96"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglshadow.h"
+          },
+          "hashes": {
+            "sha-256": "a38a2e11fb3dc64edd84486f32bb56bc2f73bf502b08cc13bdc12c48c0c084fb"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxgllight.h"
+          },
+          "hashes": {
+            "sha-256": "297c44e114382e11af7eed621085e5329f3572bdbf87f1ad1574e037fb0dc43d"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglmousepicker.h"
+          },
+          "hashes": {
+            "sha-256": "49f62d3d595113c5467c7b2f9f079ac3c988964115948c7ef290699e5e892086"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/vertex.h"
+          },
+          "hashes": {
+            "sha-256": "0391a6f7cf1cd56af6ace7d2b11123489bc656e8f786ab39755dde8847800751"
+          }
+        }
+      ]
+    }
+  ]
+}

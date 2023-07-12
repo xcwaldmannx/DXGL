@@ -1,0 +1,59 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "PREfast Code Analysis",
+          "version": "14.33.31629.0",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglindexbuffer.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "bbeba91fa4ec75c1b3ec130034f597489acc69d01c5abc0d35fe3a26260be92d"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglindexbuffer.h"
+          },
+          "hashes": {
+            "sha-256": "5257e6e4016958996ff173ac8fb75ef373a865f754a9e783714b3a7d56eaf356"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxgldefinitions.h"
+          },
+          "hashes": {
+            "sha-256": "d7cfe58ec7fb35f5e92951efb269f27b95b5aa63b535a83e98d036e2cdc3d58e"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/xcwal/source/repos/dxl/dxl/dxglgraphics.h"
+          },
+          "hashes": {
+            "sha-256": "58a329a82ac2d9b0c567e2a4f4110235a91c7607709f11334b43312ac90b695c"
+          }
+        }
+      ]
+    }
+  ]
+}
