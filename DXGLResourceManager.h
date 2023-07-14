@@ -30,6 +30,8 @@
 
 namespace dxgl {
 
+	struct MeshDesc;
+
 	enum ResourceType {
 		VERTEX_BUFFER,
 		INDEX_BUFFER,
@@ -114,9 +116,9 @@ namespace dxgl {
 		void storeMaterial(const MaterialData& data, const std::string& alias);
 
 		SP_DXGLMesh createMesh(const std::string& filepath);
-		SP_DXGLBasicMesh createBasicMesh(const std::string& filepath);
+		SP_DXGLBasicMesh createBasicMesh(const MeshDesc& desc, const std::string& filepath);
 		void storeMesh(const std::string& filepath, const std::string& alias);
-		void storeBasicMesh(const std::string& filepath, const std::string& alias);
+		void storeBasicMesh(const MeshDesc& desc, const std::string& filepath, const std::string& alias);
 
 	private:
 		std::unordered_map<std::type_index, std::unordered_map<std::string, std::any>> m_resources{};

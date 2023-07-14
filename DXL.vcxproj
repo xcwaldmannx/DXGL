@@ -208,7 +208,6 @@
     <ClCompile Include="DXGLCamera.cpp" />
     <ClCompile Include="DXGLCameraManager.cpp" />
     <ClCompile Include="DXGLCBuffer.cpp" />
-    <ClCompile Include="DXGLCBufferManager.cpp" />
     <ClCompile Include="DXGLComponentList.cpp" />
     <ClCompile Include="DXGLComponentManager.cpp" />
     <ClCompile Include="DXGLDepthStencilView.cpp" />
@@ -260,7 +259,6 @@
     <ClInclude Include="DXGLCamera.h" />
     <ClInclude Include="DXGLCameraManager.h" />
     <ClInclude Include="DXGLCBuffer.h" />
-    <ClInclude Include="DXGLCBufferManager.h" />
     <ClInclude Include="DXGLComponentList.h" />
     <ClInclude Include="DXGLComponentManager.h" />
     <ClInclude Include="DXGLComponentTypes.h" />
@@ -366,6 +364,12 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
+    <FxCompile Include="PS_FoliageShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
     <FxCompile Include="PS_Instance.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
@@ -433,6 +437,12 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="VS_FoliageShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>

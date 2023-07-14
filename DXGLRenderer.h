@@ -12,13 +12,12 @@
 #include "DXGLRaster.h"
 #include "DXGLOutputMerger.h"
 
-#include "DXGLCBufferManager.h"
-
 #include "DXGLCameraManager.h"
 
 #include "DXGLShadow.h"
 #include "DXGLLight.h"
 #include "DXGLMousePicker.h"
+#include "DXGLFoliageManager.h"
 
 namespace dxgl {
 
@@ -56,6 +55,7 @@ namespace dxgl {
 		SP_DXGLShadow shadow();
 		SP_DXGLLight light();
 		SP_DXGLMousePicker mousePicker();
+		SP_DXGLFoliageManager foliage();
 
 		void createRenderTargetView(RESOURCE_VIEW_DESC* desc, ResourceViewSlot slot, SP_DXGLRenderTargetView* rtv);
 		void createDepthStencilView(RESOURCE_VIEW_DESC* desc, ResourceViewSlot slot, SP_DXGLDepthStencilView* dsv);
@@ -90,6 +90,8 @@ namespace dxgl {
 		SP_DXGLLight m_light = nullptr;
 
 		SP_DXGLMousePicker m_mousePicker = nullptr;
+
+		SP_DXGLFoliageManager m_foliageManager = nullptr;
 
 		int m_drawCallCount = 0;
 	};

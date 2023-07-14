@@ -40,7 +40,7 @@ namespace dxgl {
 	class DXGLInputManager;
 	typedef std::shared_ptr<DXGLInputManager> SP_DXGLInputManager;
 
-	// Assets
+	// Managers
 	class DXGLCameraManager;
 	typedef std::shared_ptr<DXGLCameraManager> SP_DXGLCameraManager;
 	class DXGLCamera;
@@ -54,6 +54,9 @@ namespace dxgl {
 
 	class DXGLMousePicker;
 	typedef std::shared_ptr<DXGLMousePicker> SP_DXGLMousePicker;
+
+	class DXGLFoliageManager;
+	typedef std::shared_ptr<DXGLFoliageManager> SP_DXGLFoliageManager;
 
 	///////////////
 	// Resources //

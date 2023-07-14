@@ -14,6 +14,7 @@ DXGLRenderer::DXGLRenderer() {
 	m_shadow = std::make_shared<DXGLShadow>();
 	m_light = std::make_shared<DXGLLight>();
 	m_mousePicker = std::make_shared<DXGLMousePicker>();
+	m_foliageManager = std::make_shared<DXGLFoliageManager>();
 }
 
 DXGLRenderer::~DXGLRenderer() {
@@ -102,6 +103,10 @@ SP_DXGLLight DXGLRenderer::light() {
 
 SP_DXGLMousePicker DXGLRenderer::mousePicker() {
 	return m_mousePicker;
+}
+
+SP_DXGLFoliageManager DXGLRenderer::foliage() {
+	return m_foliageManager;
 }
 
 void DXGLRenderer::createRenderTargetView(RESOURCE_VIEW_DESC* desc, ResourceViewSlot slot, SP_DXGLRenderTargetView* rtv) {

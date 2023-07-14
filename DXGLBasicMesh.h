@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "assimp/Importer.hpp"
+#include "assimp/DefaultLogger.hpp"
 #include "assimp/scene.h"
 #include "assimp/postprocess.h"
 
@@ -23,6 +24,28 @@
 #define COUNT_OF(x) ((sizeof(x)/sizeof(0[x])) / ((size_t)(!(sizeof(x) % sizeof(0[x])))))
 
 namespace dxgl {
+
+	enum VertexAttribute {
+		VERTEX_ZERO     =  0,
+		VERTEX_POSITION =  1,
+		VERTEX_TEXCOORD =  2,
+		VERTEX_NORMAL   =  4,
+		VERTEX_TANGENT  =  8,
+		VERTEX_ALL = VERTEX_POSITION | VERTEX_TEXCOORD | VERTEX_NORMAL | VERTEX_TANGENT,
+	};
+
+	enum MiscAttribute {
+		MISC_ZERO      = 0,
+		MISC_INDEX     = 1,
+		MISC_MATERIAL  = 2,
+		MISC_ANIMATION = 4,
+		MISC_ALL = MISC_INDEX | MISC_MATERIAL | MISC_ANIMATION,
+	};
+
+	struct MeshDesc {
+		unsigned int vertexAttributes = 0;
+		unsigned int miscAttributes   = 0;
+	};
 
 	struct BasicMesh {
 		unsigned int indexCount    = 0;
@@ -59,7 +82,7 @@ namespace dxgl {
 
 	class DXGLBasicMesh {
 	public:
-		DXGLBasicMesh(const std::string& filename);
+		DXGLBasicMesh(const MeshDesc& desc, const std::string& filename);
 		~DXGLBasicMesh();
 
 		const SP_DXGLVertexBuffer& getMeshVertexBuffer();
@@ -98,7 +121,7 @@ namespace dxgl {
 		std::vector<BasicMesh> m_meshes{};
 		std::vector<std::string> m_materialNames{};
 
-		std::vector<Vertex> m_vertices{};
+		std::vector<float> m_vertices{};
 		std::vector<unsigned int> m_indices{};
 
 		std::vector<VertexBoneData> m_bones{};

@@ -1,9 +1,15 @@
 #include "DXGLBasicMesh.h"
 
 using namespace dxgl;
-DXGLBasicMesh::DXGLBasicMesh(const std::string& filename) {
+DXGLBasicMesh::DXGLBasicMesh(const MeshDesc& desc, const std::string& filename) {
+
+	Assimp::DefaultLogger::create("", Assimp::Logger::VERBOSE);
 
 	m_scene = m_importer.ReadFile(filename.c_str(), ASSIMP_LOAD_FLAGS);
+
+	if (!m_scene) {
+		std::cout << m_importer.GetErrorString() << "\n";
+	}
 
 	if (m_scene) {
 		convertMatrix(m_scene->mRootNode->mTransformation, m_globalInverseTransform);
@@ -28,55 +34,87 @@ DXGLBasicMesh::DXGLBasicMesh(const std::string& filename) {
 			vertexCount += m_scene->mMeshes[i]->mNumVertices;
 			indexCount += m_meshes[i].indexCount;
 
-			m_bones.resize(vertexCount);
 
-			if (mesh->HasBones()) {
-				loadBones(i, mesh);
+			if (desc.miscAttributes & MISC_ANIMATION) {
+				m_bones.resize(vertexCount);
+
+				if (mesh->HasBones()) {
+					loadBones(i, mesh);
+				}
 			}
 		}
 
-		m_vbBone = DXGLMain::resource()->createVertexBuffer(&m_bones[0], m_bones.size(), sizeof(unsigned int) * 4 + sizeof(float) * 4);
+		if (desc.miscAttributes & MISC_ANIMATION) {
+			m_vbBone = DXGLMain::resource()->createVertexBuffer(&m_bones[0], m_bones.size(), sizeof(unsigned int) * 4 + sizeof(float) * 4);
+		}
 
 		// create meshes
-		m_vertices.reserve(vertexCount);
+		unsigned int vertexSizePosition = (desc.vertexAttributes & VERTEX_POSITION) ? (4 * 3) : 0;
+		unsigned int vertexSizeTexcoord = (desc.vertexAttributes & VERTEX_TEXCOORD) ? (4 * 2) : 0;
+		unsigned int vertexSizeNormal   = (desc.vertexAttributes & VERTEX_NORMAL)   ? (4 * 3) : 0;
+		unsigned int vertexSizeTangent  = (desc.vertexAttributes & VERTEX_TANGENT)  ? (4 * 3) : 0;
+		unsigned int vertexSize = vertexSizePosition + vertexSizeTexcoord + vertexSizeNormal + vertexSizeTangent;
+
+		m_vertices.reserve(vertexCount * vertexSize);
 		m_indices.reserve(indexCount);
 
 		for (unsigned int meshIndex = 0; meshIndex < m_meshes.size(); meshIndex++) {
 			const aiMesh* mesh = m_scene->mMeshes[meshIndex];
 
 			for (unsigned int vertexIndex = 0; vertexIndex < mesh->mNumVertices; vertexIndex++) {
-				const aiVector3D& position = mesh->mVertices[vertexIndex];
-				const aiVector3D& normal = mesh->mNormals[vertexIndex];
-				const aiVector3D& texcoord = mesh->HasTextureCoords(0) ? mesh->mTextureCoords[0][vertexIndex] : aiVector3D(0, 0, 0);
-				const aiVector3D& tangent = mesh->HasTangentsAndBitangents() ? mesh->mTangents[vertexIndex] : aiVector3D(0, 0, 0);
 
-				Vertex vertex{};
+				if (desc.vertexAttributes & VERTEX_POSITION) {
+					const aiVector3D& position = mesh->mVertices[vertexIndex];
+					m_vertices.push_back(position.x);
+					m_vertices.push_back(position.y);
+					m_vertices.push_back(position.z);
 
-				vertex.position = Vec3f(position.x, position.y, position.z);
-				vertex.texcoord = Vec2f(texcoord.x, texcoord.y);
-				vertex.normal   = Vec3f(normal.x, normal.y, normal.z);
-				vertex.tangent  = Vec3f(tangent.x, tangent.y, tangent.z);
+					computeAxialMinAndMax(Vec3f{ position.x, position.y, position.z });
+				}
 
-				computeAxialMinAndMax(vertex.position);
+				if (desc.vertexAttributes & VERTEX_TEXCOORD) {
+					const aiVector3D& texcoord = mesh->HasTextureCoords(0) ? mesh->mTextureCoords[0][vertexIndex] : aiVector3D(0, 0, 0);
+					m_vertices.push_back(texcoord.x);
+					m_vertices.push_back(texcoord.y);
+				}
 
-				m_vertices.push_back(vertex);
+				if (desc.vertexAttributes & VERTEX_NORMAL) {
+					const aiVector3D& normal = mesh->mNormals[vertexIndex];
+					m_vertices.push_back(normal.x);
+					m_vertices.push_back(normal.y);
+					m_vertices.push_back(normal.z);
+				}
+
+				if (desc.vertexAttributes & VERTEX_TANGENT) {
+					const aiVector3D& tangent = mesh->HasTangentsAndBitangents() ? mesh->mTangents[vertexIndex] : aiVector3D(0, 0, 0);
+					m_vertices.push_back(tangent.x);
+					m_vertices.push_back(tangent.y);
+					m_vertices.push_back(tangent.z);
+				}
 			}
 
-			for (unsigned int faceIndex = 0; faceIndex < mesh->mNumFaces; faceIndex++) {
-				const aiFace& face = mesh->mFaces[faceIndex];
-				m_indices.push_back(face.mIndices[0]);
-				m_indices.push_back(face.mIndices[1]);
-				m_indices.push_back(face.mIndices[2]);
+			if (desc.miscAttributes & MISC_INDEX) {
+				for (unsigned int faceIndex = 0; faceIndex < mesh->mNumFaces; faceIndex++) {
+					const aiFace& face = mesh->mFaces[faceIndex];
+					m_indices.push_back(face.mIndices[0]);
+					m_indices.push_back(face.mIndices[1]);
+					m_indices.push_back(face.mIndices[2]);
+				}
 			}
 		}
 
 		computeAABB();
 
-		m_vbMesh = DXGLMain::resource()->createVertexBuffer(&m_vertices[0], m_vertices.size(), sizeof(Vertex));
-		m_ib = DXGLMain::resource()->createIndexBuffer(&m_indices[0], m_indices.size());
+		m_vbMesh = DXGLMain::resource()->createVertexBuffer(&m_vertices[0], vertexCount, vertexSize);
+
+		if (desc.miscAttributes & MISC_INDEX) {
+			m_ib = DXGLMain::resource()->createIndexBuffer(&m_indices[0], m_indices.size());
+		}
 
 		// get materials embedded in fbx
-		loadMaterialTextures(m_scene);
+		if (desc.miscAttributes & MISC_MATERIAL) {
+			loadMaterialTextures(m_scene);
+		}
 
 	} else {
 		throw std::runtime_error("Model '" + filename + "' could not be loaded.");

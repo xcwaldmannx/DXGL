@@ -1,5 +1,9 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(520,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
 C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(534,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (DXL.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  DXGLCamera.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\VS_FoliageShader.hlsl(72,2-27): warning X3206: implicit truncation of vector type
+C:\Users\xcwal\source\repos\DXL\DXL\VS_FoliageShader.hlsl(73,2-27): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see C:\Users\xcwal\source\repos\DXL\x64\Debug\Assets\Shaders\VS_FoliageShader.cso
   DXL.vcxproj -> C:\Users\xcwal\source\repos\DXL\x64\Debug\DXGL.exe
-  0 File(s) copied
+  C:\Users\xcwal\source\repos\DXL\x64\Debug\Assets\Shaders\VS_FoliageShader.cso
+  1 File(s) copied

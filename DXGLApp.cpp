@@ -74,17 +74,17 @@ void DXGLApp::create() {
 	dxgl::InputLayoutDesc descFbx{};
 	descFbx.add("POSITION", 0, FLOAT3, false);
 	descFbx.add("TEXCOORD", 0, FLOAT2, false);
-	descFbx.add("NORMAL", 0, FLOAT3, false);
-	descFbx.add("TANGENT", 0, FLOAT3, false);
+	descFbx.add("NORMAL",   0, FLOAT3, false);
+	descFbx.add("TANGENT",  0, FLOAT3, false);
 
-	descFbx.add("BONE_ID", 2, UINT4, false);
+	descFbx.add("BONE_ID",     2, UINT4, false);
 	descFbx.add("BONE_WEIGHT", 2, FLOAT4, false);
 
-	descFbx.add("INSTANCE_ID", 1, UINT1, true);
-	descFbx.add("INSTANCE_SCALE", 1, FLOAT3, true);
-	descFbx.add("INSTANCE_ROTATION", 1, FLOAT3, true);
+	descFbx.add("INSTANCE_ID",          1, UINT1, true);
+	descFbx.add("INSTANCE_SCALE",       1, FLOAT3, true);
+	descFbx.add("INSTANCE_ROTATION",    1, FLOAT3, true);
 	descFbx.add("INSTANCE_TRANSLATION", 1, FLOAT3, true);
-	descFbx.add("INSTANCE_FLAGS", 1, SINT1, true);
+	descFbx.add("INSTANCE_FLAGS",       1, SINT1, true);
 	resource()->storeInputLayout(descFbx, "Assets/Shaders/VS_Instance.cso", "fbxLayout");
 
 	DXGLShaderSet shaderSet = {
@@ -211,22 +211,22 @@ void DXGLApp::create() {
 	// lights
 	
 	dxgl::Light light{};
-	light.position = Vec3f{ -16.0f, -4.0f, -12.0f };
+	light.position = Vec3f{ -16.0f, 4.0f, -12.0f };
 	light.color = Vec3f{ 10, 0, 0 };
 	renderer()->light()->addLight(light);
 
 	light = {};
-	light.position = Vec3f{-8.0f, -4.0f, -12.0f};
+	light.position = Vec3f{-8.0f, 4.0f, -12.0f};
 	light.color = Vec3f{ 20, 20, 0 };
 	renderer()->light()->addLight(light);
 
 	light = {};
-	light.position = Vec3f{ 8.0f, -4.0f, -12.0f };
+	light.position = Vec3f{ 8.0f, 4.0f, -12.0f };
 	light.color = Vec3f{ 0, 30, 0 };
 	renderer()->light()->addLight(light);
 
 	light = {};
-	light.position = Vec3f{ 16.0f, -4.0f, -12.0f };
+	light.position = Vec3f{ 16.0f, 4.0f, -12.0f };
 	light.color = Vec3f{ 0, 0, 10 };
 	renderer()->light()->addLight(light);
 
@@ -273,15 +273,18 @@ void DXGLApp::create() {
 	}
 
 	// landscape
-	/*{
-		resource()->storeBasicMesh("Assets/Meshes/landscapes/landscape.fbx", "landscape");
+	{
+		MeshDesc desc{};
+		desc.vertexAttributes = VERTEX_ALL;
+		desc.miscAttributes = MISC_ALL;
+		resource()->storeBasicMesh(desc, "Assets/Meshes/landscapes/landscape.fbx", "landscape");
 
 		dxgl::governor::EntityId id = governor()->createEntity();
 
 		TransformComponent transform{};
 		transform.scale = { 10, 10, 10 };
 		transform.rotation = { 0, 0, 0 };
-		transform.translation = { 0, -5, 0 };
+		transform.translation = { 0, 0, 0 };
 		governor()->addEntityComponent<TransformComponent>(transform, id);
 
 		MeshComponent mesh{};
@@ -290,45 +293,39 @@ void DXGLApp::create() {
 		mesh.useTessellation = false;
 		mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
 		governor()->addEntityComponent<MeshComponent>(mesh, id);
-	}*/
+	}
 
 	// grass
-	{
-		resource()->storeBasicMesh("Assets/Meshes/landscapes/grass.fbx", "grass");
 
-		for (int i = 0; i < 20; i++) {
-			for (int j = 0; j < 20; j++) {
-				dxgl::governor::EntityId id = governor()->createEntity();
+	for (int i = 0; i < 500; i++) {
+		for (int j = 0; j < 500; j++) {
+			FoliageInstance foliage{};
+			float scale = 0.25f + (std::rand() % 25) * 0.01f;
+			foliage.scale = Vec3f{ 0.1f, scale, 0.1f };
 
-				float x = (std::rand() % 10) * 0.1f;
-				float z = (std::rand() % 10) * 0.1f;
+			float rotation = (std::rand() % 314) * 0.01f;
+			foliage.rotation = Vec3f{ 0, rotation, 0 };
 
-				float r = (std::rand() % 7) * 0.1f;
+			float x = (std::rand() % 125) * 0.001f;
+			float y = (std::rand() % 125) * 0.001f;
+			foliage.translation = Vec3f{(float) i * 0.125f + x, 0, (float) j * 0.125f + y };
 
-				TransformComponent transform{};
-				transform.scale = { 0.5f, 0.5f, 0.5f };
-				transform.rotation = { 0, r, 0 };
-				transform.translation = { (float) i * 3.5f + x, -5, (float) j * 3.5f + z };
-				governor()->addEntityComponent<TransformComponent>(transform, id);
+			foliage.color0 = Vec3f{ 0.1f, 0.8f, 0.0f };
+			foliage.color1 = Vec3f{ 0.0f, 0.6f, 0.0f };
+			foliage.color2 = Vec3f{ 0.0f, 0.4f, 0.0f };
+			foliage.color3 = Vec3f{ 0.0f, 0.2f, 0.0f };
 
-				MeshComponent mesh{};
-				mesh.mesh = nullptr;
-				mesh.basicmesh = resource()->get<SP_DXGLBasicMesh>("grass");
-				mesh.useTessellation = false;
-				mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
-				governor()->addEntityComponent<MeshComponent>(mesh, id);
-
-				FoliageComponent foliage{};
-				foliage.position = Vec3f((float) i * 3.5f, -5, (float) j * 3.5f);
-				foliage.size = 20.0f * 3.5f;
-				governor()->addEntityComponent<FoliageComponent>(foliage, id);
-			}
+			foliage.timeOffset = i * 0.025f + j * 0.025f;
+			renderer()->foliage()->add(foliage);
 		}
 	}
 
 	{ // guitar
-		resource()->storeBasicMesh("Assets/Meshes/material test cube/explorer guitar.fbx", "guitar");
-		resource()->storeBasicMesh("Assets/Meshes/material test cube/cube.fbx", "cube02");
+		MeshDesc desc{};
+		desc.vertexAttributes = VERTEX_ALL;
+		desc.miscAttributes = MISC_ALL;
+		resource()->storeBasicMesh(desc, "Assets/Meshes/material test cube/explorer guitar.fbx", "guitar");
+		resource()->storeBasicMesh(desc, "Assets/Meshes/material test cube/cube.fbx", "cube02");
 
 		m_guitar = governor()->createEntity();
 
@@ -352,7 +349,10 @@ void DXGLApp::create() {
 
 	// gun
 	{
-		m_fbxMesh = resource()->createBasicMesh("Assets/Meshes/material test cube/gun.fbx");
+		MeshDesc desc{};
+		desc.vertexAttributes = VERTEX_ALL;
+		desc.miscAttributes = MISC_ALL;
+		m_fbxMesh = resource()->createBasicMesh(desc, "Assets/Meshes/material test cube/gun.fbx");
 
 		m_gun = governor()->createEntity();
 
@@ -418,6 +418,8 @@ void DXGLApp::update(long double delta) {
 	m_postProcessor.update(delta, width, height);
 
 	m_skybox.update(delta);
+
+	renderer()->foliage()->update(delta);
 
 	// add entity start
 
@@ -553,14 +555,20 @@ void DXGLApp::draw() {
 	renderer()->shader()->PS_setResource(1, m_skybox.getCube()->get());
 	renderer()->shader()->PS_setResource(2, resource()->get<SP_DXGLTexture2D>("brdf")->get());
 
+
 	// render meshes
 	renderer()->merger()->setDepthStencil("basic");
+
+	// grass
+	renderer()->raster()->RS_setState("cull_none");
+	renderer()->foliage()->draw();
+	renderer()->raster()->RS_setState("cull_back");
 
 	if (input()->getKeyPressState('Z')) {
 		renderer()->raster()->RS_setState("wireframe");
 	}
 	else {
-		renderer()->raster()->RS_setState("cull_none");
+		renderer()->raster()->RS_setState("cull_back");
 	}
 
 	// general cbuffers
@@ -642,7 +650,8 @@ void DXGLApp::draw() {
 			// set appropriate input data
 			renderer()->input()->setInputLayout(resource()->get<SP_DXGLInputLayout>("fbxLayout"));
 			renderer()->input()->setVertexBuffer(0, 1, &mesh->getMeshVertexBuffer());
-			renderer()->input()->setVertexBuffer(2, 1, &mesh->getBoneVertexBuffer());
+			if (mesh->getBoneVertexBuffer())
+				renderer()->input()->setVertexBuffer(2, 1, &mesh->getBoneVertexBuffer());
 			renderer()->input()->setInstanceBuffers(1, &buffer);
 			renderer()->input()->setIndexBuffer(mesh->getIndexBuffer());
 

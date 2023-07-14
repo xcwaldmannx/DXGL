@@ -226,6 +226,9 @@
     <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLFoliageManager">
       <UniqueIdentifier>{920ffc7f-8e56-4e7d-bcae-f811c103aaa4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DXGL\DXGLApp\Shaders\Current\Foliage">
+      <UniqueIdentifier>{832ec898-7021-42f8-8f48-396eb0608f7d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ComputeShader.cpp">
@@ -283,9 +286,6 @@
       <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLCamera</Filter>
     </ClCompile>
     <ClCompile Include="DXGLCBuffer.cpp">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLCBuffer</Filter>
-    </ClCompile>
-    <ClCompile Include="DXGLCBufferManager.cpp">
       <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLCBuffer</Filter>
     </ClCompile>
     <ClCompile Include="DXGLMesh.cpp">
@@ -453,9 +453,6 @@
       <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLCamera</Filter>
     </ClInclude>
     <ClInclude Include="DXGLCBuffer.h">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLCBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="DXGLCBufferManager.h">
       <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLCBuffer</Filter>
     </ClInclude>
     <ClInclude Include="DXGLMesh.h">
@@ -675,6 +672,12 @@
     </FxCompile>
     <FxCompile Include="PS_Pixelated.hlsl">
       <Filter>DXGL\DXGLApp\Shaders\PostProcess</Filter>
+    </FxCompile>
+    <FxCompile Include="VS_FoliageShader.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\Current\Foliage</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_FoliageShader.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\Current\Foliage</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

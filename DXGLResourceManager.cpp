@@ -377,10 +377,10 @@ SP_DXGLMesh DXGLResourceManager::createMesh(const std::string& filepath) {
 	return mesh;
 }
 
-SP_DXGLBasicMesh DXGLResourceManager::createBasicMesh(const std::string& filepath) {
+SP_DXGLBasicMesh DXGLResourceManager::createBasicMesh(const MeshDesc& desc, const std::string& filepath) {
 	SP_DXGLBasicMesh mesh = nullptr;
 	try {
-		mesh = std::make_shared<DXGLBasicMesh>(filepath);
+		mesh = std::make_shared<DXGLBasicMesh>(desc, filepath);
 	} catch (...) {
 		throw std::runtime_error("DXGLBasicMesh could ont be created.");
 	}
@@ -399,11 +399,11 @@ void DXGLResourceManager::storeMesh(const std::string& filepath, const std::stri
 	}
 }
 
-void DXGLResourceManager::storeBasicMesh(const std::string& filepath, const std::string& alias) {
+void DXGLResourceManager::storeBasicMesh(const MeshDesc& desc, const std::string& filepath, const std::string& alias) {
 	SP_DXGLBasicMesh mesh = nullptr;
 	try {
 		if (!find<SP_DXGLBasicMesh>(alias)) {
-			mesh = std::make_shared<DXGLBasicMesh>(filepath);
+			mesh = std::make_shared<DXGLBasicMesh>(desc, filepath);
 			m_resources[typeid(SP_DXGLBasicMesh)][alias] = mesh;
 		}
 	}

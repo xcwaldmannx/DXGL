@@ -25,6 +25,9 @@
       <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Debug\Assets\Shaders\PS_DrunkVision.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Debug\Assets\Shaders\PS_FoliageShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Debug\Assets\Shaders\PS_Instance.cso</FullPath>
     </ContentFile>
     <ContentFile>
@@ -59,6 +62,9 @@
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Debug\Assets\Shaders\VS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Debug\Assets\Shaders\VS_FoliageShader.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Debug\Assets\Shaders\VS_Instance.cso</FullPath>
