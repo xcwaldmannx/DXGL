@@ -178,13 +178,15 @@ void DXGLBasicMesh::loadMaterialTextures(const aiScene* scene) {
 								texture->mWidth * texture->mHeight, width, height, channels);
 						}
 
-						TextureData t{
+						TextureData t {
 							(TextureType)textureType,
 							width,
 							height,
 							channels,
 							data,
 						};
+
+						m_usedMaterials = m_usedMaterials | (1 << textureTypeIndex);
 
 						m.textures.push_back(t);
 					}
@@ -504,4 +506,8 @@ const SP_DXGLIndexBuffer& DXGLBasicMesh::getIndexBuffer() {
 
 const std::vector<BasicMesh>& DXGLBasicMesh::getMeshes() {
 	return m_meshes;
+}
+
+int DXGLBasicMesh::getUsedMaterials() {
+	return m_usedMaterials;
 }

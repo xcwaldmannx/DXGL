@@ -24,9 +24,10 @@ struct alignas(16) EntityBuffer {
 	float height = 0;
 	float pad2[2];
 
-	// global flags for shader
+	// flags
+	int materialFlags = 0;
 	int globalFlags = 0;
-	float pad3[3];
+	float pad3[2];
 };
 
 DXGLApp::DXGLApp() {
@@ -273,7 +274,7 @@ void DXGLApp::create() {
 	}
 
 	// landscape
-	{
+	{/*
 		MeshDesc desc{};
 		desc.vertexAttributes = VERTEX_ALL;
 		desc.miscAttributes = MISC_ALL;
@@ -293,7 +294,7 @@ void DXGLApp::create() {
 		mesh.useTessellation = false;
 		mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
 		governor()->addEntityComponent<MeshComponent>(mesh, id);
-	}
+	*/}
 
 	// grass
 
@@ -310,10 +311,10 @@ void DXGLApp::create() {
 			float y = (std::rand() % 125) * 0.001f;
 			foliage.translation = Vec3f{(float) i * 0.125f + x, 0, (float) j * 0.125f + y };
 
-			foliage.color0 = Vec3f{ 0.1f, 0.8f, 0.0f };
-			foliage.color1 = Vec3f{ 0.0f, 0.6f, 0.0f };
-			foliage.color2 = Vec3f{ 0.0f, 0.4f, 0.0f };
-			foliage.color3 = Vec3f{ 0.0f, 0.2f, 0.0f };
+			foliage.color0 = Vec3f{ 0.05f, 0.5f, 0.0f };
+			foliage.color1 = Vec3f{ 0.0f, 0.3f, 0.0f };
+			foliage.color2 = Vec3f{ 0.0f, 0.2f, 0.0f };
+			foliage.color3 = Vec3f{ 0.0f, 0.1f, 0.0f };
 
 			foliage.timeOffset = i * 0.025f + j * 0.025f;
 			renderer()->foliage()->add(foliage);
@@ -618,6 +619,7 @@ void DXGLApp::draw() {
 			ebuff.camDirection = m_camera->getDirection();
 			ebuff.width = width;
 			ebuff.height = height;
+			ebuff.materialFlags = mesh->getUsedMaterials();
 			ebuff.globalFlags = (m_fullscreen ? GLOBAL_USE_FULLSCREEN : 0);
 			m_cbEntityBuffer->update(&ebuff);
 

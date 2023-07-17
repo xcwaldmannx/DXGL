@@ -63,10 +63,12 @@ float3 fresnelSchlickRoughness(float1 cosTheta, float3 F0, float1 roughness) {
 float3 calcLighting(Texture2DArray materials, TextureCube skybox, Texture2D brdf, SamplerState textureSampler, PS_Input input) {
     float3 outputColor = float3(0.0f, 0.0f, 0.0f);
 
-    float3 albedoSample = pow(materials.Sample(textureSampler, float3(input.texcoord, TEX_ALBEDO)).rgb, float3(2.2333f, 2.2333f, 2.2333f));
-    float1 metallicSample = materials.Sample(textureSampler, float3(input.texcoord, TEX_METALLIC)).r;
-    float1 roughnessSample = materials.Sample(textureSampler, float3(input.texcoord, TEX_ROUGHNESS)).r;
-    float1 amboccSample = materials.Sample(textureSampler, float3(input.texcoord, TEX_AMB_OCC)).r;
+    Material mat = getMaterial();
+
+    float3 albedoSample = mat.useAlbedo ? pow(materials.Sample(textureSampler, float3(input.texcoord, TEX_ALBEDO)).rgb, float3(2.2333f, 2.2333f, 2.2333f)) : float3(0.25f, 0.25f, 0.25f);
+    float1 metallicSample = mat.useMetallic ? materials.Sample(textureSampler, float3(input.texcoord, TEX_METALLIC)).r : 0;
+    float1 roughnessSample = mat.useRoughness ? materials.Sample(textureSampler, float3(input.texcoord, TEX_ROUGHNESS)).r : 1;
+    float1 amboccSample = mat.useAmbOcc ? materials.Sample(textureSampler, float3(input.texcoord, TEX_AMB_OCC)).r : 1;
 
     float3 N = input.normal;
     float3 V = normalize(camPosition - input.worldPosition);

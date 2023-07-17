@@ -91,6 +91,7 @@ namespace dxgl {
 
 		const std::vector<BasicMesh>& getMeshes();
 		void getBoneTransforms(unsigned int animationIndex, long double deltaTime, std::vector<Mat4f>& transforms);
+		int getUsedMaterials();
 
 		const AABB getAABB();
 
@@ -114,8 +115,9 @@ namespace dxgl {
 		Assimp::Importer m_importer;
 		const aiScene* m_scene;
 
-		SP_DXGLVertexBuffer m_vbMesh = nullptr;
-		SP_DXGLVertexBuffer m_vbBone = nullptr;
+		SP_DXGLVertexBuffer m_vbMesh = nullptr; // slot 0
+		SP_DXGLVertexBuffer m_vbBone = nullptr; // slot 1
+		SP_DXGLVertexBuffer m_vbMtl = nullptr;  // slot 2
 		SP_DXGLIndexBuffer m_ib = nullptr;
 
 		std::vector<BasicMesh> m_meshes{};
@@ -123,6 +125,8 @@ namespace dxgl {
 
 		std::vector<float> m_vertices{};
 		std::vector<unsigned int> m_indices{};
+
+		int m_usedMaterials = 0;
 
 		std::vector<VertexBoneData> m_bones{};
 		std::vector<MatrixBoneData> m_boneTransforms{};

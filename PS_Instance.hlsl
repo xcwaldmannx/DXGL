@@ -23,7 +23,9 @@ float3 calculateNormals(PS_Input input) {
 
 	const float3x3 TBN = float3x3(tangent, bitangent, normal);
 
-	float3 normalSample = tex_materials.Sample(textureSampler, float3(input.texcoord, TEX_NORM_DISP)).rgb;
+	Material mat = getMaterial();
+
+	float3 normalSample = mat.useNormal ? tex_materials.Sample(textureSampler, float3(input.texcoord, TEX_NORM_DISP)).rgb : float3(0, 1, 0);
 	normalSample.x =  2.0f * normalSample.r - 1.0f;
 	normalSample.y = -2.0f * normalSample.g + 1.0f;
 	normalSample.z = normalSample.b;

@@ -37,7 +37,6 @@ PS_Input main(VS_Input input) {
 	output.boneIds = input.boneIds;
 	output.weights = input.weights;
 
-	output.instanceId = input.instanceId;
 	output.instanceFlags = input.instanceFlags;
 
 	// shadows start

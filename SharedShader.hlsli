@@ -33,8 +33,9 @@ cbuffer entity: register(b0) {
 	float1 screenHeight;
 	float2 pad2;
 
+	int1 materialFlags;
 	int1 globalFlags;
-	float3 pad3;
+	float2 pad3;
 };
 
 struct ShadowCascade {
@@ -47,6 +48,26 @@ struct ShadowCascade {
 cbuffer shadow: register(b1) {
 	ShadowCascade cascades[4];
 };
+
+struct Material {
+	bool useNormal;
+	bool useHeight;
+	bool useAlbedo;
+	bool useMetallic;
+	bool useRoughness;
+	bool useAmbOcc;
+};
+
+Material getMaterial() {
+	Material mat = (Material)0;
+	mat.useNormal    = ((materialFlags & (1 << 0)) != 0);
+	mat.useHeight    = ((materialFlags & (1 << 1)) != 0);
+	mat.useAlbedo    = ((materialFlags & (1 << 2)) != 0);
+	mat.useMetallic  = ((materialFlags & (1 << 3)) != 0);
+	mat.useRoughness = ((materialFlags & (1 << 4)) != 0);
+	mat.useAmbOcc    = ((materialFlags & (1 << 5)) != 0);
+	return mat;
+}
 
 //////////////////////
 // Input Structures //
@@ -105,7 +126,6 @@ struct PS_Input {
 	uint4  boneIds: BONE_ID;
 	float4 weights: BONE_WEIGHT;
 
-	int1 instanceId: INSTANCE_ID;
 	int1 instanceFlags: INSTANCE_FLAGS;
 
 	float3 worldPosition: WORLD_POSITION;
@@ -138,6 +158,7 @@ InstanceFlags getInstanceFlags(int instanceFlags) {
 	flags.useLighting  = ((instanceFlags & (1 << 0)) != 0);
 	flags.useShadowing = ((instanceFlags & (1 << 1)) != 0);
 	flags.useFog       = ((instanceFlags & (1 << 2)) != 0);
+
 	flags.isSelected   = ((instanceFlags & (1 << 3)) != 0);
 	return flags;
 }

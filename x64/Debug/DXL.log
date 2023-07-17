@@ -1,9 +1,15 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(520,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
 C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(534,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (DXL.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-C:\Users\xcwal\source\repos\DXL\DXL\VS_FoliageShader.hlsl(72,2-27): warning X3206: implicit truncation of vector type
-C:\Users\xcwal\source\repos\DXL\DXL\VS_FoliageShader.hlsl(73,2-27): warning X3206: implicit truncation of vector type
-  
-  compilation object save succeeded; see C:\Users\xcwal\source\repos\DXL\x64\Debug\Assets\Shaders\VS_FoliageShader.cso
+  DXGLBasicMesh.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLBasicMesh.cpp(48,129): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLBasicMesh.cpp(111,82): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLBasicMesh.cpp(158,52): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLBasicMesh.cpp(159,45): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLBasicMesh.cpp(218,37): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLBasicMesh.cpp(369,50): warning C4244: 'argument': conversion from 'long double' to 'TReal', possible loss of data
+          with
+          [
+              TReal=ai_real
+          ]
   DXL.vcxproj -> C:\Users\xcwal\source\repos\DXL\x64\Debug\DXGL.exe
-  C:\Users\xcwal\source\repos\DXL\x64\Debug\Assets\Shaders\VS_FoliageShader.cso
-  1 File(s) copied
+  0 File(s) copied
