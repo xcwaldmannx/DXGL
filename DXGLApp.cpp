@@ -274,7 +274,14 @@ void DXGLApp::create() {
 	}
 
 	// landscape
-	{/*
+	{
+
+		MeshDesc desc{};
+		desc.vertexAttributes = VERTEX_ALL;
+		desc.miscAttributes = MISC_ALL;
+		m_terrain = new DXGLTerrainSystem(desc, "Assets/Meshes/landscapes/landscape2.fbx");
+
+		/*
 		MeshDesc desc{};
 		desc.vertexAttributes = VERTEX_ALL;
 		desc.miscAttributes = MISC_ALL;
@@ -294,12 +301,13 @@ void DXGLApp::create() {
 		mesh.useTessellation = false;
 		mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
 		governor()->addEntityComponent<MeshComponent>(mesh, id);
-	*/}
+		*/
+	}
 
 	{ // guitar
 		MeshDesc desc{};
 		desc.vertexAttributes = VERTEX_ALL;
-		desc.miscAttributes = MISC_ALL;
+		desc.miscAttributes = MISC_DEFAULT;
 		resource()->storeBasicMesh(desc, "Assets/Meshes/material test cube/explorer guitar.fbx", "guitar");
 		resource()->storeBasicMesh(desc, "Assets/Meshes/material test cube/cube.fbx", "cube02");
 
@@ -327,7 +335,7 @@ void DXGLApp::create() {
 	{
 		MeshDesc desc{};
 		desc.vertexAttributes = VERTEX_ALL;
-		desc.miscAttributes = MISC_ALL;
+		desc.miscAttributes = MISC_DEFAULT;
 		m_fbxMesh = resource()->createBasicMesh(desc, "Assets/Meshes/material test cube/gun.fbx");
 
 		m_gun = governor()->createEntity();
@@ -396,6 +404,8 @@ void DXGLApp::update(long double delta) {
 	m_skybox.update(delta);
 
 	renderer()->foliage()->update(delta);
+
+	m_terrain->update(delta);
 
 	// add entity start
 
@@ -547,6 +557,9 @@ void DXGLApp::draw() {
 		renderer()->raster()->RS_setState("cull_back");
 	}
 
+	// terrain
+	m_terrain->draw();
+
 	// general cbuffers
 	renderer()->shader()->VS_setCBuffer(0, 1, m_cbEntityBuffer->get());
 	renderer()->shader()->HS_setCBuffer(0, 1, m_cbEntityBuffer->get());
@@ -635,8 +648,7 @@ void DXGLApp::draw() {
 			// set shaders
 			if (useTessellation) {
 				renderer()->shader()->setShaderSet("tessellation");
-			}
-			else {
+			} else {
 				renderer()->shader()->setShaderSet("instance");
 			}
 

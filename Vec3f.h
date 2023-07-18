@@ -1,6 +1,8 @@
 #pragma once
 
 #include <cmath>
+#include <string>
+
 #include "Vec2f.h"
 
 class Vec3f {
@@ -117,6 +119,10 @@ public:
 
 	bool operator== (Vec3f vec) {
 		return x == vec.x && y == vec.y && z == vec.z;
+	}
+
+	std::string toString() {
+		return std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(z);
 	}
 
 	float x = 0;

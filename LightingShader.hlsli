@@ -60,18 +60,18 @@ float3 fresnelSchlickRoughness(float1 cosTheta, float3 F0, float1 roughness) {
     return F0 + (max(float3(1.0f - roughness, 1.0f - roughness, 1.0f - roughness), F0) - F0) * pow(clamp(1.0f - cosTheta, 0.0f, 1.0f), 5.0f);
 }
 
-float3 calcLighting(Texture2DArray materials, TextureCube skybox, Texture2D brdf, SamplerState textureSampler, PS_Input input) {
+float3 calcLighting(Texture2DArray materials, TextureCube skybox, Texture2D brdf, SamplerState textureSampler, float2 texcoord, float3 normal, float3 worldPos, unsigned int materialFlags) {
     float3 outputColor = float3(0.0f, 0.0f, 0.0f);
 
-    Material mat = getMaterial();
+    Material mat = getMaterial(materialFlags);
 
-    float3 albedoSample = mat.useAlbedo ? pow(materials.Sample(textureSampler, float3(input.texcoord, TEX_ALBEDO)).rgb, float3(2.2333f, 2.2333f, 2.2333f)) : float3(0.25f, 0.25f, 0.25f);
-    float1 metallicSample = mat.useMetallic ? materials.Sample(textureSampler, float3(input.texcoord, TEX_METALLIC)).r : 0;
-    float1 roughnessSample = mat.useRoughness ? materials.Sample(textureSampler, float3(input.texcoord, TEX_ROUGHNESS)).r : 1;
-    float1 amboccSample = mat.useAmbOcc ? materials.Sample(textureSampler, float3(input.texcoord, TEX_AMB_OCC)).r : 1;
+    float3 albedoSample = mat.useAlbedo ? pow(materials.Sample(textureSampler, float3(texcoord, TEX_ALBEDO)).rgb, float3(2.2333f, 2.2333f, 2.2333f)) : float3(0.25f, 0.25f, 0.25f);
+    float1 metallicSample = mat.useMetallic ? materials.Sample(textureSampler, float3(texcoord, TEX_METALLIC)).r : 0;
+    float1 roughnessSample = mat.useRoughness ? materials.Sample(textureSampler, float3(texcoord, TEX_ROUGHNESS)).r : 1;
+    float1 amboccSample = mat.useAmbOcc ? materials.Sample(textureSampler, float3(texcoord, TEX_AMB_OCC)).r : 1;
 
-    float3 N = input.normal;
-    float3 V = normalize(camPosition - input.worldPosition);
+    float3 N = normal;
+    float3 V = normalize(camPosition - worldPos);
     float3 R = reflect(-V, N);
 
     float3 irradianceSample = pow(skybox.SampleLevel(textureSampler, N, 8).rgb, 2.2333f);
@@ -92,9 +92,9 @@ float3 calcLighting(Texture2DArray materials, TextureCube skybox, Texture2D brdf
 
         if (length(lights[i].direction) == 0) { // point light
 
-            L = normalize(lights[i].position - input.worldPosition);
+            L = normalize(lights[i].position - worldPos);
             H = normalize(V + L);
-            float1 distance = length(lights[i].position - input.worldPosition);
+            float1 distance = length(lights[i].position - worldPos);
             float1 attenuation = 1.0f / (distance * distance);
             radiance = lights[i].color * attenuation;
 

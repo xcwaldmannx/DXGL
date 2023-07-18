@@ -239,6 +239,7 @@
     <ClCompile Include="DXGLShader.cpp" />
     <ClCompile Include="DXGLSwapChain.cpp" />
     <ClCompile Include="DXGLInputManager.cpp" />
+    <ClCompile Include="DXGLTerrainSystem.cpp" />
     <ClCompile Include="DXGLTexture2D.cpp" />
     <ClCompile Include="DXGLTextureCube.cpp" />
     <ClCompile Include="DXGLTimer.cpp" />
@@ -294,6 +295,7 @@
     <ClInclude Include="DXGLShader.h" />
     <ClInclude Include="DXGLSwapChain.h" />
     <ClInclude Include="DXGLInputManager.h" />
+    <ClInclude Include="DXGLTerrainSystem.h" />
     <ClInclude Include="DXGLTexture2D.h" />
     <ClInclude Include="DXGLTextureCube.h" />
     <ClInclude Include="DXGLTimer.h" />
@@ -430,6 +432,12 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
+    <FxCompile Include="PS_TerrainShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
     <FxCompile Include="PS_Tessellation.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
@@ -495,6 +503,12 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="VS_Skybox.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="VS_TerrainShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>

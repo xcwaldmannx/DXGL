@@ -58,7 +58,7 @@ struct Material {
 	bool useAmbOcc;
 };
 
-Material getMaterial() {
+Material getMaterial(int materialFlags) {
 	Material mat = (Material)0;
 	mat.useNormal    = ((materialFlags & (1 << 0)) != 0);
 	mat.useHeight    = ((materialFlags & (1 << 1)) != 0);

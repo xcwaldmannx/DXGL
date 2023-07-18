@@ -39,7 +39,9 @@ namespace dxgl {
 		MISC_INDEX     = 1,
 		MISC_MATERIAL  = 2,
 		MISC_ANIMATION = 4,
-		MISC_ALL = MISC_INDEX | MISC_MATERIAL | MISC_ANIMATION,
+		MISC_FACE      = 8,
+		MISC_DEFAULT = MISC_INDEX | MISC_MATERIAL | MISC_ANIMATION,
+		MISC_ALL     = MISC_INDEX | MISC_MATERIAL | MISC_ANIMATION | MISC_FACE,
 	};
 
 	struct MeshDesc {
@@ -58,6 +60,13 @@ namespace dxgl {
 	struct AABB {
 		Vec3f min{};
 		Vec3f max{};
+	};
+
+	struct Face {
+		Vec3f indices;
+		Vec3f v0;
+		Vec3f v1;
+		Vec3f v2;
 	};
 
 	struct VertexBoneData {
@@ -92,6 +101,7 @@ namespace dxgl {
 		const std::vector<BasicMesh>& getMeshes();
 		void getBoneTransforms(unsigned int animationIndex, long double deltaTime, std::vector<Mat4f>& transforms);
 		int getUsedMaterials();
+		const std::vector<Face>& getFaces();
 
 		const AABB getAABB();
 
@@ -125,6 +135,7 @@ namespace dxgl {
 
 		std::vector<float> m_vertices{};
 		std::vector<unsigned int> m_indices{};
+		std::vector<Face> m_faces{};
 
 		int m_usedMaterials = 0;
 

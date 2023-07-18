@@ -23,7 +23,7 @@ float3 calculateNormals(PS_Input input) {
 
 	const float3x3 TBN = float3x3(tangent, bitangent, normal);
 
-	Material mat = getMaterial();
+	Material mat = getMaterial(materialFlags);
 
 	float3 normalSample = mat.useNormal ? tex_materials.Sample(textureSampler, float3(input.texcoord, TEX_NORM_DISP)).rgb : float3(0, 1, 0);
 	normalSample.x =  2.0f * normalSample.r - 1.0f;
@@ -121,7 +121,7 @@ float4 main(PS_Input input) : SV_TARGET {
 	float3 outputColor = float3(0, 0, 0);
 
 	if (instanceFlags.useLighting) {
-		lightColor = calcLighting(tex_materials, tex_skybox, tex_brdf, textureSampler, input);
+		lightColor = calcLighting(tex_materials, tex_skybox, tex_brdf, textureSampler, input.texcoord, input.normal, input.worldPosition, materialFlags);
 		outputColor = (visibility * lightColor) + (1.0f - visibility) * lightColor;
 		// outputColor = (visibility * direcLightColor) + ((1.0f - visibility) * pointLightColor) + (visibility * pointLightColor);
 	} else {

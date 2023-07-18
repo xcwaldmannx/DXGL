@@ -68,7 +68,6 @@ DXGLBasicMesh::DXGLBasicMesh(const MeshDesc& desc, const std::string& filename) 
 					m_vertices.push_back(position.x);
 					m_vertices.push_back(position.y);
 					m_vertices.push_back(position.z);
-
 					computeAxialMinAndMax(Vec3f{ position.x, position.y, position.z });
 				}
 
@@ -96,9 +95,25 @@ DXGLBasicMesh::DXGLBasicMesh(const MeshDesc& desc, const std::string& filename) 
 			if (desc.miscAttributes & MISC_INDEX) {
 				for (unsigned int faceIndex = 0; faceIndex < mesh->mNumFaces; faceIndex++) {
 					const aiFace& face = mesh->mFaces[faceIndex];
-					m_indices.push_back(face.mIndices[0]);
-					m_indices.push_back(face.mIndices[1]);
-					m_indices.push_back(face.mIndices[2]);
+					unsigned int i0 = face.mIndices[0];
+					unsigned int i1 = face.mIndices[1];
+					unsigned int i2 = face.mIndices[2];
+					m_indices.push_back(i0);
+					m_indices.push_back(i1);
+					m_indices.push_back(i2);
+
+					if (desc.miscAttributes & MISC_FACE) {
+
+						Vec3f indices = {(float) i0, (float) i1, (float) i2};
+
+						Vec3f v0 = Vec3f{ mesh->mVertices[i0].x, mesh->mVertices[i0].y, mesh->mVertices[i0].z };
+						Vec3f v1 = Vec3f{ mesh->mVertices[i1].x, mesh->mVertices[i1].y, mesh->mVertices[i1].z };
+						Vec3f v2 = Vec3f{ mesh->mVertices[i2].x, mesh->mVertices[i2].y, mesh->mVertices[i2].z };
+
+						Face facee = Face{ indices, v0, v1, v2 };
+
+						m_faces.push_back(facee);
+					}
 				}
 			}
 		}
@@ -510,4 +525,8 @@ const std::vector<BasicMesh>& DXGLBasicMesh::getMeshes() {
 
 int DXGLBasicMesh::getUsedMaterials() {
 	return m_usedMaterials;
+}
+
+const std::vector<Face>& DXGLBasicMesh::getFaces() {
+	return m_faces;
 }

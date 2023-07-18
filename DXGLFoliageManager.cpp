@@ -74,10 +74,10 @@ void DXGLFoliageManager::generateFoliage() {
 					float offZ = (std::rand() % ((int) GRASS_TILE_SIZE * 10)) * 0.01f;
 					grass.translation = { x + offX, y, z + offZ };
 
-					grass.color0 = Vec3f{ 0.05f, 0.5f, 0.0f };
-					grass.color1 = Vec3f{ 0.0f, 0.3f, 0.0f };
-					grass.color2 = Vec3f{ 0.0f, 0.2f, 0.0f };
-					grass.color3 = Vec3f{ 0.0f, 0.1f, 0.0f };
+					grass.color0 = Vec3f{ 0.025f, 0.3f, 0.0f };
+					grass.color1 = Vec3f{ 0.0125f, 0.2f, 0.0f };
+					grass.color2 = Vec3f{ 0.0f, 0.1f, 0.0f };
+					grass.color3 = Vec3f{ 0.0f, 0.05f, 0.0f };
 
 					grass.timeOffset = x * (6.28f) / GRASS_DENSITY + z * (6.28f) / GRASS_DENSITY;
 
@@ -162,7 +162,6 @@ void DXGLFoliageManager::update(long double delta) {
 }
 
 void DXGLFoliageManager::draw() {
-	if (!m_mesh) return;
 	DXGLMain::renderer()->input()->setInputLayout(m_layout);
 	DXGLMain::renderer()->input()->setVertexBuffer(0, 1, &m_mesh->getMeshVertexBuffer());
 	DXGLMain::renderer()->input()->setIndexBuffer(m_mesh->getIndexBuffer());

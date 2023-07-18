@@ -58,6 +58,9 @@
       <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Debug\Assets\Shaders\PS_Skybox.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Debug\Assets\Shaders\PS_TerrainShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Debug\Assets\Shaders\PS_Tessellation.cso</FullPath>
     </ContentFile>
     <ContentFile>
@@ -89,6 +92,9 @@
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Debug\Assets\Shaders\VS_Skybox.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Debug\Assets\Shaders\VS_TerrainShader.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Debug\Assets\Shaders\VS_Tessellation.cso</FullPath>

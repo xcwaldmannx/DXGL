@@ -229,6 +229,12 @@
     <Filter Include="DXGL\DXGLApp\Shaders\Current\Foliage">
       <UniqueIdentifier>{832ec898-7021-42f8-8f48-396eb0608f7d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLTerrainSystem">
+      <UniqueIdentifier>{c44dcf8e-fb2c-4198-a8cd-a64957077b1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLApp\Shaders\Current\Terrain">
+      <UniqueIdentifier>{8580c7b3-a6cc-44af-a6bb-db7821086bdc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ComputeShader.cpp">
@@ -377,6 +383,9 @@
     </ClCompile>
     <ClCompile Include="DXGLFoliageManager.cpp">
       <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLFoliageManager</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGLTerrainSystem.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLTerrainSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -557,6 +566,9 @@
     <ClInclude Include="DXGLFoliageManager.h">
       <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLFoliageManager</Filter>
     </ClInclude>
+    <ClInclude Include="DXGLTerrainSystem.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLTerrainSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="VertexShader.hlsl">
@@ -678,6 +690,12 @@
     </FxCompile>
     <FxCompile Include="PS_FoliageShader.hlsl">
       <Filter>DXGL\DXGLApp\Shaders\Current\Foliage</Filter>
+    </FxCompile>
+    <FxCompile Include="VS_TerrainShader.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\Current\Terrain</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_TerrainShader.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\Current\Terrain</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

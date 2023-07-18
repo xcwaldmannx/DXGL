@@ -11,6 +11,8 @@
 
 #include "DXGLBasicMesh.h"
 
+#include "DXGLTerrainSystem.h"
+
 struct DXGLVertex {
 	Vec3f pos{};
 	Vec2f texcoord{};
@@ -61,4 +63,6 @@ private:
 	SP_DXGLCamera m_camera = nullptr;
 
 	DXGLTimer shadowTimer;
+
+	DXGLTerrainSystem* m_terrain = nullptr;
 };
