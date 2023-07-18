@@ -17,7 +17,7 @@ DXGLTerrainSystem::DXGLTerrainSystem(const MeshDesc& desc, const std::string& fi
 	float maxY = aabb.max.y * scale;
 	float maxZ = aabb.max.z * scale;
 
-	float chunkSize = 128;
+	float chunkSize = std::floor((std::abs(minX) + maxX) / 25.0f);
 
 	for (int x = minX; x < maxX; x += chunkSize) {
 		for (int z = minZ; z < maxZ; z += chunkSize) {
