@@ -296,31 +296,6 @@ void DXGLApp::create() {
 		governor()->addEntityComponent<MeshComponent>(mesh, id);
 	*/}
 
-	// grass
-
-	for (int i = 0; i < 500; i++) {
-		for (int j = 0; j < 500; j++) {
-			FoliageInstance foliage{};
-			float scale = 0.25f + (std::rand() % 25) * 0.01f;
-			foliage.scale = Vec3f{ 0.1f, scale, 0.1f };
-
-			float rotation = (std::rand() % 314) * 0.01f;
-			foliage.rotation = Vec3f{ 0, rotation, 0 };
-
-			float x = (std::rand() % 125) * 0.001f;
-			float y = (std::rand() % 125) * 0.001f;
-			foliage.translation = Vec3f{(float) i * 0.125f + x, 0, (float) j * 0.125f + y };
-
-			foliage.color0 = Vec3f{ 0.05f, 0.5f, 0.0f };
-			foliage.color1 = Vec3f{ 0.0f, 0.3f, 0.0f };
-			foliage.color2 = Vec3f{ 0.0f, 0.2f, 0.0f };
-			foliage.color3 = Vec3f{ 0.0f, 0.1f, 0.0f };
-
-			foliage.timeOffset = i * 0.025f + j * 0.025f;
-			renderer()->foliage()->add(foliage);
-		}
-	}
-
 	{ // guitar
 		MeshDesc desc{};
 		desc.vertexAttributes = VERTEX_ALL;

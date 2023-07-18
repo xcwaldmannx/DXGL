@@ -63,11 +63,10 @@ float4x4 getWorldMatrix(float3 scale, float3 rotation, float3 translation) {
 PS_Input main(VS_Input input) {
 	PS_Input output = (PS_Input)0;
 
-	// sway grass
 	float y = (PI / 3.0f) * input.texcoord.y - (PI / 3.0f);
 	float finalTime = time + input.instTimeOffset;
 	float offsetX = sin(y) * cos(finalTime);
-	float offsetZ = sin(y) * cos(2* finalTime);
+	float offsetZ = sin(y) * cos(2 * finalTime);
 
 	offsetX *= input.instScale;
 	offsetZ *= input.instScale;
