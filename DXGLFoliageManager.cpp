@@ -113,9 +113,9 @@ void DXGLFoliageManager::update(long double delta) {
 				chunk.LOD = 1.0f;
 			} else {
 				// Define the desired increment step
-				float incrementStep = 0.05f;
-
-				float rawLOD = std::clamp<float>(1.0f / (1 + (distToCam - GRASS_TILE_SIZE * 2) * 0.1f), 0.0f, 1.0f);
+				float incrementStep = 0.01f;
+				
+				float rawLOD = smoothstep(1.0f / (1.0f + (distToCam - GRASS_TILE_SIZE * 2) * 0.1f), 0, 1);
 
 				// Round the rawLOD to the nearest multiple of incrementStep
 				chunk.LOD = std::round(rawLOD / incrementStep) * incrementStep;

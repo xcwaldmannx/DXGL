@@ -1,17 +1,16 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(520,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
 C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(534,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (DXL.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  DXGLApp.cpp
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(374,16): warning C4244: '=': conversion from 'long double' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(402,39): warning C4244: 'argument': conversion from 'UINT' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(402,32): warning C4244: 'argument': conversion from 'UINT' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(525,30): warning C4838: conversion from 'float' to 'LONG' requires a narrowing conversion
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(525,30): warning C4244: 'initializing': conversion from 'float' to 'LONG', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(525,39): warning C4838: conversion from 'float' to 'LONG' requires a narrowing conversion
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(525,39): warning C4244: 'initializing': conversion from 'float' to 'LONG', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(608,18): warning C4244: '=': conversion from 'UINT' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(609,19): warning C4244: '=': conversion from 'UINT' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(638,121): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(664,139): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(666,135): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+  DXGLFoliageManager.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLFoliageManager.cpp(34,43): warning C4244: 'argument': conversion from 'float' to 'const unsigned __int64', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLFoliageManager.cpp(38,64): warning C4244: 'argument': conversion from 'float' to 'const unsigned __int64', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLFoliageManager.cpp(39,85): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLFoliageManager.cpp(56,20): warning C4244: 'argument': conversion from 'const float' to 'const unsigned __int64', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLFoliageManager.cpp(57,26): warning C4244: 'argument': conversion from 'const float' to 'const unsigned __int64', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLFoliageManager.cpp(107,64): warning C4244: 'argument': conversion from 'float' to 'const unsigned __int64', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLFoliageManager.cpp(131,25): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLFoliageManager.cpp(179,37): warning C4244: 'argument': conversion from 'float' to 'const __int64', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLFoliageManager.cpp(185,127): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLFoliageManager.cpp(188,18): warning C4244: '+=': conversion from 'long double' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLFoliageManager.cpp(213,133): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
   DXL.vcxproj -> C:\Users\xcwal\source\repos\DXL\x64\Debug\DXGL.exe
   0 File(s) copied

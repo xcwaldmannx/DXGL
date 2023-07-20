@@ -28,7 +28,7 @@ namespace dxgl {
 
 	const float GRASS_DENSITY = 64;
 	const float GRASS_TILE_SIZE = 8;
-	const float GRASS_TILE_LENGTH = 16;
+	const float GRASS_TILE_LENGTH = 20;
 	const float GRASS_TOTAL_LENGTH = GRASS_TILE_SIZE * GRASS_TILE_LENGTH;
 	const float GRASS_BLADES_MAX = (GRASS_DENSITY * GRASS_DENSITY) * (GRASS_TILE_LENGTH * GRASS_TILE_LENGTH);
 
@@ -54,6 +54,13 @@ namespace dxgl {
 		void cull();
 
 	private:
+
+		float smoothstep(float x, float edge0 = 0.0f, float edge1 = 1.0f) {
+			// Scale, and clamp x to 0..1 range
+			x = std::clamp<float>((x - edge0) / (edge1 - edge0), 0, 1);
+
+			return x * x * (3.0f - 2.0f * x);
+		}
 
 		template <class _InIt>
 		void copyPercentage(_InIt _First, _InIt _Last, _InIt _Dest, float percentage) {
