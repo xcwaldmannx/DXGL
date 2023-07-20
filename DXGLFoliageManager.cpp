@@ -38,11 +38,13 @@ DXGLFoliageManager::DXGLFoliageManager() {
 			FoliageChunk& chunk = m_foliageChunks[x * GRASS_TILE_LENGTH + z];
 			chunk.bufferLocation = (x * GRASS_TILE_LENGTH) * (GRASS_DENSITY * GRASS_DENSITY) + z * (GRASS_DENSITY * GRASS_DENSITY);
 
-			chunk.curX = x * GRASS_TILE_SIZE;
-			chunk.curZ = z * GRASS_TILE_SIZE;
+			chunk.curX = 0;
+			chunk.curZ = 0;
 
-			chunk.lastX = x * GRASS_TILE_SIZE;
-			chunk.lastZ = z * GRASS_TILE_SIZE;
+			chunk.lastX = x * GRASS_TILE_SIZE + GRASS_TILE_SIZE / 2;
+			chunk.lastZ = z * GRASS_TILE_SIZE + GRASS_TILE_SIZE / 2;
+
+			chunk.LOD = 0;
 		}
 	}
 }
@@ -74,10 +76,10 @@ void DXGLFoliageManager::generateFoliage() {
 					float offZ = (std::rand() % ((int) GRASS_TILE_SIZE * 10)) * 0.01f;
 					grass.translation = { x + offX, y, z + offZ };
 
-					grass.color0 = Vec3f{ 0.025f, 0.3f, 0.0f };
-					grass.color1 = Vec3f{ 0.0125f, 0.2f, 0.0f };
-					grass.color2 = Vec3f{ 0.0f, 0.1f, 0.0f };
-					grass.color3 = Vec3f{ 0.0f, 0.05f, 0.0f };
+					grass.color0 = Vec3f{ 0.025f, 0.1f, 0.0f };
+					grass.color1 = Vec3f{ 0.0125f, 0.05f, 0.0f };
+					grass.color2 = Vec3f{ 0.0f, 0.01f, 0.0f };
+					grass.color3 = Vec3f{ 0.0f, 0.005f, 0.0f };
 
 					grass.timeOffset = x * (6.28f) / GRASS_DENSITY + z * (6.28f) / GRASS_DENSITY;
 
@@ -95,6 +97,10 @@ void DXGLFoliageManager::update(long double delta) {
 
 	// update spaces
 	m_visibleBufferLocations.clear();
+	m_bufferAdvance.clear();
+	m_chunkLODs.clear();
+
+	unsigned int totalGrassBlades = 0;
 
 	for (int x = 0; x < GRASS_TILE_LENGTH; x++) {
 		for (int z = 0; z < GRASS_TILE_LENGTH; z++) {
@@ -102,20 +108,44 @@ void DXGLFoliageManager::update(long double delta) {
 			chunk.curX = camPos.x;
 			chunk.curZ = camPos.z;
 
-			bool isVisible = !cam->cull(Vec3f{ chunk.lastX, 0, chunk.lastZ }, Vec3f{ 1, 1, 1 }, Vec3f{ 0, 0, 0 }, Vec3f{ GRASS_TILE_SIZE, 1, GRASS_TILE_SIZE });
+			float distToCam = Vec3f::dist(camPos, Vec3f{ chunk.lastX, 0, chunk.lastZ });
+			if (distToCam < GRASS_TILE_SIZE * 2) {
+				chunk.LOD = 1.0f;
+			} else {
+				// Define the desired increment step
+				float incrementStep = 0.05f;
+
+				float rawLOD = std::clamp<float>(1.0f / (1 + (distToCam - GRASS_TILE_SIZE * 2) * 0.1f), 0.0f, 1.0f);
+
+				// Round the rawLOD to the nearest multiple of incrementStep
+				chunk.LOD = std::round(rawLOD / incrementStep) * incrementStep;
+
+				// Ensure chunk.LOD is not greater than 1 or less than 0
+				chunk.LOD = std::clamp<float>(chunk.LOD, 0.0f, 1.0f);
+			}
+
+			bool isVisible = !cam->cull(Vec3f{ chunk.lastX, 0, chunk.lastZ }, Vec3f{ 1, 1, 1 },
+				Vec3f{ -GRASS_TILE_SIZE / 2, 0, -GRASS_TILE_SIZE / 2 }, Vec3f{ GRASS_TILE_SIZE / 2, 1, GRASS_TILE_SIZE / 2 });
 
 			if (isVisible) {
+				int grassBladeCount = (GRASS_DENSITY * GRASS_DENSITY) * chunk.LOD;
+				totalGrassBlades += grassBladeCount;
+
 				m_visibleBufferLocations.push_back(chunk.bufferLocation);
+				m_bufferAdvance.push_back(grassBladeCount);
+				m_chunkLODs.push_back(chunk.LOD);
 			}
 
 			if (chunk.lastX + GRASS_TOTAL_LENGTH / 2 <= chunk.curX) {
 				chunk.lastX += GRASS_TOTAL_LENGTH;
+
 				for (int i = 0; i < (GRASS_DENSITY * GRASS_DENSITY); i++) {
 					FoliageInstance& foliage = m_foliage[chunk.bufferLocation + i];
 					foliage.translation.x += GRASS_TOTAL_LENGTH;
 				}
 			} else if (chunk.lastX - GRASS_TOTAL_LENGTH / 2 >= chunk.curX) {
 				chunk.lastX -= GRASS_TOTAL_LENGTH;
+
 				for (int i = 0; i < (GRASS_DENSITY * GRASS_DENSITY); i++) {
 					FoliageInstance& foliage = m_foliage[chunk.bufferLocation + i];
 					foliage.translation.x -= GRASS_TOTAL_LENGTH;
@@ -124,27 +154,31 @@ void DXGLFoliageManager::update(long double delta) {
 
 			if (chunk.lastZ + GRASS_TOTAL_LENGTH / 2 <= chunk.curZ) {
 				chunk.lastZ += GRASS_TOTAL_LENGTH;
+
 				for (int i = 0; i < (GRASS_DENSITY * GRASS_DENSITY); i++) {
 					FoliageInstance& foliage = m_foliage[chunk.bufferLocation + i];
 					foliage.translation.z += GRASS_TOTAL_LENGTH;
 				}
 			} else if (chunk.lastZ - GRASS_TOTAL_LENGTH / 2 >= chunk.curZ) {
 				chunk.lastZ -= GRASS_TOTAL_LENGTH;
+
 				for (int i = 0; i < (GRASS_DENSITY * GRASS_DENSITY); i++) {
 					FoliageInstance& foliage = m_foliage[chunk.bufferLocation + i];
 					foliage.translation.z -= GRASS_TOTAL_LENGTH;
 				}
 			}
 		}
+	}
 
-		m_culledFoliage.resize(m_visibleBufferLocations.size() * (GRASS_DENSITY * GRASS_DENSITY));
+	m_culledFoliage.clear();
+	m_culledFoliage.resize(totalGrassBlades);
 
-		for (int i = 0; i < m_visibleBufferLocations.size(); i++) {
-			int loc = m_visibleBufferLocations[i];
-			auto start = m_foliage.begin() + loc;
-			auto end = start + (GRASS_DENSITY * GRASS_DENSITY);
-			std::copy(start, end, m_culledFoliage.begin() + (GRASS_DENSITY * GRASS_DENSITY) * i);
-		}
+	auto dest = m_culledFoliage.begin();
+	for (int i = 0; i < m_visibleBufferLocations.size(); i++) {
+		auto start = m_foliage.begin() + m_visibleBufferLocations[i];
+		auto end = start + (GRASS_DENSITY * GRASS_DENSITY);
+		copyPercentage(start, end, dest, m_chunkLODs[i]);
+		dest += m_bufferAdvance[i];
 	}
 
 	if (!m_culledFoliage.empty()) {

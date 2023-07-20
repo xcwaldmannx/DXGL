@@ -279,7 +279,7 @@ void DXGLApp::create() {
 		MeshDesc desc{};
 		desc.vertexAttributes = VERTEX_ALL;
 		desc.miscAttributes = MISC_ALL;
-		m_terrain = new DXGLTerrainSystem(desc, "Assets/Meshes/landscapes/landscape2.fbx");
+		m_terrain = new DXGLTerrainSystem(desc, "Assets/Meshes/landscapes/landscape_grass.fbx");
 
 		/*
 		MeshDesc desc{};
