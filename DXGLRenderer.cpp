@@ -15,6 +15,7 @@ DXGLRenderer::DXGLRenderer() {
 	m_light = std::make_shared<DXGLLight>();
 	m_mousePicker = std::make_shared<DXGLMousePicker>();
 	m_foliageManager = std::make_shared<DXGLFoliageManager>();
+	m_terrainManager = std::make_shared<DXGLTerrainManager>();
 }
 
 DXGLRenderer::~DXGLRenderer() {
@@ -107,6 +108,10 @@ SP_DXGLMousePicker DXGLRenderer::mousePicker() {
 
 SP_DXGLFoliageManager DXGLRenderer::foliage() {
 	return m_foliageManager;
+}
+
+SP_DXGLTerrainManager DXGLRenderer::terrain() {
+	return m_terrainManager;
 }
 
 void DXGLRenderer::createRenderTargetView(RESOURCE_VIEW_DESC* desc, ResourceViewSlot slot, SP_DXGLRenderTargetView* rtv) {

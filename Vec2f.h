@@ -15,6 +15,10 @@ public:
 	~Vec2f() {
 	}
 
+	static float det(Vec2f v1, Vec2f v2) {
+		return (v1.x * v2.y) - (v2.x * v1.y);
+	}
+
 	Vec2f operator+ (Vec2f vec) {
 		return Vec2f(x + vec.x, y + vec.y);
 	}

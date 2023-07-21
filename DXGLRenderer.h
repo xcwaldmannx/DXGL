@@ -18,6 +18,7 @@
 #include "DXGLLight.h"
 #include "DXGLMousePicker.h"
 #include "DXGLFoliageManager.h"
+#include "DXGLTerrainManager.h"
 
 namespace dxgl {
 
@@ -56,6 +57,7 @@ namespace dxgl {
 		SP_DXGLLight light();
 		SP_DXGLMousePicker mousePicker();
 		SP_DXGLFoliageManager foliage();
+		SP_DXGLTerrainManager terrain();
 
 		void createRenderTargetView(RESOURCE_VIEW_DESC* desc, ResourceViewSlot slot, SP_DXGLRenderTargetView* rtv);
 		void createDepthStencilView(RESOURCE_VIEW_DESC* desc, ResourceViewSlot slot, SP_DXGLDepthStencilView* dsv);
@@ -92,6 +94,8 @@ namespace dxgl {
 		SP_DXGLMousePicker m_mousePicker = nullptr;
 
 		SP_DXGLFoliageManager m_foliageManager = nullptr;
+
+		SP_DXGLTerrainManager m_terrainManager = nullptr;
 
 		int m_drawCallCount = 0;
 	};

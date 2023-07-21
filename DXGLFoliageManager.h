@@ -2,6 +2,7 @@
 
 #include "DXGLMain.h"
 
+#include "Math.h"
 #include "Vec3f.h"
 #include "Mat4f.h"
 
@@ -26,16 +27,18 @@ namespace dxgl {
 		float pad[3];
 	};
 
-	const float GRASS_DENSITY = 64;
+	const float GRASS_DENSITY = 32;
 	const float GRASS_TILE_SIZE = 8;
-	const float GRASS_TILE_LENGTH = 20;
+	const float GRASS_TILE_LENGTH = 8;
 	const float GRASS_TOTAL_LENGTH = GRASS_TILE_SIZE * GRASS_TILE_LENGTH;
 	const float GRASS_BLADES_MAX = (GRASS_DENSITY * GRASS_DENSITY) * (GRASS_TILE_LENGTH * GRASS_TILE_LENGTH);
 
 	struct FoliageChunk {
 		float lastX = 0;
+		float lastY = 0;
 		float lastZ = 0;
 		float curX = 0;
+		float curY = 0;
 		float curZ = 0;
 		float LOD = 0;
 		int bufferLocation = 0;
@@ -54,96 +57,6 @@ namespace dxgl {
 		void cull();
 
 	private:
-
-		float smoothstep(float x, float edge0 = 0.0f, float edge1 = 1.0f) {
-			// Scale, and clamp x to 0..1 range
-			x = std::clamp<float>((x - edge0) / (edge1 - edge0), 0, 1);
-
-			return x * x * (3.0f - 2.0f * x);
-		}
-
-		template <class _InIt>
-		void copyPercentage(_InIt _First, _InIt _Last, _InIt _Dest, float percentage) {
-			if (percentage <= 0.0) {
-				return;
-			}
-
-			auto _UFirst = std::_Get_unwrapped(_First);
-			auto _ULast = std::_Get_unwrapped(_Last);
-			auto _UDest = std::_Get_unwrapped(_Dest);
-
-			size_t totalSize = std::distance(_UFirst, _ULast);
-			size_t copyCount = static_cast<size_t>(percentage * totalSize);
-
-			if (copyCount == 0) {
-				return;
-			}
-
-			// Calculate the step size to evenly distribute elements
-			double stepSize = static_cast<double>(totalSize) / static_cast<double>(copyCount);
-			double stepIndex = 0.0;
-
-			for (size_t copiedCount = 0; copiedCount < copyCount; ++copiedCount) {
-				// Calculate the current index to copy from
-				size_t index = static_cast<size_t>(stepIndex);
-				stepIndex += stepSize;
-
-				// Copy the element to the destination range
-				if (_UFirst + index < _ULast) {
-					_UDest[copiedCount] = _UFirst[index];
-				}
-			}
-		}
-
-		template <class _InIt, class _OutIt>
-		_OutIt copySkipEveryOtherN(_InIt _First, _InIt _Last, _OutIt _Dest, int n) {
-			if (n < 1) {
-				return _Dest;
-			}
-
-			auto _UFirst = std::_Get_unwrapped(_First);
-			auto _ULast = std::_Get_unwrapped(_Last);
-			auto _UDest = std::_Get_unwrapped(_Dest);
-
-			int nCount = 0;
-
-			while (_UFirst <= _ULast) {
-				*_UDest = *_UFirst;
-
-				std::advance(_UFirst, 1);
-				++_UDest;
-
-				nCount++;
-
-				if (nCount >= n) {
-					std::advance(_UFirst, 1);
-					nCount = 0;
-				}
-			}
-
-			return _Dest;
-		}
-
-		template <class _InIt, class _OutIt>
-		_OutIt copyEveryNth(_InIt _First, _InIt _Last, _OutIt _Dest, int n) {
-
-			if (n < 1) {
-				return _Dest;
-			}
-
-			auto _UFirst = std::_Get_unwrapped(_First);
-			auto _ULast = std::_Get_unwrapped(_Last);
-			auto _UDest = std::_Get_unwrapped(_Dest);
-
-			while (_UFirst <= _ULast) {
-				*_UDest = *_UFirst;
-
-				std::advance(_UFirst, n);
-				++_UDest;
-			}
-
-			return _Dest;
-		}
 
 		std::vector<FoliageInstance> m_foliage{};
 		std::vector<FoliageInstance> m_culledFoliage{};

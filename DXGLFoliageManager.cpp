@@ -43,6 +43,7 @@ DXGLFoliageManager::DXGLFoliageManager() {
 
 			chunk.lastX = x * GRASS_TILE_SIZE + GRASS_TILE_SIZE / 2;
 			chunk.lastZ = z * GRASS_TILE_SIZE + GRASS_TILE_SIZE / 2;
+			// chunk.lastY = DXGLMain::renderer()->terrain()->getTerrainHeight(chunk.lastX, chunk.lastZ);
 
 			chunk.LOD = 0;
 		}
@@ -108,14 +109,14 @@ void DXGLFoliageManager::update(long double delta) {
 			chunk.curX = camPos.x;
 			chunk.curZ = camPos.z;
 
-			float distToCam = Vec3f::dist(camPos, Vec3f{ chunk.lastX, 0, chunk.lastZ });
+			float distToCam = Vec3f::dist(camPos, Vec3f{ chunk.lastX, chunk.lastY, chunk.lastZ });
 			if (distToCam < GRASS_TILE_SIZE * 2) {
 				chunk.LOD = 1.0f;
 			} else {
 				// Define the desired increment step
-				float incrementStep = 0.01f;
+				float incrementStep = 0.025f;
 				
-				float rawLOD = smoothstep(1.0f / (1.0f + (distToCam - GRASS_TILE_SIZE * 2) * 0.1f), 0, 1);
+				float rawLOD = Math::smoothstep(1.0f / (1.0f + (distToCam - GRASS_TILE_SIZE * 2) * 0.1f), 0, 1);
 
 				// Round the rawLOD to the nearest multiple of incrementStep
 				chunk.LOD = std::round(rawLOD / incrementStep) * incrementStep;
@@ -124,8 +125,8 @@ void DXGLFoliageManager::update(long double delta) {
 				chunk.LOD = std::clamp<float>(chunk.LOD, 0.0f, 1.0f);
 			}
 
-			bool isVisible = !cam->cull(Vec3f{ chunk.lastX, 0, chunk.lastZ }, Vec3f{ 1, 1, 1 },
-				Vec3f{ -GRASS_TILE_SIZE / 2, 0, -GRASS_TILE_SIZE / 2 }, Vec3f{ GRASS_TILE_SIZE / 2, 1, GRASS_TILE_SIZE / 2 });
+			bool isVisible = !cam->cull(Vec3f{ chunk.lastX, chunk.lastY, chunk.lastZ }, Vec3f{ 1, 1, 1 },
+				Vec3f{ -GRASS_TILE_SIZE / 2, -1, -GRASS_TILE_SIZE / 2 }, Vec3f{ GRASS_TILE_SIZE / 2, 5, GRASS_TILE_SIZE / 2 });
 
 			if (isVisible) {
 				int grassBladeCount = (GRASS_DENSITY * GRASS_DENSITY) * chunk.LOD;
@@ -138,33 +139,41 @@ void DXGLFoliageManager::update(long double delta) {
 
 			if (chunk.lastX + GRASS_TOTAL_LENGTH / 2 <= chunk.curX) {
 				chunk.lastX += GRASS_TOTAL_LENGTH;
+				chunk.lastY = DXGLMain::renderer()->terrain()->getTerrainHeight(chunk.lastX, chunk.lastZ);;
 
 				for (int i = 0; i < (GRASS_DENSITY * GRASS_DENSITY); i++) {
 					FoliageInstance& foliage = m_foliage[chunk.bufferLocation + i];
 					foliage.translation.x += GRASS_TOTAL_LENGTH;
+					foliage.translation.y = DXGLMain::renderer()->terrain()->getTerrainHeight(foliage.translation.x, foliage.translation.z);
 				}
 			} else if (chunk.lastX - GRASS_TOTAL_LENGTH / 2 >= chunk.curX) {
 				chunk.lastX -= GRASS_TOTAL_LENGTH;
+				chunk.lastY = DXGLMain::renderer()->terrain()->getTerrainHeight(chunk.lastX, chunk.lastZ);;
 
 				for (int i = 0; i < (GRASS_DENSITY * GRASS_DENSITY); i++) {
 					FoliageInstance& foliage = m_foliage[chunk.bufferLocation + i];
 					foliage.translation.x -= GRASS_TOTAL_LENGTH;
+					foliage.translation.y = DXGLMain::renderer()->terrain()->getTerrainHeight(foliage.translation.x, foliage.translation.z);
 				}
 			}
 
 			if (chunk.lastZ + GRASS_TOTAL_LENGTH / 2 <= chunk.curZ) {
 				chunk.lastZ += GRASS_TOTAL_LENGTH;
+				chunk.lastY = DXGLMain::renderer()->terrain()->getTerrainHeight(chunk.lastX, chunk.lastZ);;
 
 				for (int i = 0; i < (GRASS_DENSITY * GRASS_DENSITY); i++) {
 					FoliageInstance& foliage = m_foliage[chunk.bufferLocation + i];
 					foliage.translation.z += GRASS_TOTAL_LENGTH;
+					foliage.translation.y = DXGLMain::renderer()->terrain()->getTerrainHeight(foliage.translation.x, foliage.translation.z);
 				}
 			} else if (chunk.lastZ - GRASS_TOTAL_LENGTH / 2 >= chunk.curZ) {
 				chunk.lastZ -= GRASS_TOTAL_LENGTH;
+				chunk.lastY = DXGLMain::renderer()->terrain()->getTerrainHeight(chunk.lastX, chunk.lastZ);;
 
 				for (int i = 0; i < (GRASS_DENSITY * GRASS_DENSITY); i++) {
 					FoliageInstance& foliage = m_foliage[chunk.bufferLocation + i];
 					foliage.translation.z -= GRASS_TOTAL_LENGTH;
+					foliage.translation.y = DXGLMain::renderer()->terrain()->getTerrainHeight(foliage.translation.x, foliage.translation.z);
 				}
 			}
 		}
@@ -177,7 +186,7 @@ void DXGLFoliageManager::update(long double delta) {
 	for (int i = 0; i < m_visibleBufferLocations.size(); i++) {
 		auto start = m_foliage.begin() + m_visibleBufferLocations[i];
 		auto end = start + (GRASS_DENSITY * GRASS_DENSITY);
-		copyPercentage(start, end, dest, m_chunkLODs[i]);
+		Math::copyPercentage(start, end, dest, m_chunkLODs[i]);
 		dest += m_bufferAdvance[i];
 	}
 

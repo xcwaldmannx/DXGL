@@ -239,7 +239,7 @@
     <ClCompile Include="DXGLShader.cpp" />
     <ClCompile Include="DXGLSwapChain.cpp" />
     <ClCompile Include="DXGLInputManager.cpp" />
-    <ClCompile Include="DXGLTerrainSystem.cpp" />
+    <ClCompile Include="DXGLTerrainManager.cpp" />
     <ClCompile Include="DXGLTexture2D.cpp" />
     <ClCompile Include="DXGLTextureCube.cpp" />
     <ClCompile Include="DXGLTimer.cpp" />
@@ -295,7 +295,7 @@
     <ClInclude Include="DXGLShader.h" />
     <ClInclude Include="DXGLSwapChain.h" />
     <ClInclude Include="DXGLInputManager.h" />
-    <ClInclude Include="DXGLTerrainSystem.h" />
+    <ClInclude Include="DXGLTerrainManager.h" />
     <ClInclude Include="DXGLTexture2D.h" />
     <ClInclude Include="DXGLTextureCube.h" />
     <ClInclude Include="DXGLTimer.h" />
@@ -303,6 +303,7 @@
     <ClInclude Include="DXGLWindow.h" />
     <ClInclude Include="DXGLVertexBuffer.h" />
     <ClInclude Include="Mat4f.h" />
+    <ClInclude Include="Math.h" />
     <ClInclude Include="Point2f.h" />
     <ClInclude Include="PostProcessor.h" />
     <ClInclude Include="RenderQueue.h" />

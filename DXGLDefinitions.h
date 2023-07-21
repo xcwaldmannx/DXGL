@@ -58,6 +58,9 @@ namespace dxgl {
 	class DXGLFoliageManager;
 	typedef std::shared_ptr<DXGLFoliageManager> SP_DXGLFoliageManager;
 
+	class DXGLTerrainManager;
+	typedef std::shared_ptr<DXGLTerrainManager> SP_DXGLTerrainManager;
+
 	///////////////
 	// Resources //
 	///////////////

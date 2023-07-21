@@ -384,7 +384,7 @@
     <ClCompile Include="DXGLFoliageManager.cpp">
       <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLFoliageManager</Filter>
     </ClCompile>
-    <ClCompile Include="DXGLTerrainSystem.cpp">
+    <ClCompile Include="DXGLTerrainManager.cpp">
       <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLTerrainSystem</Filter>
     </ClCompile>
   </ItemGroup>
@@ -566,8 +566,11 @@
     <ClInclude Include="DXGLFoliageManager.h">
       <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLFoliageManager</Filter>
     </ClInclude>
-    <ClInclude Include="DXGLTerrainSystem.h">
+    <ClInclude Include="DXGLTerrainManager.h">
       <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLTerrainSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>DXGL\DXGLSource\Util\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

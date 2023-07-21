@@ -149,7 +149,7 @@ void DXGLApp::create() {
 	m_shapes.push_back("torus");
 
 	m_camera = renderer()->camera()->create(this, input(), "primary");
-	m_camera->world().setTranslation(Vec3f{ 0, 0, -5.0f });
+	m_camera->world().setTranslation(Vec3f{ 0, -64.0f, -64.0f });
 
 	m_cbEntityBuffer = resource()->createCBuffer(sizeof(EntityBuffer));
 
@@ -275,33 +275,10 @@ void DXGLApp::create() {
 
 	// landscape
 	{
-
 		MeshDesc desc{};
 		desc.vertexAttributes = VERTEX_ALL;
 		desc.miscAttributes = MISC_ALL;
-		m_terrain = new DXGLTerrainSystem(desc, "Assets/Meshes/landscapes/landscape_grass.fbx");
-
-		/*
-		MeshDesc desc{};
-		desc.vertexAttributes = VERTEX_ALL;
-		desc.miscAttributes = MISC_ALL;
-		resource()->storeBasicMesh(desc, "Assets/Meshes/landscapes/landscape.fbx", "landscape");
-
-		dxgl::governor::EntityId id = governor()->createEntity();
-
-		TransformComponent transform{};
-		transform.scale = { 10, 10, 10 };
-		transform.rotation = { 0, 0, 0 };
-		transform.translation = { 0, 0, 0 };
-		governor()->addEntityComponent<TransformComponent>(transform, id);
-
-		MeshComponent mesh{};
-		mesh.mesh = nullptr;
-		mesh.basicmesh = resource()->get<SP_DXGLBasicMesh>("landscape");
-		mesh.useTessellation = false;
-		mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
-		governor()->addEntityComponent<MeshComponent>(mesh, id);
-		*/
+		renderer()->terrain()->load(desc, "Assets/Meshes/landscapes/landscape_grass.fbx");
 	}
 
 	{ // guitar
@@ -405,7 +382,7 @@ void DXGLApp::update(long double delta) {
 
 	renderer()->foliage()->update(delta);
 
-	m_terrain->update(delta);
+	renderer()->terrain()->update(delta);
 
 	// add entity start
 
@@ -558,7 +535,7 @@ void DXGLApp::draw() {
 	}
 
 	// terrain
-	m_terrain->draw();
+	renderer()->terrain()->draw();
 
 	// general cbuffers
 	renderer()->shader()->VS_setCBuffer(0, 1, m_cbEntityBuffer->get());
