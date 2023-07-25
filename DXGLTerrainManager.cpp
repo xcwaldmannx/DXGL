@@ -15,10 +15,17 @@ DXGLTerrainManager::DXGLTerrainManager() {
 
 	m_cb = DXGLMain::resource()->createCBuffer(sizeof(TerrainBuffer));
 
+	m_lastNearestChunk = new TerrainChunk();
 }
 
 DXGLTerrainManager::~DXGLTerrainManager() {
+	if (m_lastNearestChunk) {
+		delete m_lastNearestChunk;
+	}
 
+	for (TerrainChunk* chunk : m_chunks) {
+		delete chunk;
+	}
 }
 
 void DXGLTerrainManager::load(const MeshDesc& desc, const std::string& filename) {
@@ -26,7 +33,7 @@ void DXGLTerrainManager::load(const MeshDesc& desc, const std::string& filename)
 
 	AABB aabb = m_mesh->getAABB();
 
-	float scale = 50.0f;
+	float scale = 20.0f;
 
 	float minX = aabb.min.x * scale;
 	float minY = aabb.min.y * scale;
@@ -36,14 +43,19 @@ void DXGLTerrainManager::load(const MeshDesc& desc, const std::string& filename)
 	float maxY = aabb.max.y * scale;
 	float maxZ = aabb.max.z * scale;
 
-	chunkSize = std::ceil((std::abs(minX) + maxX) / 25.0f);
+	chunkSize = std::ceil((std::abs(minX) + maxX) / 50.0f);
+
+	m_area = { Vec2f{ minX, minZ }, Vec2f{ maxX - minX, maxZ - minZ } };
+	m_chunkTree.resize(m_area);
 
 	for (int x = minX; x < maxX; x += chunkSize) {
 		for (int z = minZ; z < maxZ; z += chunkSize) {
-			TerrainChunk* chunk = new TerrainChunk();
-			chunk->minVertex = Vec3f(x, minY, z);
-			chunk->maxVertex = Vec3f(x + chunkSize, maxY, z + chunkSize);
-			m_chunks.push_back(chunk);
+			TerrainChunk chunk{};
+			chunk.id = x * z + x + z;
+			chunk.minVertex = Vec3f(x, 0, z);
+			chunk.maxVertex = Vec3f(x + chunkSize, 0, z + chunkSize);
+			QuadTreeRect rect = { Vec2f(x, z), Vec2f(chunkSize, chunkSize) };
+			m_chunkTree.insert(chunk, rect);
 		}
 	}
 
@@ -60,9 +72,9 @@ void DXGLTerrainManager::load(const MeshDesc& desc, const std::string& filename)
 	}
 
 	for (int faceCenterIndex = 0; faceCenterIndex < faceCenters.size(); faceCenterIndex++) {
-		for (int chunkIndex = 0; chunkIndex < m_chunks.size(); chunkIndex++) {
+		auto chunk = m_chunkTree.begin();
+		while (chunk != m_chunkTree.end()) {
 			Vec3f& faceCenter = faceCenters[faceCenterIndex];
-			TerrainChunk* chunk = m_chunks[chunkIndex];
 			if (faceCenter.x >= chunk->minVertex.x && faceCenter.x < chunk->maxVertex.x) {
 				if (faceCenter.z >= chunk->minVertex.z && faceCenter.z < chunk->maxVertex.z) {
 					chunk->faceIndices.push_back(faces[faceCenterIndex].indices.x);
@@ -70,26 +82,64 @@ void DXGLTerrainManager::load(const MeshDesc& desc, const std::string& filename)
 					chunk->faceIndices.push_back(faces[faceCenterIndex].indices.z);
 					chunk->indexCount += 3;
 
-					TerrainFace* face = new TerrainFace();
-					face->v0 = faces[faceCenterIndex].v0 * scale;
-					face->v1 = faces[faceCenterIndex].v1 * scale;
-					face->v2 = faces[faceCenterIndex].v2 * scale;
+					// set chunk bounds based on extent of faces
+					TerrainFace face{};
+					face.v0 = faces[faceCenterIndex].v0 * scale;
+					face.v1 = faces[faceCenterIndex].v1 * scale;
+					face.v2 = faces[faceCenterIndex].v2 * scale;
 
-					// calc normal
-					Vec3f U = face->v1 - face->v0;
-					Vec3f V = face->v2 - face->v0;
+					// x
+					if (face.v0.x < chunk->minVertex.x) chunk->minVertex.x = face.v0.x;
+					if (face.v1.x < chunk->minVertex.x) chunk->minVertex.x = face.v1.x;
+					if (face.v2.x < chunk->minVertex.x) chunk->minVertex.x = face.v2.x;
+										 					 
+					if (face.v0.x > chunk->maxVertex.x) chunk->maxVertex.x = face.v0.x;
+					if (face.v1.x > chunk->maxVertex.x) chunk->maxVertex.x = face.v1.x;
+					if (face.v2.x > chunk->maxVertex.x) chunk->maxVertex.x = face.v2.x;
+										 					 
+					// y				 					 
+					if (face.v0.y < chunk->minVertex.y) chunk->minVertex.y = face.v0.y;
+					if (face.v1.y < chunk->minVertex.y) chunk->minVertex.y = face.v1.y;
+					if (face.v2.y < chunk->minVertex.y) chunk->minVertex.y = face.v2.y;
+										 					 
+					if (face.v0.y > chunk->maxVertex.y) chunk->maxVertex.y = face.v0.y;
+					if (face.v1.y > chunk->maxVertex.y) chunk->maxVertex.y = face.v1.y;
+					if (face.v2.y > chunk->maxVertex.y) chunk->maxVertex.y = face.v2.y;
+										 					 
+					// z				 					 
+					if (face.v0.z < chunk->minVertex.z) chunk->minVertex.z = face.v0.z;
+					if (face.v1.z < chunk->minVertex.z) chunk->minVertex.z = face.v1.z;
+					if (face.v2.z < chunk->minVertex.z) chunk->minVertex.z = face.v2.z;
+										 					 
+					if (face.v0.z > chunk->maxVertex.z) chunk->maxVertex.z = face.v0.z;
+					if (face.v1.z > chunk->maxVertex.z) chunk->maxVertex.z = face.v1.z;
+					if (face.v2.z > chunk->maxVertex.z) chunk->maxVertex.z = face.v2.z;
 
-					face->normal.x = U.y * V.z - U.z * V.y;
-					face->normal.y = U.z * V.x - U.x * V.z;
-					face->normal.z = U.x * V.y - U.y * V.x;
+					// calc face normal
+					Vec3f U = face.v1 - face.v0;
+					Vec3f V = face.v2 - face.v0;
 
-					face->center = faceCenter;
+					face.normal.x = U.y * V.z - U.z * V.y;
+					face.normal.y = U.z * V.x - U.x * V.z;
+					face.normal.z = U.x * V.y - U.y * V.x;
+
+					// calc foliage points on face
+					//Vec2f A = {face.v0.x, face.v0.z};
+					//Vec2f B = {face.v1.x, face.v1.z};
+					//Vec2f C = {face.v2.x, face.v2.z};
+					
+					//std::vector<Vec2f> foliagePositions = Math::fillTriangle(A, B, C, 10);
+
+					//for (Vec2f& p : foliagePositions) {
+					//	chunk->foliagePositions.push_back(Vec3f{ p.x, Math::barycentricHeight(face.v0, face.v1, face.v2, p), p.y });
+					//}
 
 					chunk->faces.push_back(face);
 
 					break;
 				}
 			}
+			chunk++;
 		}
 	}
 }
@@ -97,35 +147,61 @@ void DXGLTerrainManager::load(const MeshDesc& desc, const std::string& filename)
 void DXGLTerrainManager::update(long double delta) {
 	SP_DXGLCamera cam = DXGLMain::renderer()->camera()->get("primary");
 
-	std::vector<TerrainChunk> culledTerrainChunks{};
+	m_indices.clear();
 
-	int indexCount = 0;
-
-	for (int i = 0; i < m_chunks.size(); i++) {
-		TerrainChunk* chunk = m_chunks[i];
+	auto chunk = m_chunkTree.begin();
+	while (chunk != m_chunkTree.end()) {
 		if (!cam->cull(chunk->minVertex, Vec3f{ 1, 1, 1 }, Vec3f{ 0, 0, 0 }, chunk->maxVertex - chunk->minVertex)) {
-			indexCount += chunk->indexCount;
-			culledTerrainChunks.push_back(*chunk);
+			m_indices.insert(m_indices.end(), chunk->faceIndices.begin(), chunk->faceIndices.end());
 		}
-	}
-
-	m_indices.resize(indexCount);
-
-	int lastIndex = 0;
-	for (int i = 0; i < culledTerrainChunks.size(); i++) {
-		TerrainChunk& chunk = culledTerrainChunks[i];
-		std::copy(chunk.faceIndices.begin(), chunk.faceIndices.end(), m_indices.begin() + lastIndex);
-		lastIndex += chunk.indexCount;
+		chunk++;
 	}
 
 	if (m_indices.size() > 0) {
 		m_ib = DXGLMain::resource()->createIndexBuffer(&m_indices[0], m_indices.size());
+	}
+
+	float searchSize = 64.0f;
+	m_searchArea = { Vec2f(cam->getPosition().x - (searchSize / 2.0f), cam->getPosition().z - (searchSize / 2.0f)),
+		Vec2f(searchSize, searchSize) };
+
+	std::vector<Vec3f> foliagePositions{};
+
+	auto searched = m_chunkTree.search(m_searchArea);
+	if (searched != m_lastSearch) {
+		m_lastSearch = searched;
+
+		for (auto chunk : searched) {
+			if (!chunk->isLoaded) {
+
+				for (int i = 0; i < chunk->faces.size(); i++) {
+					TerrainFace& face = chunk->faces[i];
+					Vec2f A = { face.v0.x, face.v0.z };
+					Vec2f B = { face.v1.x, face.v1.z };
+					Vec2f C = { face.v2.x, face.v2.z };
+
+					std::vector<Vec2f> foliagePositions = Math::fillTriangle(A, B, C, 10);
+
+					for (Vec2f& p : foliagePositions) {
+						chunk->foliagePositions.push_back(Vec3f{ p.x, Math::barycentricHeight(face.v0, face.v1, face.v2, p), p.y });
+					}
+				}
+
+				chunk->isLoaded = true;
+			}
+			foliagePositions.insert(foliagePositions.end(), chunk->foliagePositions.begin(), chunk->foliagePositions.end());
+		}
+	}
+
+	if (!foliagePositions.empty()) {
+		DXGLMain::renderer()->foliage()->updatePositions(foliagePositions);
 	}
 }
 
 void DXGLTerrainManager::draw() {
 	DXGLMain::renderer()->input()->setInputLayout(m_layout);
 	DXGLMain::renderer()->input()->setVertexBuffer(0, 1, &m_mesh->getMeshVertexBuffer());
+	if (m_ib)
 	DXGLMain::renderer()->input()->setIndexBuffer(m_ib);
 
 	DXGLMain::renderer()->shader()->VS_setShader(m_vs);
@@ -133,12 +209,14 @@ void DXGLTerrainManager::draw() {
 
 	SP_DXGLCamera cam = DXGLMain::renderer()->camera()->get("primary");
 
-	float height = 1.7f + getTerrainHeight(cam->getPosition().x, cam->getPosition().z);
-	cam->world().setTranslation(Vec3f{cam->getPosition().x, height, cam->getPosition().z});
+	//float height = 1.7f + getTerrainHeight(cam->getPosition().x, cam->getPosition().z);
+	//cam->world().setTranslation(Vec3f{cam->getPosition().x, height, cam->getPosition().z});
+
+	float scale = 20.0f;
 
 	TerrainBuffer tbuff{};
 	tbuff.world.setIdentity();
-	tbuff.world.setScale(Vec3f{ 50, 50, 50 });
+	tbuff.world.setScale(Vec3f{ scale, scale, scale });
 	tbuff.view = cam->view();
 	tbuff.proj = cam->proj();
 	tbuff.materialFlags = m_mesh->getUsedMaterials();
@@ -155,41 +233,21 @@ void DXGLTerrainManager::draw() {
 }
 
 float DXGLTerrainManager::getTerrainHeight(float x, float z) {
-	// get corresponding chunk
-	TerrainChunk* chunk = nullptr;
-
 	for (TerrainChunk* c : m_chunks) {
 		if (x >= c->minVertex.x && x < c->maxVertex.x) {
 			if (z >= c->minVertex.z && z < c->maxVertex.z) {
-				chunk = c;
-				break;
+				TerrainFace face{};
+				for (TerrainFace& f : c->faces) {
+					Vec2f p0 = { f.v0.x, f.v0.z };
+					Vec2f p1 = { f.v1.x, f.v1.z };
+					Vec2f p2 = { f.v2.x, f.v2.z };
+					if (Math::isPointInsideTriangle(p0, p1, p2, Vec2f{ x, z })) {
+						return Math::barycentricHeight(f.v0, f.v1, f.v2, Vec2f(x, z));
+					}
+				}
 			}
 		}
 	}
 
-	TerrainFace* face = nullptr;
-	if (chunk) {
-		for (TerrainFace* f : chunk->faces) {
-			Vec2f p0 = { f->v0.x, f->v0.z };
-			Vec2f p1 = { f->v1.x, f->v1.z };
-			Vec2f p2 = { f->v2.x, f->v2.z };
-			if (Math::isPointInsideTriangle(p0, p1, p2, Vec2f{ x, z })) {
-				face = f;
-				break;
-			}
-		}
-	} else {
-		//std::cout << "NO CHUNK\n";
-		return 0;
-	}
-
-
-	float result = 0;
-	if (face) {
-		result = Math::barryCentric(face->v0, face->v1, face->v2, Vec2f(x, z));
-	} else {
-		std::cout << "NO FACE\n";
-	}
-
-	return result;
+	return 0;
 }

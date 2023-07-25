@@ -1,6 +1,10 @@
 #pragma once
 
+#include <thread>
+#include <condition_variable>
+
 #include "Math.h"
+#include "QuadTree.h"
 
 #include "DXGLBasicMesh.h"
 
@@ -10,16 +14,18 @@ namespace dxgl {
 		Vec3f v0;
 		Vec3f v1;
 		Vec3f v2;
-		Vec3f center;
 		Vec3f normal;
 	};
 
 	struct TerrainChunk {
+		uint32_t id = 0;
 		Vec3f minVertex{};
 		Vec3f maxVertex{};
 		std::vector<unsigned int> faceIndices{};
-		std::vector<TerrainFace*> faces{};
+		std::vector<TerrainFace> faces{};
+		std::vector<Vec3f> foliagePositions{};
 		int indexCount = 0;
+		bool isLoaded = false;
 	};
 
 	struct TerrainBuffer {
@@ -61,5 +67,11 @@ namespace dxgl {
 		std::vector<TerrainChunk*> m_chunks{};
 		std::vector<unsigned int> m_indices{};
 
+		QuadTreeRect m_area{};
+		QuadTreeRect m_searchArea{};
+		QuadTree<TerrainChunk> m_chunkTree{};
+		std::list<std::list<TerrainChunk>::iterator> m_lastSearch;
+
+		TerrainChunk* m_lastNearestChunk = nullptr;
 	};
 }

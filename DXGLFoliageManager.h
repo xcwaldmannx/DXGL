@@ -52,6 +52,7 @@ namespace dxgl {
 		void generateFoliage();
 
 		void update(long double delta);
+		void updatePositions(const std::vector<Vec3f>& positions);
 		void draw();
 	private:
 		void cull();

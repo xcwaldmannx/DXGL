@@ -149,7 +149,7 @@ void DXGLApp::create() {
 	m_shapes.push_back("torus");
 
 	m_camera = renderer()->camera()->create(this, input(), "primary");
-	m_camera->world().setTranslation(Vec3f{ 0, -64.0f, -64.0f });
+	m_camera->world().setTranslation(Vec3f{ 0.0f, 0.0f, 0.0f });
 
 	m_cbEntityBuffer = resource()->createCBuffer(sizeof(EntityBuffer));
 
@@ -380,9 +380,9 @@ void DXGLApp::update(long double delta) {
 
 	m_skybox.update(delta);
 
-	renderer()->foliage()->update(delta);
-
 	renderer()->terrain()->update(delta);
+
+	renderer()->foliage()->update(delta);
 
 	// add entity start
 

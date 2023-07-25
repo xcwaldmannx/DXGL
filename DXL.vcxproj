@@ -306,6 +306,7 @@
     <ClInclude Include="Math.h" />
     <ClInclude Include="Point2f.h" />
     <ClInclude Include="PostProcessor.h" />
+    <ClInclude Include="QuadTree.h" />
     <ClInclude Include="RenderQueue.h" />
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="stb_image.h" />

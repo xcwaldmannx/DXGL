@@ -57,6 +57,7 @@ void DXGLFoliageManager::generateFoliage() {
 	m_foliage.reserve(GRASS_BLADES_MAX);
 	m_culledFoliage.reserve(GRASS_BLADES_MAX);
 
+	return;
 	for (int chunkX = 0; chunkX < GRASS_TILE_LENGTH; chunkX++) {
 		for (int chunkZ = 0; chunkZ < GRASS_TILE_LENGTH; chunkZ++) {
 			for (int i = 0; i < GRASS_DENSITY; i++) {
@@ -92,10 +93,10 @@ void DXGLFoliageManager::generateFoliage() {
 }
 
 void DXGLFoliageManager::update(long double delta) {
-
 	SP_DXGLCamera cam = DXGLMain::renderer()->camera()->get("primary");
 	Vec3f camPos = cam->getPosition();
 
+	/*
 	// update spaces
 	m_visibleBufferLocations.clear();
 	m_bufferAdvance.clear();
@@ -139,41 +140,41 @@ void DXGLFoliageManager::update(long double delta) {
 
 			if (chunk.lastX + GRASS_TOTAL_LENGTH / 2 <= chunk.curX) {
 				chunk.lastX += GRASS_TOTAL_LENGTH;
-				chunk.lastY = DXGLMain::renderer()->terrain()->getTerrainHeight(chunk.lastX, chunk.lastZ);;
+				//chunk.lastY = DXGLMain::renderer()->terrain()->getTerrainHeight(chunk.lastX, chunk.lastZ);;
 
 				for (int i = 0; i < (GRASS_DENSITY * GRASS_DENSITY); i++) {
 					FoliageInstance& foliage = m_foliage[chunk.bufferLocation + i];
 					foliage.translation.x += GRASS_TOTAL_LENGTH;
-					foliage.translation.y = DXGLMain::renderer()->terrain()->getTerrainHeight(foliage.translation.x, foliage.translation.z);
+					//foliage.translation.y = DXGLMain::renderer()->terrain()->getTerrainHeight(foliage.translation.x, foliage.translation.z);
 				}
 			} else if (chunk.lastX - GRASS_TOTAL_LENGTH / 2 >= chunk.curX) {
 				chunk.lastX -= GRASS_TOTAL_LENGTH;
-				chunk.lastY = DXGLMain::renderer()->terrain()->getTerrainHeight(chunk.lastX, chunk.lastZ);;
+				//chunk.lastY = DXGLMain::renderer()->terrain()->getTerrainHeight(chunk.lastX, chunk.lastZ);;
 
 				for (int i = 0; i < (GRASS_DENSITY * GRASS_DENSITY); i++) {
 					FoliageInstance& foliage = m_foliage[chunk.bufferLocation + i];
 					foliage.translation.x -= GRASS_TOTAL_LENGTH;
-					foliage.translation.y = DXGLMain::renderer()->terrain()->getTerrainHeight(foliage.translation.x, foliage.translation.z);
+					//foliage.translation.y = DXGLMain::renderer()->terrain()->getTerrainHeight(foliage.translation.x, foliage.translation.z);
 				}
 			}
 
 			if (chunk.lastZ + GRASS_TOTAL_LENGTH / 2 <= chunk.curZ) {
 				chunk.lastZ += GRASS_TOTAL_LENGTH;
-				chunk.lastY = DXGLMain::renderer()->terrain()->getTerrainHeight(chunk.lastX, chunk.lastZ);;
+				//chunk.lastY = DXGLMain::renderer()->terrain()->getTerrainHeight(chunk.lastX, chunk.lastZ);;
 
 				for (int i = 0; i < (GRASS_DENSITY * GRASS_DENSITY); i++) {
 					FoliageInstance& foliage = m_foliage[chunk.bufferLocation + i];
 					foliage.translation.z += GRASS_TOTAL_LENGTH;
-					foliage.translation.y = DXGLMain::renderer()->terrain()->getTerrainHeight(foliage.translation.x, foliage.translation.z);
+					//foliage.translation.y = DXGLMain::renderer()->terrain()->getTerrainHeight(foliage.translation.x, foliage.translation.z);
 				}
 			} else if (chunk.lastZ - GRASS_TOTAL_LENGTH / 2 >= chunk.curZ) {
 				chunk.lastZ -= GRASS_TOTAL_LENGTH;
-				chunk.lastY = DXGLMain::renderer()->terrain()->getTerrainHeight(chunk.lastX, chunk.lastZ);;
+				//chunk.lastY = DXGLMain::renderer()->terrain()->getTerrainHeight(chunk.lastX, chunk.lastZ);;
 
 				for (int i = 0; i < (GRASS_DENSITY * GRASS_DENSITY); i++) {
 					FoliageInstance& foliage = m_foliage[chunk.bufferLocation + i];
 					foliage.translation.z -= GRASS_TOTAL_LENGTH;
-					foliage.translation.y = DXGLMain::renderer()->terrain()->getTerrainHeight(foliage.translation.x, foliage.translation.z);
+					//foliage.translation.y = DXGLMain::renderer()->terrain()->getTerrainHeight(foliage.translation.x, foliage.translation.z);
 				}
 			}
 		}
@@ -189,10 +190,15 @@ void DXGLFoliageManager::update(long double delta) {
 		Math::copyPercentage(start, end, dest, m_chunkLODs[i]);
 		dest += m_bufferAdvance[i];
 	}
+	*/
 
-	if (!m_culledFoliage.empty()) {
-		m_vbInstance = DXGLMain::resource()->createVertexBuffer(&m_culledFoliage[0], m_culledFoliage.size(), sizeof(FoliageInstance));
+	if (!m_foliage.empty()) {
+		m_vbInstance = DXGLMain::resource()->createVertexBuffer(&m_foliage[0], m_foliage.size(), sizeof(FoliageInstance));
 	}
+
+	//if (!m_culledFoliage.empty()) {
+	//	m_vbInstance = DXGLMain::resource()->createVertexBuffer(&m_culledFoliage[0], m_culledFoliage.size(), sizeof(FoliageInstance));
+	//}
 
 	m_timePassed += delta;
 
@@ -204,12 +210,39 @@ void DXGLFoliageManager::update(long double delta) {
 	m_cb->update(&buffer);
 }
 
+void DXGLFoliageManager::updatePositions(const std::vector<Vec3f>& positions) {
+	m_foliage.clear();
+
+	for (const Vec3f& p : positions) {
+		FoliageInstance foliage{};
+
+		float scale = 0.25f + (std::rand() % 25) * 0.01f;
+		foliage.scale = Vec3f{ 0.1f, 1, 0.1f };
+
+		float rotation = (std::rand() % 314) * 0.01f;
+		foliage.rotation = Vec3f{ 0, 0, 0 };
+
+		float offX = 0;// (std::rand() % ((int)GRASS_TILE_SIZE * 10)) * 0.01f;
+		float offZ = 0;// (std::rand() % ((int)GRASS_TILE_SIZE * 10)) * 0.01f;
+		foliage.translation = Vec3f{ p.x + offX, p.y, p.z + offZ };
+
+		foliage.color0 = Vec3f{ 0.025f, 0.1f, 0.0f };
+		foliage.color1 = Vec3f{ 0.0125f, 0.05f, 0.0f };
+		foliage.color2 = Vec3f{ 0.0f, 0.01f, 0.0f };
+		foliage.color3 = Vec3f{ 0.0f, 0.005f, 0.0f };
+
+		foliage.timeOffset = p.x * (6.28f) / GRASS_DENSITY + p.z * (6.28f) / GRASS_DENSITY;
+
+		m_foliage.push_back(foliage);
+	}
+}
+
 void DXGLFoliageManager::draw() {
 	DXGLMain::renderer()->input()->setInputLayout(m_layout);
 	DXGLMain::renderer()->input()->setVertexBuffer(0, 1, &m_mesh->getMeshVertexBuffer());
 	DXGLMain::renderer()->input()->setIndexBuffer(m_mesh->getIndexBuffer());
 
-	if (!m_culledFoliage.empty()) {
+	if (!m_foliage.empty()) {
 		DXGLMain::renderer()->input()->setVertexBuffer(1, 1, &m_vbInstance);
 	}
 
@@ -219,7 +252,7 @@ void DXGLFoliageManager::draw() {
 	DXGLMain::renderer()->shader()->VS_setCBuffer(0, 1, m_cb->get());
 
 	for (auto& mesh : m_mesh->getMeshes()) {
-		DXGLMain::renderer()->drawIndexedTriangleListInstanced(mesh.indexCount, m_culledFoliage.size(), mesh.baseIndex, mesh.baseVertex, 0);
+		DXGLMain::renderer()->drawIndexedTriangleListInstanced(mesh.indexCount, m_foliage.size(), mesh.baseIndex, mesh.baseVertex, 0);
 	}
 }
 

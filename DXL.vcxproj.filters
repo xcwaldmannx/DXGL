@@ -235,6 +235,9 @@
     <Filter Include="DXGL\DXGLApp\Shaders\Current\Terrain">
       <UniqueIdentifier>{8580c7b3-a6cc-44af-a6bb-db7821086bdc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DXGL\DXGLSource\Util\Structure">
+      <UniqueIdentifier>{ba3cb4b8-d634-4eb1-8038-1a138808d3d9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ComputeShader.cpp">
@@ -571,6 +574,9 @@
     </ClInclude>
     <ClInclude Include="Math.h">
       <Filter>DXGL\DXGLSource\Util\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadTree.h">
+      <Filter>DXGL\DXGLSource\Util\Structure</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

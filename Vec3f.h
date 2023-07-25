@@ -117,6 +117,10 @@ public:
 		z *= vec.z;
 	}
 
+	Vec3f operator/ (float num) {
+		return Vec3f(x / num, y / num, z / num);
+	}
+
 	bool operator== (Vec3f vec) {
 		return x == vec.x && y == vec.y && z == vec.z;
 	}
