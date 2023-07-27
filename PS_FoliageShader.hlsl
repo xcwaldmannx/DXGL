@@ -25,9 +25,10 @@ float4 main(PS_Input input) : SV_TARGET{
 		float blend = (height - 0.25f) / transitionHeight;
 		outputColor = lerp(input.instColor3, input.instColor2, blend);
 	} else {
-		float blend = height / transitionHeight;
-		outputColor = lerp(float3(0, 0, 0), input.instColor3, blend);
+		outputColor = input.instColor3;
 	}
+
+	outputColor = pow(outputColor, 2.2333f);
 
     return float4(outputColor, 1.0f);
 }

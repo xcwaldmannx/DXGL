@@ -1,34 +1,41 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(520,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
 C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(534,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (DXL.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  DXGLTerrainManager.cpp
+  DXGLFoliageManager.cpp
 C:\Users\xcwal\source\repos\DXL\DXL\Math.h(75,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 C:\Users\xcwal\source\repos\DXL\DXL\Math.h(98,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 C:\Users\xcwal\source\repos\DXL\DXL\Math.h(99,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 C:\Users\xcwal\source\repos\DXL\DXL\Math.h(100,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLTerrainManager.cpp(51,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLTerrainManager.cpp(51,36): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLTerrainManager.cpp(52,14): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLTerrainManager.cpp(52,37): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLTerrainManager.cpp(55,34): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLTerrainManager.cpp(55,28): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLTerrainManager.cpp(57,35): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLTerrainManager.cpp(57,32): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLTerrainManager.cpp(80,65): warning C4244: 'argument': conversion from 'float' to '_Ty', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLFoliageManager.cpp(64,33): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLFoliageManager.cpp(74,115): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLFoliageManager.cpp(77,18): warning C4244: '+=': conversion from 'long double' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLFoliageManager.cpp(160,127): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLFoliageManager.cpp(132,41): warning C4267: '+=': conversion from 'size_t' to 'int', possible loss of data
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.33.31629\include\xutility(325): message : see reference to function template instantiation 'auto dxgl::DXGLFoliageManager::loadTerrain::<lambda_1>::operator ()<std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>>(_T1) const' being compiled
           with
           [
-              _Ty=unsigned int
+              _Ty=dxgl::TerrainChunk,
+              _T1=std::_List_iterator<std::_List_val<std::_List_simple_types<dxgl::TerrainChunk>>>
           ]
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLTerrainManager.cpp(81,65): warning C4244: 'argument': conversion from 'float' to '_Ty', possible loss of data
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.33.31629\include\execution(1155): message : see reference to function template instantiation 'decltype(auto) std::_Ref_fn<_Fn>::operator ()<const std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>&>(const std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>> &)' being compiled
           with
           [
-              _Ty=unsigned int
+              _Fn=dxgl::DXGLFoliageManager::loadTerrain::<lambda_1>,
+              _Ty=dxgl::TerrainChunk
           ]
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLTerrainManager.cpp(82,65): warning C4244: 'argument': conversion from 'float' to '_Ty', possible loss of data
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.33.31629\include\execution(1190): message : see reference to function template instantiation 'void std::_For_each_ivdep<std::_List_unchecked_const_iterator<std::_List_val<std::_List_simple_types<_Ty>>,std::_Iterator_base0>,std::_Ref_fn<_Fn>>(_FwdIt,const _FwdIt,std::_Ref_fn<_Fn>)' being compiled
           with
           [
-              _Ty=unsigned int
+              _Ty=std::_List_iterator<std::_List_val<std::_List_simple_types<dxgl::TerrainChunk>>>,
+              _Fn=dxgl::DXGLFoliageManager::loadTerrain::<lambda_1>,
+              _FwdIt=std::_List_unchecked_const_iterator<std::_List_val<std::_List_simple_types<std::_List_iterator<std::_List_val<std::_List_simple_types<dxgl::TerrainChunk>>>>>,std::_Iterator_base0>
           ]
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLTerrainManager.cpp(161,81): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLTerrainManager.cpp(231,98): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLFoliageManager.cpp(134): message : see reference to function template instantiation 'void std::for_each<const std::execution::parallel_policy&,std::_List_const_iterator<std::_List_val<std::_List_simple_types<_Ty>>>,dxgl::DXGLFoliageManager::loadTerrain::<lambda_1>,0>(_ExPo,_FwdIt,_FwdIt,_Fn) noexcept' being compiled
+          with
+          [
+              _Ty=std::_List_iterator<std::_List_val<std::_List_simple_types<dxgl::TerrainChunk>>>,
+              _ExPo=const std::execution::parallel_policy &,
+              _FwdIt=std::_List_const_iterator<std::_List_val<std::_List_simple_types<std::_List_iterator<std::_List_val<std::_List_simple_types<dxgl::TerrainChunk>>>>>>,
+              _Fn=dxgl::DXGLFoliageManager::loadTerrain::<lambda_1>
+          ]
   DXL.vcxproj -> C:\Users\xcwal\source\repos\DXL\x64\Debug\DXGL.exe
   0 File(s) copied

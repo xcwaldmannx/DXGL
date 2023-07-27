@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "Vec2f.h"
+#include "Point2f.h"
 
 struct QuadTreeRect {
 	Vec2f pos;
@@ -14,6 +15,11 @@ struct QuadTreeRect {
 	bool contains(const QuadTreeRect& rect) const {
 		return rect.pos.x >= pos.x && rect.pos.x + rect.size.x < pos.x + size.x
 			&& rect.pos.y >= pos.y && rect.pos.y + rect.size.y < pos.y + size.y;
+	}
+
+	bool contains(const Point2f& point) const {
+		return point.x >= pos.x && point.x < pos.x + size.x
+			&& point.y >= pos.y && point.y < pos.y + size.y;
 	}
 
 	bool overlaps(const QuadTreeRect& rect) const {
@@ -128,6 +134,8 @@ template<typename T>
 class QuadTree {
 
 public:
+	typedef std::list<typename std::list<T>::iterator> list;
+
 	QuadTree(const QuadTreeRect& rect = { Vec2f{0, 0}, Vec2f{1, 1} }, const size_t maxDepth = 4) : m_root(rect) {
 
 	}
@@ -138,8 +146,8 @@ public:
 		m_root.insert(std::prev(m_items.end()), rect);
 	}
 
-	std::list<typename std::list<T>::iterator> search(const QuadTreeRect& rect) {
-		std::list<typename std::list<T>::iterator> items{};
+	list search(const QuadTreeRect& rect) {
+		list items{};
 		m_root.search(rect, items);
 		return items;
 	}

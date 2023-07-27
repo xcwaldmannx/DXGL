@@ -1,7 +1,7 @@
 #pragma once
 
-#include <thread>
-#include <condition_variable>
+#include <algorithm>
+#include <execution>
 
 #include "Math.h"
 #include "QuadTree.h"
@@ -23,7 +23,7 @@ namespace dxgl {
 		Vec3f maxVertex{};
 		std::vector<unsigned int> faceIndices{};
 		std::vector<TerrainFace> faces{};
-		std::vector<Vec3f> foliagePositions{};
+		int lod = 0;
 		int indexCount = 0;
 		bool isLoaded = false;
 	};
@@ -64,14 +64,11 @@ namespace dxgl {
 
 		SP_DXGLCBuffer m_cb = nullptr;
 
-		std::vector<TerrainChunk*> m_chunks{};
 		std::vector<unsigned int> m_indices{};
 
 		QuadTreeRect m_area{};
 		QuadTreeRect m_searchArea{};
-		QuadTree<TerrainChunk> m_chunkTree{};
+		QuadTree<TerrainChunk> m_chunkTree{m_area, 8};
 		std::list<std::list<TerrainChunk>::iterator> m_lastSearch;
-
-		TerrainChunk* m_lastNearestChunk = nullptr;
 	};
 }

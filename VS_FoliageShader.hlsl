@@ -25,8 +25,8 @@ cbuffer transform: register(b0) {
 	row_major float4x4 model;
 	row_major float4x4 view;
 	row_major float4x4 proj;
-	float time;
-	float3 pad;
+	float3 camPos;
+	float1 time;
 }
 
 static const float PI = 3.14159265359f;
@@ -60,18 +60,27 @@ float4x4 getWorldMatrix(float3 scale, float3 rotation, float3 translation) {
 	return mul(mul(scaleMatrix, rotationMatrix), translationMatrix);
 }
 
+float dist(float3 p1, float3 p2) {
+	return sqrt((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y) + (p1.z - p2.z) * (p1.z - p2.z));
+}
+
 PS_Input main(VS_Input input) {
 	PS_Input output = (PS_Input)0;
+
+	float distToCam = dist(input.instTranslation, camPos);
+	input.instScale.y -= distToCam * 0.01f;
 
 	float y = (PI / 3.0f) * input.texcoord.y - (PI / 3.0f);
 	float finalTime = time + input.instTimeOffset;
 	float offsetX = sin(y) * cos(finalTime);
+	float offsetY = -distToCam * 0.01f;
 	float offsetZ = sin(y) * cos(2 * finalTime);
 
 	offsetX *= input.instScale;
 	offsetZ *= input.instScale;
 
-	float4x4 worldMatrix = getWorldMatrix(input.instScale, input.instRotation, input.instTranslation + float3(offsetX, 0, offsetZ));
+	float4x4 worldMatrix = getWorldMatrix(input.instScale, input.instRotation, input.instTranslation + float3(offsetX, offsetY, offsetZ));
+
 
 	output.position = mul(float4(input.position, 1.0f), worldMatrix);
 	output.position = mul(output.position, view);

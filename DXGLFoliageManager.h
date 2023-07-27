@@ -1,12 +1,18 @@
 #pragma once
 
+#include <algorithm>
+#include <execution>
+
 #include "DXGLMain.h"
 
 #include "Math.h"
 #include "Vec3f.h"
 #include "Mat4f.h"
+#include "QuadTree.h"
 
 namespace dxgl {
+
+	struct TerrainChunk;
 
 	struct FoliageInstance {
 		Vec3f scale{};
@@ -23,8 +29,8 @@ namespace dxgl {
 		Mat4f model{};
 		Mat4f view{};
 		Mat4f proj{};
+		Vec3f camPos{};
 		float time = 0;
-		float pad[3];
 	};
 
 	const float GRASS_DENSITY = 32;
@@ -34,14 +40,10 @@ namespace dxgl {
 	const float GRASS_BLADES_MAX = (GRASS_DENSITY * GRASS_DENSITY) * (GRASS_TILE_LENGTH * GRASS_TILE_LENGTH);
 
 	struct FoliageChunk {
-		float lastX = 0;
-		float lastY = 0;
-		float lastZ = 0;
-		float curX = 0;
-		float curY = 0;
-		float curZ = 0;
+		Vec3f minVertex{};
+		Vec3f maxVertex{};
 		float LOD = 0;
-		int bufferLocation = 0;
+		std::vector<FoliageInstance> foliage{};
 	};
 
 	class DXGLFoliageManager {
@@ -49,10 +51,9 @@ namespace dxgl {
 		DXGLFoliageManager();
 		~DXGLFoliageManager();
 
-		void generateFoliage();
-
 		void update(long double delta);
-		void updatePositions(const std::vector<Vec3f>& positions);
+		void loadTerrain(const QuadTree<TerrainChunk>::list& terrain);
+		void unloadTerrain(const QuadTree<TerrainChunk>::list& terrain);
 		void draw();
 	private:
 		void cull();
@@ -62,10 +63,7 @@ namespace dxgl {
 		std::vector<FoliageInstance> m_foliage{};
 		std::vector<FoliageInstance> m_culledFoliage{};
 
-		std::vector<FoliageChunk> m_foliageChunks{};
-		std::vector<int> m_visibleBufferLocations{};
-		std::vector<int> m_bufferAdvance{};
-		std::vector<float> m_chunkLODs{};
+		std::unordered_map<uint32_t, FoliageChunk> m_chunks{};
 
 		SP_DXGLInputLayout m_layout = nullptr;
 		SP_DXGLVertexShader m_vs = nullptr;

@@ -36,6 +36,10 @@ public:
 		return result;
 	}
 
+	static float length(Vec3f vec) {
+		return sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
+	}
+
 	Vec3f normalize() {
 		Vec3f result{};
 		float value = (float)sqrt(x * x + y * y + z * z);

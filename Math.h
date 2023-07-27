@@ -137,6 +137,10 @@ public:
 			size_t index = static_cast<size_t>(stepIndex);
 			stepIndex += stepSize;
 
+			//if (index > totalSize) {
+			//	return;
+			//}
+
 			// Copy the element to the destination range
 			if (_UFirst + index < _ULast && index > 0) {
 				_UDest[copiedCount] = _UFirst[index];

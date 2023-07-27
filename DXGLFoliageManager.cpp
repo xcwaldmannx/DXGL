@@ -27,178 +27,52 @@ DXGLFoliageManager::DXGLFoliageManager() {
 	meshDesc.vertexAttributes = VERTEX_POSITION | VERTEX_TEXCOORD | VERTEX_NORMAL;
 	meshDesc.miscAttributes = MISC_INDEX;
 	m_mesh = DXGLMain::resource()->createBasicMesh(meshDesc, "Assets/Meshes/landscapes/grass.fbx");
-
-	generateFoliage();
-
-	// init spaces
-	m_foliageChunks.resize(GRASS_TILE_LENGTH * GRASS_TILE_LENGTH);
-
-	for (int x = 0; x < GRASS_TILE_LENGTH; x++) {
-		for (int z = 0; z < GRASS_TILE_LENGTH; z++) {
-			FoliageChunk& chunk = m_foliageChunks[x * GRASS_TILE_LENGTH + z];
-			chunk.bufferLocation = (x * GRASS_TILE_LENGTH) * (GRASS_DENSITY * GRASS_DENSITY) + z * (GRASS_DENSITY * GRASS_DENSITY);
-
-			chunk.curX = 0;
-			chunk.curZ = 0;
-
-			chunk.lastX = x * GRASS_TILE_SIZE + GRASS_TILE_SIZE / 2;
-			chunk.lastZ = z * GRASS_TILE_SIZE + GRASS_TILE_SIZE / 2;
-			// chunk.lastY = DXGLMain::renderer()->terrain()->getTerrainHeight(chunk.lastX, chunk.lastZ);
-
-			chunk.LOD = 0;
-		}
-	}
 }
 
 DXGLFoliageManager::~DXGLFoliageManager() {
-}
-
-void DXGLFoliageManager::generateFoliage() {
-	m_foliage.reserve(GRASS_BLADES_MAX);
-	m_culledFoliage.reserve(GRASS_BLADES_MAX);
-
-	return;
-	for (int chunkX = 0; chunkX < GRASS_TILE_LENGTH; chunkX++) {
-		for (int chunkZ = 0; chunkZ < GRASS_TILE_LENGTH; chunkZ++) {
-			for (int i = 0; i < GRASS_DENSITY; i++) {
-				for (int j = 0; j < GRASS_DENSITY; j++) {
-					float x = (chunkX * GRASS_TILE_SIZE) + ((float) i / GRASS_DENSITY) * GRASS_TILE_SIZE;
-					float y = 0;
-					float z = (chunkZ * GRASS_TILE_SIZE) + ((float) j / GRASS_DENSITY) * GRASS_TILE_SIZE;
-
-					FoliageInstance grass{};
-
-					float scale = 0.25f + (std::rand() % 25) * 0.01f;
-					grass.scale = Vec3f{ 0.1f, scale, 0.1f };
-
-					float rotation = (std::rand() % 314) * 0.01f;
-					grass.rotation = Vec3f{ 0, rotation, 0 };
-
-					float offX = (std::rand() % ((int) GRASS_TILE_SIZE * 10)) * 0.01f;
-					float offZ = (std::rand() % ((int) GRASS_TILE_SIZE * 10)) * 0.01f;
-					grass.translation = { x + offX, y, z + offZ };
-
-					grass.color0 = Vec3f{ 0.025f, 0.1f, 0.0f };
-					grass.color1 = Vec3f{ 0.0125f, 0.05f, 0.0f };
-					grass.color2 = Vec3f{ 0.0f, 0.01f, 0.0f };
-					grass.color3 = Vec3f{ 0.0f, 0.005f, 0.0f };
-
-					grass.timeOffset = x * (6.28f) / GRASS_DENSITY + z * (6.28f) / GRASS_DENSITY;
-
-					m_foliage.push_back(grass);
-				}
-			}
-		}
-	}
 }
 
 void DXGLFoliageManager::update(long double delta) {
 	SP_DXGLCamera cam = DXGLMain::renderer()->camera()->get("primary");
 	Vec3f camPos = cam->getPosition();
 
-	/*
-	// update spaces
-	m_visibleBufferLocations.clear();
-	m_bufferAdvance.clear();
-	m_chunkLODs.clear();
+	int count = 0;
+	for (auto it = m_chunks.begin(); it != m_chunks.end(); it++) {
+		FoliageChunk& chunk = it->second;
 
-	unsigned int totalGrassBlades = 0;
+		// update chunk LOD
+		float chunkLength = chunk.maxVertex.x - chunk.minVertex.x;
+		float distToCam = Vec3f::dist(camPos, chunk.minVertex + chunkLength / 2.0f);
 
-	for (int x = 0; x < GRASS_TILE_LENGTH; x++) {
-		for (int z = 0; z < GRASS_TILE_LENGTH; z++) {
-			FoliageChunk& chunk = m_foliageChunks[x * GRASS_TILE_LENGTH + z];
-			chunk.curX = camPos.x;
-			chunk.curZ = camPos.z;
+		// Define the desired increment step
+		float incrementStep = 0.025f;
 
-			float distToCam = Vec3f::dist(camPos, Vec3f{ chunk.lastX, chunk.lastY, chunk.lastZ });
-			if (distToCam < GRASS_TILE_SIZE * 2) {
-				chunk.LOD = 1.0f;
-			} else {
-				// Define the desired increment step
-				float incrementStep = 0.025f;
-				
-				float rawLOD = Math::smoothstep(1.0f / (1.0f + (distToCam - GRASS_TILE_SIZE * 2) * 0.1f), 0, 1);
+		if (distToCam <= chunkLength / 4.0f) {
+			chunk.LOD = 1.0f;
+		} else {
+			float rawLOD = Math::smoothstep(1.0f / (1.0f + (distToCam - chunkLength / 4.0f) * 0.1f), 0, 1);
 
-				// Round the rawLOD to the nearest multiple of incrementStep
-				chunk.LOD = std::round(rawLOD / incrementStep) * incrementStep;
+			// Round the rawLOD to the nearest multiple of incrementStep
+			chunk.LOD = std::round(rawLOD / incrementStep) * incrementStep;
 
-				// Ensure chunk.LOD is not greater than 1 or less than 0
-				chunk.LOD = std::clamp<float>(chunk.LOD, 0.0f, 1.0f);
-			}
-
-			bool isVisible = !cam->cull(Vec3f{ chunk.lastX, chunk.lastY, chunk.lastZ }, Vec3f{ 1, 1, 1 },
-				Vec3f{ -GRASS_TILE_SIZE / 2, -1, -GRASS_TILE_SIZE / 2 }, Vec3f{ GRASS_TILE_SIZE / 2, 5, GRASS_TILE_SIZE / 2 });
-
-			if (isVisible) {
-				int grassBladeCount = (GRASS_DENSITY * GRASS_DENSITY) * chunk.LOD;
-				totalGrassBlades += grassBladeCount;
-
-				m_visibleBufferLocations.push_back(chunk.bufferLocation);
-				m_bufferAdvance.push_back(grassBladeCount);
-				m_chunkLODs.push_back(chunk.LOD);
-			}
-
-			if (chunk.lastX + GRASS_TOTAL_LENGTH / 2 <= chunk.curX) {
-				chunk.lastX += GRASS_TOTAL_LENGTH;
-				//chunk.lastY = DXGLMain::renderer()->terrain()->getTerrainHeight(chunk.lastX, chunk.lastZ);;
-
-				for (int i = 0; i < (GRASS_DENSITY * GRASS_DENSITY); i++) {
-					FoliageInstance& foliage = m_foliage[chunk.bufferLocation + i];
-					foliage.translation.x += GRASS_TOTAL_LENGTH;
-					//foliage.translation.y = DXGLMain::renderer()->terrain()->getTerrainHeight(foliage.translation.x, foliage.translation.z);
-				}
-			} else if (chunk.lastX - GRASS_TOTAL_LENGTH / 2 >= chunk.curX) {
-				chunk.lastX -= GRASS_TOTAL_LENGTH;
-				//chunk.lastY = DXGLMain::renderer()->terrain()->getTerrainHeight(chunk.lastX, chunk.lastZ);;
-
-				for (int i = 0; i < (GRASS_DENSITY * GRASS_DENSITY); i++) {
-					FoliageInstance& foliage = m_foliage[chunk.bufferLocation + i];
-					foliage.translation.x -= GRASS_TOTAL_LENGTH;
-					//foliage.translation.y = DXGLMain::renderer()->terrain()->getTerrainHeight(foliage.translation.x, foliage.translation.z);
-				}
-			}
-
-			if (chunk.lastZ + GRASS_TOTAL_LENGTH / 2 <= chunk.curZ) {
-				chunk.lastZ += GRASS_TOTAL_LENGTH;
-				//chunk.lastY = DXGLMain::renderer()->terrain()->getTerrainHeight(chunk.lastX, chunk.lastZ);;
-
-				for (int i = 0; i < (GRASS_DENSITY * GRASS_DENSITY); i++) {
-					FoliageInstance& foliage = m_foliage[chunk.bufferLocation + i];
-					foliage.translation.z += GRASS_TOTAL_LENGTH;
-					//foliage.translation.y = DXGLMain::renderer()->terrain()->getTerrainHeight(foliage.translation.x, foliage.translation.z);
-				}
-			} else if (chunk.lastZ - GRASS_TOTAL_LENGTH / 2 >= chunk.curZ) {
-				chunk.lastZ -= GRASS_TOTAL_LENGTH;
-				//chunk.lastY = DXGLMain::renderer()->terrain()->getTerrainHeight(chunk.lastX, chunk.lastZ);;
-
-				for (int i = 0; i < (GRASS_DENSITY * GRASS_DENSITY); i++) {
-					FoliageInstance& foliage = m_foliage[chunk.bufferLocation + i];
-					foliage.translation.z -= GRASS_TOTAL_LENGTH;
-					//foliage.translation.y = DXGLMain::renderer()->terrain()->getTerrainHeight(foliage.translation.x, foliage.translation.z);
-				}
-			}
+			// Ensure LOD is not greater than 1 or less than 0
+			chunk.LOD = std::clamp<float>(chunk.LOD, 0.05f, 1.0f);
 		}
-	}
 
-	m_culledFoliage.clear();
-	m_culledFoliage.resize(totalGrassBlades);
+		// get next buffer location for updating instances
+		auto location = m_foliage.begin() + count;
+		count += chunk.foliage.size() * chunk.LOD;
 
-	auto dest = m_culledFoliage.begin();
-	for (int i = 0; i < m_visibleBufferLocations.size(); i++) {
-		auto start = m_foliage.begin() + m_visibleBufferLocations[i];
-		auto end = start + (GRASS_DENSITY * GRASS_DENSITY);
-		Math::copyPercentage(start, end, dest, m_chunkLODs[i]);
-		dest += m_bufferAdvance[i];
+		// resize to fit instances
+		m_foliage.resize(count);
+
+		// Copy the instances
+		Math::copyPercentage(chunk.foliage.begin(), chunk.foliage.end(), location, chunk.LOD);
 	}
-	*/
 
 	if (!m_foliage.empty()) {
 		m_vbInstance = DXGLMain::resource()->createVertexBuffer(&m_foliage[0], m_foliage.size(), sizeof(FoliageInstance));
 	}
-
-	//if (!m_culledFoliage.empty()) {
-	//	m_vbInstance = DXGLMain::resource()->createVertexBuffer(&m_culledFoliage[0], m_culledFoliage.size(), sizeof(FoliageInstance));
-	//}
 
 	m_timePassed += delta;
 
@@ -206,34 +80,65 @@ void DXGLFoliageManager::update(long double delta) {
 	buffer.model.setIdentity();
 	buffer.view = cam->view();
 	buffer.proj = cam->proj();
+	buffer.camPos = cam->getPosition();
 	buffer.time = m_timePassed;
 	m_cb->update(&buffer);
 }
 
-void DXGLFoliageManager::updatePositions(const std::vector<Vec3f>& positions) {
+void DXGLFoliageManager::loadTerrain(const QuadTree<TerrainChunk>::list& terrain) {
+	SP_DXGLCamera cam = DXGLMain::renderer()->camera()->get("primary");
+	Vec3f camPos = cam->getPosition();
+
 	m_foliage.clear();
 
-	for (const Vec3f& p : positions) {
-		FoliageInstance foliage{};
+	int totalGrassBlades = 0;
 
-		float scale = 0.25f + (std::rand() % 25) * 0.01f;
-		foliage.scale = Vec3f{ 0.1f, 1, 0.1f };
+	std::for_each(std::execution::par, terrain.begin(), terrain.end(), [&](auto t) {
+		FoliageChunk chunk{};
 
-		float rotation = (std::rand() % 314) * 0.01f;
-		foliage.rotation = Vec3f{ 0, 0, 0 };
+		chunk.minVertex = t->minVertex;
+		chunk.maxVertex = t->maxVertex;
 
-		float offX = 0;// (std::rand() % ((int)GRASS_TILE_SIZE * 10)) * 0.01f;
-		float offZ = 0;// (std::rand() % ((int)GRASS_TILE_SIZE * 10)) * 0.01f;
-		foliage.translation = Vec3f{ p.x + offX, p.y, p.z + offZ };
+		for (int i = 0; i < t->faces.size(); i++) {
+			TerrainFace& face = t->faces[i];
+			Vec2f A = { face.v0.x, face.v0.z };
+			Vec2f B = { face.v1.x, face.v1.z };
+			Vec2f C = { face.v2.x, face.v2.z };
 
-		foliage.color0 = Vec3f{ 0.025f, 0.1f, 0.0f };
-		foliage.color1 = Vec3f{ 0.0125f, 0.05f, 0.0f };
-		foliage.color2 = Vec3f{ 0.0f, 0.01f, 0.0f };
-		foliage.color3 = Vec3f{ 0.0f, 0.005f, 0.0f };
+			std::vector<Vec2f> foliagePositions = Math::fillTriangle(A, B, C, 40);
 
-		foliage.timeOffset = p.x * (6.28f) / GRASS_DENSITY + p.z * (6.28f) / GRASS_DENSITY;
+			for (Vec2f& p : foliagePositions) {
+				FoliageInstance foliage{};
 
-		m_foliage.push_back(foliage);
+				float scale = 0.5f + (std::rand() % 25) * 0.01f;
+				foliage.scale = Vec3f{ 0.1f, scale, 0.1f };
+
+				float rotation = (std::rand() % 314) * 0.01f;
+				foliage.rotation = Vec3f{ 0, rotation, 0 };
+
+				float offX = (std::rand() % ((int)GRASS_TILE_SIZE * 10)) * 0.01f;
+				float offZ = (std::rand() % ((int)GRASS_TILE_SIZE * 10)) * 0.01f;
+				foliage.translation = Vec3f{ p.x + offX, Math::barycentricHeight(face.v0, face.v1, face.v2, p), p.y + offZ };
+
+				foliage.color0 = Vec3f{ 0.25f, 0.25f, 0.2f };  // Dark brown
+				foliage.color1 = Vec3f{ 0.3f, 0.25f, 0.1f };   // Dark yellowish brown
+				foliage.color2 = Vec3f{ 0.25f, 0.2f, 0.1f };  // Slightly more yellowish greenish brown
+				foliage.color3 = Vec3f{ 0.2f, 0.2f, 0.1f };  // Slightly more yellowish green
+
+				foliage.timeOffset = p.x * (6.28f) / GRASS_DENSITY + p.y * (6.28f) / GRASS_DENSITY;
+				chunk.foliage.push_back(std::move(foliage));
+			}
+		}
+		totalGrassBlades += chunk.foliage.size();
+		m_chunks.insert(std::pair<uint32_t, FoliageChunk>(t->id, chunk));
+	});
+
+	m_foliage.reserve(totalGrassBlades);
+}
+
+void DXGLFoliageManager::unloadTerrain(const QuadTree<TerrainChunk>::list& terrain) {
+	for (auto t : terrain) {
+		m_chunks.erase(t->id);
 	}
 }
 

@@ -14,18 +14,9 @@ DXGLTerrainManager::DXGLTerrainManager() {
 	m_ps = DXGLMain::resource()->createShader<DXGLPixelShader>("Assets/Shaders/PS_TerrainShader.cso");
 
 	m_cb = DXGLMain::resource()->createCBuffer(sizeof(TerrainBuffer));
-
-	m_lastNearestChunk = new TerrainChunk();
 }
 
 DXGLTerrainManager::~DXGLTerrainManager() {
-	if (m_lastNearestChunk) {
-		delete m_lastNearestChunk;
-	}
-
-	for (TerrainChunk* chunk : m_chunks) {
-		delete chunk;
-	}
 }
 
 void DXGLTerrainManager::load(const MeshDesc& desc, const std::string& filename) {
@@ -48,15 +39,20 @@ void DXGLTerrainManager::load(const MeshDesc& desc, const std::string& filename)
 	m_area = { Vec2f{ minX, minZ }, Vec2f{ maxX - minX, maxZ - minZ } };
 	m_chunkTree.resize(m_area);
 
+	int idx = 0;
+	int idy = 0;
 	for (int x = minX; x < maxX; x += chunkSize) {
 		for (int z = minZ; z < maxZ; z += chunkSize) {
 			TerrainChunk chunk{};
-			chunk.id = x * z + x + z;
+			chunk.id = idx + idy;
 			chunk.minVertex = Vec3f(x, 0, z);
 			chunk.maxVertex = Vec3f(x + chunkSize, 0, z + chunkSize);
 			QuadTreeRect rect = { Vec2f(x, z), Vec2f(chunkSize, chunkSize) };
 			m_chunkTree.insert(chunk, rect);
+
+			idy++;
 		}
+		idx++;
 	}
 
 	std::vector<Face> faces = m_mesh->getFaces();
@@ -72,9 +68,12 @@ void DXGLTerrainManager::load(const MeshDesc& desc, const std::string& filename)
 	}
 
 	for (int faceCenterIndex = 0; faceCenterIndex < faceCenters.size(); faceCenterIndex++) {
-		auto chunk = m_chunkTree.begin();
-		while (chunk != m_chunkTree.end()) {
-			Vec3f& faceCenter = faceCenters[faceCenterIndex];
+		Vec3f& faceCenter = faceCenters[faceCenterIndex];
+		QuadTreeRect searchFace{ Vec2f{ faceCenter.x, faceCenter.z }, Vec2f{ 0.001f, 0.001f } };
+
+		QuadTree<TerrainChunk>::list searchedChunks = m_chunkTree.search(searchFace);
+		for (auto chunkIt = searchedChunks.begin(); chunkIt != searchedChunks.end(); chunkIt++) {
+			auto chunk = *chunkIt;
 			if (faceCenter.x >= chunk->minVertex.x && faceCenter.x < chunk->maxVertex.x) {
 				if (faceCenter.z >= chunk->minVertex.z && faceCenter.z < chunk->maxVertex.z) {
 					chunk->faceIndices.push_back(faces[faceCenterIndex].indices.x);
@@ -123,23 +122,11 @@ void DXGLTerrainManager::load(const MeshDesc& desc, const std::string& filename)
 					face.normal.y = U.z * V.x - U.x * V.z;
 					face.normal.z = U.x * V.y - U.y * V.x;
 
-					// calc foliage points on face
-					//Vec2f A = {face.v0.x, face.v0.z};
-					//Vec2f B = {face.v1.x, face.v1.z};
-					//Vec2f C = {face.v2.x, face.v2.z};
-					
-					//std::vector<Vec2f> foliagePositions = Math::fillTriangle(A, B, C, 10);
-
-					//for (Vec2f& p : foliagePositions) {
-					//	chunk->foliagePositions.push_back(Vec3f{ p.x, Math::barycentricHeight(face.v0, face.v1, face.v2, p), p.y });
-					//}
-
 					chunk->faces.push_back(face);
 
 					break;
 				}
 			}
-			chunk++;
 		}
 	}
 }
@@ -161,40 +148,30 @@ void DXGLTerrainManager::update(long double delta) {
 		m_ib = DXGLMain::resource()->createIndexBuffer(&m_indices[0], m_indices.size());
 	}
 
-	float searchSize = 64.0f;
+	float searchSize = 128.0f;
 	m_searchArea = { Vec2f(cam->getPosition().x - (searchSize / 2.0f), cam->getPosition().z - (searchSize / 2.0f)),
 		Vec2f(searchSize, searchSize) };
 
-	std::vector<Vec3f> foliagePositions{};
+	std::list<Vec3f> foliagePositions{};
 
 	auto searched = m_chunkTree.search(m_searchArea);
 	if (searched != m_lastSearch) {
-		m_lastSearch = searched;
-
-		for (auto chunk : searched) {
-			if (!chunk->isLoaded) {
-
-				for (int i = 0; i < chunk->faces.size(); i++) {
-					TerrainFace& face = chunk->faces[i];
-					Vec2f A = { face.v0.x, face.v0.z };
-					Vec2f B = { face.v1.x, face.v1.z };
-					Vec2f C = { face.v2.x, face.v2.z };
-
-					std::vector<Vec2f> foliagePositions = Math::fillTriangle(A, B, C, 10);
-
-					for (Vec2f& p : foliagePositions) {
-						chunk->foliagePositions.push_back(Vec3f{ p.x, Math::barycentricHeight(face.v0, face.v1, face.v2, p), p.y });
-					}
-				}
-
-				chunk->isLoaded = true;
+		// get chunks to load/unload
+		QuadTree<TerrainChunk>::list diffLoad{};
+		QuadTree<TerrainChunk>::list diffUnload{};
+		for (auto it = m_lastSearch.begin(); it != m_lastSearch.end(); it++) {
+			if (std::find(searched.begin(), searched.end(), *it) == searched.end()) {
+				diffUnload.push_back(*it);
 			}
-			foliagePositions.insert(foliagePositions.end(), chunk->foliagePositions.begin(), chunk->foliagePositions.end());
+			else {
+				diffLoad.push_back(*it);
+			}
 		}
-	}
 
-	if (!foliagePositions.empty()) {
-		DXGLMain::renderer()->foliage()->updatePositions(foliagePositions);
+		DXGLMain::renderer()->foliage()->unloadTerrain(diffUnload);
+		DXGLMain::renderer()->foliage()->loadTerrain(diffLoad);
+
+		m_lastSearch = searched;
 	}
 }
 
@@ -209,8 +186,8 @@ void DXGLTerrainManager::draw() {
 
 	SP_DXGLCamera cam = DXGLMain::renderer()->camera()->get("primary");
 
-	//float height = 1.7f + getTerrainHeight(cam->getPosition().x, cam->getPosition().z);
-	//cam->world().setTranslation(Vec3f{cam->getPosition().x, height, cam->getPosition().z});
+	float height = 1.7f + getTerrainHeight(cam->getPosition().x, cam->getPosition().z);
+	cam->world().setTranslation(Vec3f{cam->getPosition().x, height, cam->getPosition().z});
 
 	float scale = 20.0f;
 
@@ -233,7 +210,7 @@ void DXGLTerrainManager::draw() {
 }
 
 float DXGLTerrainManager::getTerrainHeight(float x, float z) {
-	for (TerrainChunk* c : m_chunks) {
+	for (auto c : m_lastSearch) {
 		if (x >= c->minVertex.x && x < c->maxVertex.x) {
 			if (z >= c->minVertex.z && z < c->maxVertex.z) {
 				TerrainFace face{};
