@@ -25,6 +25,9 @@
       <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\PS_DrunkVision.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\PS_FoliageShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\PS_Instance.cso</FullPath>
     </ContentFile>
     <ContentFile>
@@ -55,10 +58,16 @@
       <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\PS_Skybox.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\PS_TerrainShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\PS_Tessellation.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\VS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\VS_FoliageShader.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\VS_Instance.cso</FullPath>
@@ -83,6 +92,9 @@
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\VS_Skybox.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\VS_TerrainShader.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\VS_Tessellation.cso</FullPath>

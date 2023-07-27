@@ -27,30 +27,57 @@ DXGLFoliageManager::DXGLFoliageManager() {
 	meshDesc.vertexAttributes = VERTEX_POSITION | VERTEX_TEXCOORD | VERTEX_NORMAL;
 	meshDesc.miscAttributes = MISC_INDEX;
 	m_mesh = DXGLMain::resource()->createBasicMesh(meshDesc, "Assets/Meshes/landscapes/grass.fbx");
+
+	m_foliage.reserve(2000000);
 }
 
 DXGLFoliageManager::~DXGLFoliageManager() {
 }
 
 void DXGLFoliageManager::update(long double delta) {
-	SP_DXGLCamera cam = DXGLMain::renderer()->camera()->get("primary");
-	Vec3f camPos = cam->getPosition();
+	if (!m_camera) {
+		m_camera = DXGLMain::renderer()->camera()->get("primary");
+	}
+	Vec3f camPos = m_camera->getPosition();
+
+	// check futures
+	for (auto it = m_futures.begin(); it != m_futures.end();) {
+		auto& f = it->second;
+		auto status = f.wait_for(std::chrono::seconds(0));
+
+		if (status == std::future_status::ready) {
+			std::vector<FoliageChunk> chunks = std::move(f.get());
+			for (auto& chunk : chunks) {
+				m_chunks.emplace(chunk.id, std::move(chunk));
+			}
+			it = m_futures.erase(it); // Erase the element and get the next iterator.
+		} else {
+			it++; // Move to the next element.
+		}
+	}
+
+	m_foliage.clear();
 
 	int count = 0;
 	for (auto it = m_chunks.begin(); it != m_chunks.end(); it++) {
 		FoliageChunk& chunk = it->second;
 
+		// cull check
+		if (m_camera->cull(chunk.minVertex, Vec3f{ 1, 1, 1 }, Vec3f{ 0, 0, 0 }, chunk.maxVertex - chunk.minVertex)) {
+			continue;
+		}
+
 		// update chunk LOD
-		float chunkLength = chunk.maxVertex.x - chunk.minVertex.x;
-		float distToCam = Vec3f::dist(camPos, chunk.minVertex + chunkLength / 2.0f);
+		float chunkLength = Vec3f::length(chunk.maxVertex - chunk.minVertex);
+		float distToCam = Vec3f::dist(camPos, chunk.minVertex + (chunk.maxVertex - chunk.minVertex) / 2.0f);
 
 		// Define the desired increment step
 		float incrementStep = 0.025f;
 
-		if (distToCam <= chunkLength / 4.0f) {
+		if (distToCam <= chunkLength) {
 			chunk.LOD = 1.0f;
 		} else {
-			float rawLOD = Math::smoothstep(1.0f / (1.0f + (distToCam - chunkLength / 4.0f) * 0.1f), 0, 1);
+			float rawLOD = Math::smoothstep(1.0f / (1.0f + (distToCam - chunkLength) * 0.1f), 0, 1);
 
 			// Round the rawLOD to the nearest multiple of incrementStep
 			chunk.LOD = std::round(rawLOD / incrementStep) * incrementStep;
@@ -78,68 +105,11 @@ void DXGLFoliageManager::update(long double delta) {
 
 	FoliageBuffer buffer{};
 	buffer.model.setIdentity();
-	buffer.view = cam->view();
-	buffer.proj = cam->proj();
-	buffer.camPos = cam->getPosition();
+	buffer.view = m_camera->view();
+	buffer.proj = m_camera->proj();
+	buffer.camPos = m_camera->getPosition();
 	buffer.time = m_timePassed;
 	m_cb->update(&buffer);
-}
-
-void DXGLFoliageManager::loadTerrain(const QuadTree<TerrainChunk>::list& terrain) {
-	SP_DXGLCamera cam = DXGLMain::renderer()->camera()->get("primary");
-	Vec3f camPos = cam->getPosition();
-
-	m_foliage.clear();
-
-	int totalGrassBlades = 0;
-
-	std::for_each(std::execution::par, terrain.begin(), terrain.end(), [&](auto t) {
-		FoliageChunk chunk{};
-
-		chunk.minVertex = t->minVertex;
-		chunk.maxVertex = t->maxVertex;
-
-		for (int i = 0; i < t->faces.size(); i++) {
-			TerrainFace& face = t->faces[i];
-			Vec2f A = { face.v0.x, face.v0.z };
-			Vec2f B = { face.v1.x, face.v1.z };
-			Vec2f C = { face.v2.x, face.v2.z };
-
-			std::vector<Vec2f> foliagePositions = Math::fillTriangle(A, B, C, 40);
-
-			for (Vec2f& p : foliagePositions) {
-				FoliageInstance foliage{};
-
-				float scale = 0.5f + (std::rand() % 25) * 0.01f;
-				foliage.scale = Vec3f{ 0.1f, scale, 0.1f };
-
-				float rotation = (std::rand() % 314) * 0.01f;
-				foliage.rotation = Vec3f{ 0, rotation, 0 };
-
-				float offX = (std::rand() % ((int)GRASS_TILE_SIZE * 10)) * 0.01f;
-				float offZ = (std::rand() % ((int)GRASS_TILE_SIZE * 10)) * 0.01f;
-				foliage.translation = Vec3f{ p.x + offX, Math::barycentricHeight(face.v0, face.v1, face.v2, p), p.y + offZ };
-
-				foliage.color0 = Vec3f{ 0.25f, 0.25f, 0.2f };  // Dark brown
-				foliage.color1 = Vec3f{ 0.3f, 0.25f, 0.1f };   // Dark yellowish brown
-				foliage.color2 = Vec3f{ 0.25f, 0.2f, 0.1f };  // Slightly more yellowish greenish brown
-				foliage.color3 = Vec3f{ 0.2f, 0.2f, 0.1f };  // Slightly more yellowish green
-
-				foliage.timeOffset = p.x * (6.28f) / GRASS_DENSITY + p.y * (6.28f) / GRASS_DENSITY;
-				chunk.foliage.push_back(std::move(foliage));
-			}
-		}
-		totalGrassBlades += chunk.foliage.size();
-		m_chunks.insert(std::pair<uint32_t, FoliageChunk>(t->id, chunk));
-	});
-
-	m_foliage.reserve(totalGrassBlades);
-}
-
-void DXGLFoliageManager::unloadTerrain(const QuadTree<TerrainChunk>::list& terrain) {
-	for (auto t : terrain) {
-		m_chunks.erase(t->id);
-	}
 }
 
 void DXGLFoliageManager::draw() {
@@ -161,5 +131,128 @@ void DXGLFoliageManager::draw() {
 	}
 }
 
-void DXGLFoliageManager::cull() {
+void DXGLFoliageManager::loadTerrain(const QuadTree<TerrainChunk>::list& terrain) {
+	for (const auto& t : terrain) {
+		m_futures.insert(std::pair<uint32_t, std::future<std::vector<FoliageChunk>>>(t->id, std::async(std::launch::async, [this, t]() { return asyncLoadTerrain(t); })));
+	}
+}
+
+std::vector<FoliageChunk> DXGLFoliageManager::asyncLoadTerrain(const QuadTree<TerrainChunk>::ptr& terrain) {
+	return generateChunks(terrain);
+}
+
+void DXGLFoliageManager::unloadTerrain(const QuadTree<TerrainChunk>::list& terrain) {
+	for (auto t : terrain) {
+		m_chunks.erase(t->id);
+		m_chunks.erase(t->id + 1);
+		m_chunks.erase(t->id + 2);
+		m_chunks.erase(t->id + 3);
+	}
+}
+
+std::vector<FoliageChunk> DXGLFoliageManager::generateChunks(const QuadTree<TerrainChunk>::ptr& terrain) {
+	Vec3f minVertex = terrain->minVertex;
+	Vec3f maxVertex = terrain->maxVertex;
+
+	float chunkLengthX = maxVertex.x - minVertex.x;
+	float chunkLengthZ = maxVertex.z - minVertex.z;
+
+	QuadTreeRect rect{};
+	QuadTree<TerrainFace> faces{rect, 8};
+	rect.pos = Vec2f{ minVertex.x, minVertex.z };
+	rect.size = Vec2f{ chunkLengthX , chunkLengthZ };
+	faces.resize(rect);
+
+	Vec3f up = { 0, 1, 0 };
+	for (const auto& f : terrain->faces) {
+		if (Vec3f::dot(f.normal, up) < 0.75f) {
+			continue;
+		}
+
+		QuadTreeRect faceRect{};
+		faceRect.pos = { f.center.x, f.center.z };
+		faceRect.size = { 0.01f, 0.01f };
+		faces.insert(f, faceRect);
+	}
+
+	std::vector<FoliageChunk> chunks{};
+
+	FoliageChunk topLeft{};
+	topLeft.id = terrain->id;
+	topLeft.minVertex.x = minVertex.x;
+	topLeft.minVertex.y = minVertex.y;
+	topLeft.minVertex.z = minVertex.z;
+	topLeft.maxVertex.x = minVertex.x + chunkLengthX / 2.0f;
+	topLeft.maxVertex.y = maxVertex.y;
+	topLeft.maxVertex.z = minVertex.z + chunkLengthZ / 2.0f;
+	chunks.push_back(topLeft);
+
+	FoliageChunk topRight{};
+	topRight.id = terrain->id + 1;
+	topRight.minVertex.x = minVertex.x + chunkLengthX / 2.0f;
+	topRight.minVertex.y = minVertex.y;
+	topRight.minVertex.z = minVertex.z;
+	topRight.maxVertex.x = minVertex.x + chunkLengthX;
+	topRight.maxVertex.y = maxVertex.y;
+	topRight.maxVertex.z = minVertex.z + chunkLengthZ / 2.0f;
+	chunks.push_back(topRight);
+
+	FoliageChunk bottomLeft{};
+	bottomLeft.id = terrain->id + 2;
+	bottomLeft.minVertex.x = minVertex.x;
+	bottomLeft.minVertex.y = minVertex.y;
+	bottomLeft.minVertex.z = minVertex.z + chunkLengthZ / 2.0f;
+	bottomLeft.maxVertex.x = minVertex.x + chunkLengthX / 2.0f;
+	bottomLeft.maxVertex.y = maxVertex.y;
+	bottomLeft.maxVertex.z = minVertex.z + chunkLengthZ;
+	chunks.push_back(bottomLeft);
+
+	FoliageChunk bottomRight{};
+	bottomRight.id = terrain->id + 3;
+	bottomRight.minVertex.x = minVertex.x + chunkLengthX / 2.0f;
+	bottomRight.minVertex.y = minVertex.y;
+	bottomRight.minVertex.z = minVertex.z + chunkLengthZ / 2.0f;
+	bottomRight.maxVertex.x = minVertex.x + chunkLengthX;
+	bottomRight.maxVertex.y = maxVertex.y;
+	bottomRight.maxVertex.z = minVertex.z + chunkLengthZ;
+	chunks.push_back(bottomRight);
+
+	for (auto& chunk : chunks) {
+		QuadTreeRect search{};
+		search.pos = Vec2f{ chunk.minVertex.x, chunk.minVertex.z };
+		search.size = Vec2f{ chunk.maxVertex.x - chunk.minVertex.x, chunk.maxVertex.z - chunk.minVertex.z };
+		QuadTree<TerrainFace>::list searchedFaces = faces.search(search);
+
+		for (const QuadTree<TerrainFace>::ptr face : searchedFaces) {
+			Vec2f A = { face->v0.x, face->v0.z };
+			Vec2f B = { face->v1.x, face->v1.z };
+			Vec2f C = { face->v2.x, face->v2.z };
+
+			std::vector<Vec2f> foliagePositions = Math::fillTriangle(A, B, C, 20);
+
+			for (Vec2f& p : foliagePositions) {
+				FoliageInstance foliage{};
+
+				float scale = 0.15f + (std::rand() % 25) * 0.01f;
+				foliage.scale = Vec3f{ scale * 0.5f, scale, scale * 0.5f };
+
+				float rotation = (std::rand() % 314) * 0.01f;
+				foliage.rotation = Vec3f{ 0, rotation, 0 };
+
+				p.x += (std::rand() % 25) * 0.01f;
+				p.y += (std::rand() % 25) * 0.01f;
+				foliage.translation = Vec3f{ p.x, Math::barycentricHeight(face->v0, face->v1, face->v2, p), p.y };
+
+				foliage.color0 = Vec3f{ 0.25f, 0.25f, 0.2f };
+				foliage.color1 = Vec3f{ 0.3f, 0.25f, 0.1f };
+				foliage.color2 = Vec3f{ 0.25f, 0.2f, 0.1f };
+				foliage.color3 = Vec3f{ 0.2f, 0.2f, 0.1f };
+
+				foliage.timeOffset = p.x * (6.28f * 0.0075f) + p.y * (6.28f * 0.0075f);
+				chunk.foliage.push_back(std::move(foliage));
+			}
+		}
+	}
+
+	return chunks;
 }

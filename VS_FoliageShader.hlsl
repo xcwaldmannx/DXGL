@@ -68,13 +68,13 @@ PS_Input main(VS_Input input) {
 	PS_Input output = (PS_Input)0;
 
 	float distToCam = dist(input.instTranslation, camPos);
-	input.instScale.y -= distToCam * 0.01f;
+	input.instScale.y -= distToCam / 128.0f;
 
 	float y = (PI / 3.0f) * input.texcoord.y - (PI / 3.0f);
 	float finalTime = time + input.instTimeOffset;
-	float offsetX = sin(y) * cos(finalTime);
-	float offsetY = -distToCam * 0.01f;
-	float offsetZ = sin(y) * cos(2 * finalTime);
+	float offsetX = sin(y) * cos(finalTime) * (1.0f - input.texcoord.y);
+	float offsetY = -distToCam * 0.005f;
+	float offsetZ = sin(y) * cos(2 * finalTime) * (1.0f - input.texcoord.y);
 
 	offsetX *= input.instScale;
 	offsetZ *= input.instScale;

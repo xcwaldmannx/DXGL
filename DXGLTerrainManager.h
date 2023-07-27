@@ -15,6 +15,7 @@ namespace dxgl {
 		Vec3f v1;
 		Vec3f v2;
 		Vec3f normal;
+		Vec3f center;
 	};
 
 	struct TerrainChunk {
@@ -23,9 +24,7 @@ namespace dxgl {
 		Vec3f maxVertex{};
 		std::vector<unsigned int> faceIndices{};
 		std::vector<TerrainFace> faces{};
-		int lod = 0;
 		int indexCount = 0;
-		bool isLoaded = false;
 	};
 
 	struct TerrainBuffer {

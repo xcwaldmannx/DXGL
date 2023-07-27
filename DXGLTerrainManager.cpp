@@ -50,9 +50,9 @@ void DXGLTerrainManager::load(const MeshDesc& desc, const std::string& filename)
 			QuadTreeRect rect = { Vec2f(x, z), Vec2f(chunkSize, chunkSize) };
 			m_chunkTree.insert(chunk, rect);
 
-			idy++;
+			idy += 4;
 		}
-		idx++;
+		idx += 4;
 	}
 
 	std::vector<Face> faces = m_mesh->getFaces();
@@ -74,59 +74,59 @@ void DXGLTerrainManager::load(const MeshDesc& desc, const std::string& filename)
 		QuadTree<TerrainChunk>::list searchedChunks = m_chunkTree.search(searchFace);
 		for (auto chunkIt = searchedChunks.begin(); chunkIt != searchedChunks.end(); chunkIt++) {
 			auto chunk = *chunkIt;
-			if (faceCenter.x >= chunk->minVertex.x && faceCenter.x < chunk->maxVertex.x) {
-				if (faceCenter.z >= chunk->minVertex.z && faceCenter.z < chunk->maxVertex.z) {
-					chunk->faceIndices.push_back(faces[faceCenterIndex].indices.x);
-					chunk->faceIndices.push_back(faces[faceCenterIndex].indices.y);
-					chunk->faceIndices.push_back(faces[faceCenterIndex].indices.z);
-					chunk->indexCount += 3;
+			chunk->faceIndices.push_back(faces[faceCenterIndex].indices.x);
+			chunk->faceIndices.push_back(faces[faceCenterIndex].indices.y);
+			chunk->faceIndices.push_back(faces[faceCenterIndex].indices.z);
+			chunk->indexCount += 3;
 
-					// set chunk bounds based on extent of faces
-					TerrainFace face{};
-					face.v0 = faces[faceCenterIndex].v0 * scale;
-					face.v1 = faces[faceCenterIndex].v1 * scale;
-					face.v2 = faces[faceCenterIndex].v2 * scale;
+			// set chunk bounds based on extent of faces
+			TerrainFace face{};
+			face.v0 = faces[faceCenterIndex].v0 * scale;
+			face.v1 = faces[faceCenterIndex].v1 * scale;
+			face.v2 = faces[faceCenterIndex].v2 * scale;
 
-					// x
-					if (face.v0.x < chunk->minVertex.x) chunk->minVertex.x = face.v0.x;
-					if (face.v1.x < chunk->minVertex.x) chunk->minVertex.x = face.v1.x;
-					if (face.v2.x < chunk->minVertex.x) chunk->minVertex.x = face.v2.x;
+			// x
+			if (face.v0.x < chunk->minVertex.x) chunk->minVertex.x = face.v0.x;
+			if (face.v1.x < chunk->minVertex.x) chunk->minVertex.x = face.v1.x;
+			if (face.v2.x < chunk->minVertex.x) chunk->minVertex.x = face.v2.x;
 										 					 
-					if (face.v0.x > chunk->maxVertex.x) chunk->maxVertex.x = face.v0.x;
-					if (face.v1.x > chunk->maxVertex.x) chunk->maxVertex.x = face.v1.x;
-					if (face.v2.x > chunk->maxVertex.x) chunk->maxVertex.x = face.v2.x;
+			if (face.v0.x > chunk->maxVertex.x) chunk->maxVertex.x = face.v0.x;
+			if (face.v1.x > chunk->maxVertex.x) chunk->maxVertex.x = face.v1.x;
+			if (face.v2.x > chunk->maxVertex.x) chunk->maxVertex.x = face.v2.x;
 										 					 
-					// y				 					 
-					if (face.v0.y < chunk->minVertex.y) chunk->minVertex.y = face.v0.y;
-					if (face.v1.y < chunk->minVertex.y) chunk->minVertex.y = face.v1.y;
-					if (face.v2.y < chunk->minVertex.y) chunk->minVertex.y = face.v2.y;
+			// y				 					 
+			if (face.v0.y < chunk->minVertex.y) chunk->minVertex.y = face.v0.y;
+			if (face.v1.y < chunk->minVertex.y) chunk->minVertex.y = face.v1.y;
+			if (face.v2.y < chunk->minVertex.y) chunk->minVertex.y = face.v2.y;
 										 					 
-					if (face.v0.y > chunk->maxVertex.y) chunk->maxVertex.y = face.v0.y;
-					if (face.v1.y > chunk->maxVertex.y) chunk->maxVertex.y = face.v1.y;
-					if (face.v2.y > chunk->maxVertex.y) chunk->maxVertex.y = face.v2.y;
+			if (face.v0.y > chunk->maxVertex.y) chunk->maxVertex.y = face.v0.y;
+			if (face.v1.y > chunk->maxVertex.y) chunk->maxVertex.y = face.v1.y;
+			if (face.v2.y > chunk->maxVertex.y) chunk->maxVertex.y = face.v2.y;
 										 					 
-					// z				 					 
-					if (face.v0.z < chunk->minVertex.z) chunk->minVertex.z = face.v0.z;
-					if (face.v1.z < chunk->minVertex.z) chunk->minVertex.z = face.v1.z;
-					if (face.v2.z < chunk->minVertex.z) chunk->minVertex.z = face.v2.z;
+			// z				 					 
+			if (face.v0.z < chunk->minVertex.z) chunk->minVertex.z = face.v0.z;
+			if (face.v1.z < chunk->minVertex.z) chunk->minVertex.z = face.v1.z;
+			if (face.v2.z < chunk->minVertex.z) chunk->minVertex.z = face.v2.z;
 										 					 
-					if (face.v0.z > chunk->maxVertex.z) chunk->maxVertex.z = face.v0.z;
-					if (face.v1.z > chunk->maxVertex.z) chunk->maxVertex.z = face.v1.z;
-					if (face.v2.z > chunk->maxVertex.z) chunk->maxVertex.z = face.v2.z;
+			if (face.v0.z > chunk->maxVertex.z) chunk->maxVertex.z = face.v0.z;
+			if (face.v1.z > chunk->maxVertex.z) chunk->maxVertex.z = face.v1.z;
+			if (face.v2.z > chunk->maxVertex.z) chunk->maxVertex.z = face.v2.z;
 
-					// calc face normal
-					Vec3f U = face.v1 - face.v0;
-					Vec3f V = face.v2 - face.v0;
+			// calc face normal
+			Vec3f U = face.v1 - face.v0;
+			Vec3f V = face.v2 - face.v0;
 
-					face.normal.x = U.y * V.z - U.z * V.y;
-					face.normal.y = U.z * V.x - U.x * V.z;
-					face.normal.z = U.x * V.y - U.y * V.x;
+			face.normal.x = U.y * V.z - U.z * V.y;
+			face.normal.y = U.z * V.x - U.x * V.z;
+			face.normal.z = U.x * V.y - U.y * V.x;
 
-					chunk->faces.push_back(face);
+			face.normal = face.normal.normalize();
 
-					break;
-				}
-			}
+			face.center = faceCenter;
+
+			chunk->faces.push_back(face);
+
+			break;
 		}
 	}
 }

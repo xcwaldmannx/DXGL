@@ -134,7 +134,9 @@ template<typename T>
 class QuadTree {
 
 public:
-	typedef std::list<typename std::list<T>::iterator> list;
+	typedef std::list<T>::iterator ptr;
+	typedef std::list<T>::const_iterator cptr;
+	typedef std::list<typename ptr> list;
 
 	QuadTree(const QuadTreeRect& rect = { Vec2f{0, 0}, Vec2f{1, 1} }, const size_t maxDepth = 4) : m_root(rect) {
 
@@ -173,23 +175,23 @@ public:
 		return m_items;
 	}
 	
-	typename std::list<T>::iterator begin() {
+	typename ptr begin() {
 		return m_items.begin();
 	}
 
-	typename std::list<T>::iterator end() {
+	typename ptr end() {
 		return m_items.end();
 	}
 
-	typename std::list<T>::const_iterator cbegin() const {
+	typename cptr cbegin() const {
 		return m_items.cbegin();
 	}
 
-	typename std::list<T>::const_iterator cend() const {
+	typename cptr cend() const {
 		return m_items.cend();
 	}
 
 protected:
 	std::list<T> m_items{};
-	QuadTreeWrap<typename std::list<T>::iterator> m_root;
+	QuadTreeWrap<typename ptr> m_root;
 };

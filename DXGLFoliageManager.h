@@ -2,6 +2,8 @@
 
 #include <algorithm>
 #include <execution>
+#include <future>
+#include <chrono>
 
 #include "DXGLMain.h"
 
@@ -33,13 +35,8 @@ namespace dxgl {
 		float time = 0;
 	};
 
-	const float GRASS_DENSITY = 32;
-	const float GRASS_TILE_SIZE = 8;
-	const float GRASS_TILE_LENGTH = 8;
-	const float GRASS_TOTAL_LENGTH = GRASS_TILE_SIZE * GRASS_TILE_LENGTH;
-	const float GRASS_BLADES_MAX = (GRASS_DENSITY * GRASS_DENSITY) * (GRASS_TILE_LENGTH * GRASS_TILE_LENGTH);
-
 	struct FoliageChunk {
+		uint32_t id = 0;
 		Vec3f minVertex{};
 		Vec3f maxVertex{};
 		float LOD = 0;
@@ -52,18 +49,24 @@ namespace dxgl {
 		~DXGLFoliageManager();
 
 		void update(long double delta);
+		void draw();
+
 		void loadTerrain(const QuadTree<TerrainChunk>::list& terrain);
 		void unloadTerrain(const QuadTree<TerrainChunk>::list& terrain);
-		void draw();
+
 	private:
-		void cull();
+		std::vector<FoliageChunk> asyncLoadTerrain(const QuadTree<TerrainChunk>::ptr& terrain);
+		std::vector<FoliageChunk> generateChunks(const QuadTree<TerrainChunk>::ptr& terrain);
 
 	private:
 
 		std::vector<FoliageInstance> m_foliage{};
 		std::vector<FoliageInstance> m_culledFoliage{};
 
+		SP_DXGLCamera m_camera = nullptr;
+
 		std::unordered_map<uint32_t, FoliageChunk> m_chunks{};
+		std::unordered_map<uint32_t, std::future<std::vector<FoliageChunk>>> m_futures{};
 
 		SP_DXGLInputLayout m_layout = nullptr;
 		SP_DXGLVertexShader m_vs = nullptr;
