@@ -9,5 +9,9 @@ C:\Users\xcwal\source\repos\DXL\DXL\DXGLFoliageManager.cpp(91,33): warning C4244
 C:\Users\xcwal\source\repos\DXL\DXL\DXGLFoliageManager.cpp(101,115): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
 C:\Users\xcwal\source\repos\DXL\DXL\DXGLFoliageManager.cpp(104,18): warning C4244: '+=': conversion from 'long double' to 'float', possible loss of data
 C:\Users\xcwal\source\repos\DXL\DXL\DXGLFoliageManager.cpp(130,127): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLFoliageManager.cpp(236,24): warning C4244: 'initializing': conversion from 'float' to 'uint32_t', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLFoliageManager.cpp(240,27): warning C4244: 'initializing': conversion from 'float' to 'uint32_t', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLFoliageManager.cpp(244,21): warning C4244: 'initializing': conversion from 'float' to 'uint32_t', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLFoliageManager.cpp(246,21): warning C4244: 'initializing': conversion from 'float' to 'uint32_t', possible loss of data
   DXL.vcxproj -> C:\Users\xcwal\source\repos\DXL\x64\Debug\DXGL.exe
   0 File(s) copied

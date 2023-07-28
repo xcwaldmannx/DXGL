@@ -233,14 +233,17 @@ std::vector<FoliageChunk> DXGLFoliageManager::generateChunks(const QuadTree<Terr
 			for (Vec2f& p : foliagePositions) {
 				FoliageInstance foliage{};
 
-				float scale = 0.15f + (std::rand() % 25) * 0.01f;
-				foliage.scale = Vec3f{ scale * 0.5f, scale, scale * 0.5f };
+				std::random_device rd;
+				std::uniform_real_distribution<float> dist(0.0f, 1.0f);
 
-				float rotation = (std::rand() % 314) * 0.01f;
+				float scale = 0.25f + dist(rd) * 0.25f;
+				foliage.scale = Vec3f{ scale * 0.25f, scale, scale * 0.25f };
+
+				float rotation = dist(rd) * 3.14f;
 				foliage.rotation = Vec3f{ 0, rotation, 0 };
 
-				p.x += (std::rand() % 25) * 0.01f;
-				p.y += (std::rand() % 25) * 0.01f;
+				p.x += dist(rd) * 0.25f;
+				p.y += dist(rd) * 0.25f;
 				foliage.translation = Vec3f{ p.x, Math::barycentricHeight(face->v0, face->v1, face->v2, p), p.y };
 
 				foliage.color0 = Vec3f{ 0.25f, 0.25f, 0.2f };
