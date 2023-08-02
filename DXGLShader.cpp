@@ -115,17 +115,17 @@ void DXGLShader::PS_setResources(UINT slot, UINT count, ID3D11ShaderResourceView
     m_graphics->context()->PSSetShaderResources(slot, count, srv);
 }
 
-void DXGLShader::VS_setMaterial(UINT slot, UINT count, const SP_DXGLMaterial& material) {
+void DXGLShader::VS_setMaterial(UINT slot, UINT count, const SP_Material& material) {
     ID3D11ShaderResourceView* srv = material->get();
     m_graphics->context()->VSSetShaderResources(slot, count, &srv);
 }
 
-void DXGLShader::DS_setMaterial(UINT slot, UINT count, const SP_DXGLMaterial& material) {
+void DXGLShader::DS_setMaterial(UINT slot, UINT count, const SP_Material& material) {
     ID3D11ShaderResourceView* srv = material->get();
     m_graphics->context()->DSSetShaderResources(slot, count, &srv);
 }
 
-void DXGLShader::PS_setMaterial(UINT slot, UINT count, const SP_DXGLMaterial& material) {
+void DXGLShader::PS_setMaterial(UINT slot, UINT count, const SP_Material& material) {
     ID3D11ShaderResourceView* srv = material->get();
     m_graphics->context()->PSSetShaderResources(slot, count, &srv);
 }

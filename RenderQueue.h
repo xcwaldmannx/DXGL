@@ -1,23 +1,24 @@
 #pragma once
 
-#include <vector>
-
 #include "DXGLMain.h"
 
-#include "DXGLComponentTypes.h"
+#include "EarlyZRenderPass.h"
+#include "LightingRenderPass.h"
 
-struct RenderQueueItem {
-	governor::DXGLGroup entities{};
-};
+namespace dxgl {
+	class RenderQueue {
+	public:
+		RenderQueue();
+		~RenderQueue();
 
-class RenderQueue {
-public:
-	RenderQueue();
-	~RenderQueue();
+		void createInstances();
+		void draw();
 
-	void submit(RenderQueueItem item);
-	void process();
-
-private:
-	std::vector<RenderQueueItem> m_items{};
-};
+	private:
+		governor::DXGLGroup* m_entities{};
+		std::unordered_set<SP_Mesh> m_meshes{};
+		std::unordered_map<SP_Mesh, std::vector<Instance>> m_meshToInstances{};
+		EarlyZRenderPass earlyZ{};
+		LightingRenderPass lighting{};
+	};
+}

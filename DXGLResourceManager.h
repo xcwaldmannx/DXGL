@@ -12,25 +12,29 @@
 #include "DXGLGraphics.h"
 #include "DXGLRenderer.h"
 
-#include "DXGLVertexBuffer.h"
-#include "DXGLIndexBuffer.h"
-#include "DXGLInstanceBuffer.h"
-#include "DXGLCBuffer.h"
-#include "DXGLInputLayout.h"
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
+#include "InstanceBuffer.h"
+#include "VSConstantBuffer.h"
+#include "HSConstantBuffer.h"
+#include "DSConstantBuffer.h"
+#include "PSConstantBuffer.h"
+#include "InputLayout.h"
 
 #include "DXGLSamplerState.h"
 #include "DXGLShaderResourceView.h"
 
-#include "DXGLTexture2D.h"
-#include "DXGLTextureCube.h"
+#include "Texture2D.h"
+#include "TextureCube.h"
 
-#include "DXGLMaterial.h"
-#include "DXGLMesh.h"
-#include "DXGLBasicMesh.h"
+#include "Material.h"
+#include "Mesh.h"
 
 namespace dxgl {
 
 	struct MeshDesc;
+	struct MaterialData;
+	struct InputLayoutDesc;
 
 	enum ResourceType {
 		VERTEX_BUFFER,
@@ -67,20 +71,31 @@ namespace dxgl {
 		template<typename T>
 		bool find(const std::string& alias);
 
-		SP_DXGLVertexBuffer createVertexBuffer(void* vertices, int vertexCount, int vertexSize);
+		SP_VertexBuffer createVertexBuffer(void* vertices, int vertexCount, int vertexSize);
 		void storeVertexBuffer(void* vertices, int vertexCount, int vertexSize, const std::string& alias);
 
-		SP_DXGLIndexBuffer createIndexBuffer(void* indices, int indexCount);
+		SP_IndexBuffer createIndexBuffer(void* indices, int indexCount);
 		void storeIndexBuffer(void* indices, int indexCount, const std::string& alias);
 
-		SP_DXGLInstanceBuffer createInstanceBuffer(void* instances, int instanceCount, int instanceSize);
+		SP_InstanceBuffer createInstanceBuffer(void* instances, int instanceCount, int instanceSize);
 		void storeInstanceBuffer(void* instances, int instanceCount, int instanceSize, const std::string& alias);
 
-		SP_DXGLCBuffer createCBuffer(UINT bytes);
-		void storeCBuffer(UINT bytes, std::string alias);
+		SP_VSConstantBuffer createVSConstantBuffer(UINT bytes);
+		void storeVSConstantBuffer(UINT bytes, std::string alias);
 
-		SP_DXGLInputLayout createInputLayout(const InputLayoutDesc& desc, const std::string& filename);
+		SP_HSConstantBuffer createHSConstantBuffer(UINT bytes);
+		void storeHSConstantBuffer(UINT bytes, std::string alias);
+
+		SP_DSConstantBuffer createDSConstantBuffer(UINT bytes);
+		void storeDSConstantBuffer(UINT bytes, std::string alias);
+
+		SP_PSConstantBuffer createPSConstantBuffer(UINT bytes);
+		void storePSConstantBuffer(UINT bytes, std::string alias);
+
+		SP_InputLayout createInputLayout(const InputLayoutDesc& desc, const std::string& filename);
+		SP_InputLayout createInputLayout(const InputLayoutDesc& desc, ID3DBlob* shaderBytecode);
 		void storeInputLayout(const InputLayoutDesc& desc, const std::string& filename, const std::string& alias);
+		void storeInputLayout(const InputLayoutDesc& desc, ID3DBlob* shaderBytecode, const std::string& alias);
 
 		template<class T>
 		std::shared_ptr<T> createShader(const std::string& filename);
@@ -102,23 +117,21 @@ namespace dxgl {
 		void createBlendState();
 		void storeBlendState();
 
-		SP_DXGLTexture2D createTexture2D(const std::string& filename);
-		SP_DXGLTexture2D createTexture2D(unsigned int width, unsigned int height, unsigned char* data);
+		SP_Texture2D createTexture2D(const std::string& filename);
+		SP_Texture2D createTexture2D(unsigned int width, unsigned int height, unsigned char* data);
 		void storeTexture2D(const std::string& filename, const std::string& alias);
 		void storeTexture2D(unsigned int width, unsigned int height, unsigned char* data, const std::string& alias);
 
-		SP_DXGLTextureCube createTextureCube(const std::string& filename);
+		SP_TextureCube createTextureCube(const std::string& filename);
 		void storeTextureCube(const std::string& filename, const std::string& alias);
 
-		SP_DXGLMaterial createMaterial(const std::string& filepath);
-		SP_DXGLMaterial createMaterial(const MaterialData& data);
+		SP_Material createMaterial(const std::string& filepath);
+		SP_Material createMaterial(const MaterialData& data);
 		void storeMaterial(const std::string& filepath, const std::string& alias);
 		void storeMaterial(const MaterialData& data, const std::string& alias);
 
-		SP_DXGLMesh createMesh(const std::string& filepath);
-		SP_DXGLBasicMesh createBasicMesh(const MeshDesc& desc, const std::string& filepath);
-		void storeMesh(const std::string& filepath, const std::string& alias);
-		void storeBasicMesh(const MeshDesc& desc, const std::string& filepath, const std::string& alias);
+		SP_Mesh createMesh(const MeshDesc& desc, const std::string& filepath);
+		void storeMesh(const MeshDesc& desc, const std::string& filepath, const std::string& alias);
 
 	private:
 		std::unordered_map<std::type_index, std::unordered_map<std::string, std::any>> m_resources{};

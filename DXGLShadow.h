@@ -6,6 +6,7 @@
 
 #include "DXGLMain.h"
 #include "DXGLMesh.h"
+#include "Mat4f.h"
 
 namespace dxgl {
 
@@ -49,18 +50,19 @@ namespace dxgl {
 		void createCascades();
 
 	private:
-		SP_DXGLInputLayout m_layout = nullptr;
+		SP_InputLayout m_layout = nullptr;
 		SP_DXGLVertexShader m_vs = nullptr;
 		SP_DXGLPixelShader m_ps = nullptr;
-		SP_DXGLCBuffer m_cbTrans = nullptr;
+		SP_VSConstantBuffer m_cbTrans = nullptr;
 
 		std::vector<ShadowCascade> m_cascades{};
-		SP_DXGLCBuffer m_cbShadow = nullptr;
+		SP_VSConstantBuffer m_vscbShadow = nullptr;
+		SP_PSConstantBuffer m_pscbShadow = nullptr;
 
 		governor::DXGLGroup* m_groupEntity{};
 		governor::DXGLGroup m_visibleEntities{};
 
-		std::unordered_map<SP_DXGLMesh, governor::DXGLGroup> m_meshGroups{};
+		std::unordered_map<SP_Mesh, governor::DXGLGroup> m_meshGroups{};
 
 		ID3D11ShaderResourceView** m_srvs = nullptr;
 	};

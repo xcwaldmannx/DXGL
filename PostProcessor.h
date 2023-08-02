@@ -37,11 +37,11 @@ public:
 	void draw();
 
 private:
-	dxgl::SP_DXGLInputLayout m_inputLayout = nullptr;
-	dxgl::SP_DXGLVertexBuffer m_vertexBuffer = nullptr;
-	dxgl::SP_DXGLIndexBuffer m_indexBuffer = nullptr;
-	dxgl::SP_DXGLCBuffer m_cbScreen = nullptr;
-	dxgl::SP_DXGLCBuffer m_cbEffect = nullptr;
+	dxgl::SP_InputLayout m_inputLayout = nullptr;
+	dxgl::SP_VertexBuffer m_vertexBuffer = nullptr;
+	dxgl::SP_IndexBuffer m_indexBuffer = nullptr;
+	dxgl::SP_PSConstantBuffer m_pscbScreen = nullptr;
+	dxgl::SP_PSConstantBuffer m_pscbEffect = nullptr;
 
 	dxgl::SP_DXGLVertexShader m_vs = nullptr;
 	dxgl::SP_DXGLPixelShader m_ps = nullptr;

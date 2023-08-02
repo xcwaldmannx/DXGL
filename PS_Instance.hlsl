@@ -122,7 +122,7 @@ float4 main(PS_Input input) : SV_TARGET {
 
 	if (instanceFlags.useLighting) {
 		lightColor = calcLighting(tex_materials, tex_skybox, tex_brdf, textureSampler, input.texcoord, input.normal, input.worldPosition, materialFlags);
-		outputColor = (visibility * lightColor) + (1.0f - visibility) * lightColor;
+		outputColor = (visibility * lightColor);// +(1.0f - visibility) * lightColor;
 		// outputColor = (visibility * direcLightColor) + ((1.0f - visibility) * pointLightColor) + (visibility * pointLightColor);
 	} else {
 		outputColor = visibility * pow(tex_materials.Sample(textureSampler, float3(input.texcoord, TEX_ALBEDO)).rgb, 2.2333f);

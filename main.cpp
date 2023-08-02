@@ -10,8 +10,7 @@ int main() {
 	DXGLApp dxglApp{};
 	try {
 		while (dxglApp.isRunning());
-	}
-	catch (...) {
+	} catch (...) {
 		return -1;
 	}
 

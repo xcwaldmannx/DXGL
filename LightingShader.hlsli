@@ -141,7 +141,7 @@ float3 calcLighting(Texture2DArray materials, TextureCube skybox, Texture2D brdf
     float3 kD = float3(1.0f, 1.0f, 1.0f) - kS;
     kD *= 1.0f - metallicSample;
 
-    float3 diffuse = irradianceSample * albedoSample;
+    float3 diffuse = (irradianceSample * metallicSample) * albedoSample;
 
     // sample both the pre-filter map and the BRDF lut and combine them together as per the Split-Sum approximation to get the IBL specular part.
     const float1 MIN_REFLECT_LOD =  5.0f;
@@ -149,7 +149,7 @@ float3 calcLighting(Texture2DArray materials, TextureCube skybox, Texture2D brdf
     float3 prefilteredColor = pow(skybox.SampleLevel(textureSampler, R, MIN_REFLECT_LOD + roughnessSample * (MAX_REFLECT_LOD - MIN_REFLECT_LOD)).rgb, 2.2333f);
     float3 specular = prefilteredColor * (F * envBRDF.x + envBRDF.y);
 
-    float3 ambient = (kD * diffuse + (specular * (1.0f - roughnessSample))) * amboccSample;
+    float3 ambient = (kD * diffuse + specular * metallicSample) * amboccSample;
 
     outputColor = ambient + Lo;
 

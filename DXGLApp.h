@@ -9,7 +9,9 @@
 #include "PostProcessor.h"
 #include "Skybox.h"
 
-#include "DXGLBasicMesh.h"
+#include "Mesh.h"
+
+#include "RenderQueue.h"
 
 struct DXGLVertex {
 	Vec3f pos{};
@@ -35,15 +37,15 @@ private:
 	PostProcessor m_postProcessor{};
 	Skybox m_skybox{};
 
+	// RenderQueue test
+	RenderQueue m_queue;
+
 	// FBX Test
-	SP_DXGLBasicMesh m_fbxMesh = nullptr;
-	SP_DXGLBasicMesh m_fbxMan = nullptr;
+	SP_Mesh m_fbxMesh = nullptr;
+	SP_Mesh m_fbxMan = nullptr;
 
 	governor::DXGLGroup* m_groupEntity{};
 	governor::DXGLGroup* m_groupPickable{};
-
-	governor::DXGLGroup* m_groupFoliage{};
-
 	governor::DXGLGroup m_visibleEntities{};
 
 	std::vector<std::string> m_shapes{};
@@ -55,8 +57,11 @@ private:
 	SP_DXGLDepthStencilView m_backBufferDSV = nullptr;
 
 
-	SP_DXGLCBuffer m_cbEntityBuffer = nullptr;
-	SP_DXGLCBuffer m_cbSkyboxBuffer = nullptr;
+	SP_VSConstantBuffer m_vscbEntityBuffer = nullptr;
+	SP_PSConstantBuffer m_pscbEntityBuffer = nullptr;
+
+	SP_VSConstantBuffer m_vscbSkyboxBuffer = nullptr;
+	SP_PSConstantBuffer m_pscbSkyboxBuffer = nullptr;
 
 	SP_DXGLCamera m_camera = nullptr;
 

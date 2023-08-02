@@ -16,7 +16,7 @@ DXGLMousePicker::DXGLMousePicker() {
 	m_vs = DXGLMain::resource()->createShader<dxgl::DXGLVertexShader>("Assets/Shaders/VS_MousePick.cso");
 	m_ps = DXGLMain::resource()->createShader<dxgl::DXGLPixelShader>("Assets/Shaders/PS_MousePick.cso");
 
-	m_cbTrans = DXGLMain::resource()->createCBuffer(sizeof(TransformBuffer));
+	m_cbTrans = DXGLMain::resource()->createVSConstantBuffer(sizeof(TransformBuffer));
 
 }
 
@@ -53,7 +53,7 @@ void DXGLMousePicker::update() {
 		auto& mesh = DXGLMain::governor()->getEntityComponent<MeshComponent>(id);
 
 		if (!DXGLMain::renderer()->camera()->get("primary")->cull(transform.translation, transform.scale,
-			mesh.mesh->getAABBMin(), mesh.mesh->getAABBMax())) {
+			mesh.mesh->getAABB().min, mesh.mesh->getAABB().max)) {
 			m_visibleEntities.push_back(id);
 		}
 	}
@@ -65,7 +65,7 @@ void DXGLMousePicker::draw() {
 	DXGLMain::renderer()->setRenderTarget(m_rtv, color, m_dsv);
 
 	// map entities containing same meshes to that mesh
-	std::unordered_map<SP_DXGLMesh, governor::DXGLGroup> meshGroups{};
+	std::unordered_map<SP_Mesh, governor::DXGLGroup> meshGroups{};
 	for (governor::EntityId id : m_visibleEntities) {
 		auto& mesh = DXGLMain::governor()->getEntityComponent<MeshComponent>(id);
 		if (meshGroups.find(mesh.mesh) != meshGroups.end()) {
@@ -85,7 +85,7 @@ void DXGLMousePicker::draw() {
 	DXGLMain::renderer()->shader()->PS_setShader(m_ps);
 
 	for (auto group = meshGroups.begin(); group != meshGroups.end(); group++) {
-		const SP_DXGLMesh& mesh = group->first;
+		const SP_Mesh& mesh = group->first;
 		const governor::DXGLGroup& entities = group->second;
 
 		// set world transform to zero
@@ -110,15 +110,23 @@ void DXGLMousePicker::draw() {
 		}
 
 		// create an instance buffer for each group of entities
-		SP_DXGLInstanceBuffer buffer = DXGLMain::resource()->createInstanceBuffer(&entityData[0], entities.size(), sizeof(InstanceData));
+		SP_InstanceBuffer buffer = DXGLMain::resource()->createInstanceBuffer(&entityData[0], entities.size(), sizeof(InstanceData));
 
 		// set appropriate input data
-		DXGLMain::renderer()->input()->setVertexBuffer(0, 1, &mesh->getVertexBuffer());
+		DXGLMain::renderer()->input()->setVertexBuffer(0, 1, &mesh->getMeshVertexBuffer());
 		DXGLMain::renderer()->input()->setInstanceBuffers(1, &buffer);
 		DXGLMain::renderer()->input()->setIndexBuffer(mesh->getIndexBuffer());
 
 		// draw entities based on mesh material
-		DXGLMain::renderer()->drawIndexedTriangleListInstanced(mesh->getIndices().size(), entities.size(), 0, 0, 0);
+
+		std::vector<BasicMesh> meshes = mesh->getMeshes();
+		if (meshes.size() > 0) {
+			for (int i = 0; i < meshes.size(); i++) {
+				//dxgl::MeshMaterialSlot mat = mesh->getMaterials()[i];
+				SP_Material material = DXGLMain::resource()->get<SP_Material>(meshes[i].materialName);
+				DXGLMain::renderer()->drawIndexedTriangleListInstanced(meshes[i].indexCount, entities.size(), meshes[i].baseIndex, meshes[i].baseVertex, 0);
+			}
+		}
 	}
 }
 

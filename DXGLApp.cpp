@@ -41,8 +41,8 @@ void DXGLApp::create() {
 	// back buffer RTV and DSV
 	RESOURCE_VIEW_DESC rtvDesc = {
 		FLOAT16,
-		1,
-		0,
+		4,
+		D3D11_STANDARD_MULTISAMPLE_PATTERN,
 	};
 	renderer()->createRenderTargetView(&rtvDesc, RESOURCE_VIEW_SLOT_BACK_BUFFER, &m_backBufferRTV);
 
@@ -130,28 +130,18 @@ void DXGLApp::create() {
 	resource()->storeMaterial("Assets/Materials/military-panel/", "panel");
 	resource()->storeMaterial("Assets/Materials/greasy-pan/", "greasy");
 
-	resource()->storeMesh("Assets/Meshes/landscapes/landscape_01.obj", "landscape");
-	resource()->storeMesh("Assets/Meshes/sphereFlipped.obj", "sphereFlipped");
-	resource()->storeMesh("Assets/Meshes/light_pillar.obj", "light_pillar");
+	{
+		MeshDesc desc{};
+		desc.vertexAttributes = VERTEX_ALL;
+		desc.miscAttributes = MISC_INDEX;
+		resource()->storeMesh(desc, "Assets/Meshes/cubeFlipped.fbx", "cubeFlipped");
+	}
 
-	resource()->storeMesh("Assets/Meshes/shapes/cube.obj", "cube");
-	resource()->storeMesh("Assets/Meshes/shapes/sphere.obj", "sphere");
-	resource()->storeMesh("Assets/Meshes/shapes/cone.obj", "cone");
-	resource()->storeMesh("Assets/Meshes/shapes/cylinder.obj", "cylinder");
-	resource()->storeMesh("Assets/Meshes/shapes/torus.obj", "torus");
-
-	resource()->storeMesh("Assets/Meshes/person/person_01.obj", "person");
-
-	m_shapes.push_back("cube");
-	m_shapes.push_back("sphere");
-	m_shapes.push_back("cone");
-	m_shapes.push_back("cylinder");
-	m_shapes.push_back("torus");
-
-	m_camera = renderer()->camera()->create(this, input(), "primary");
+	m_camera = renderer()->camera()->create("primary");
 	m_camera->world().setTranslation(Vec3f{ 0.0f, 0.0f, 0.0f });
 
-	m_cbEntityBuffer = resource()->createCBuffer(sizeof(EntityBuffer));
+	m_vscbEntityBuffer = resource()->createVSConstantBuffer(sizeof(EntityBuffer));
+	m_pscbEntityBuffer = resource()->createPSConstantBuffer(sizeof(EntityBuffer));
 
 	// Texture SamplerState
 	resource()->storeSamplerState(D3D11_FILTER_ANISOTROPIC, D3D11_TEXTURE_ADDRESS_WRAP, D3D11_COMPARISON_ALWAYS, 0, "textureSampler");
@@ -178,7 +168,7 @@ void DXGLApp::create() {
 		renderer()->shadow()->update(Vec3f{ x, y, z }, Vec3f{ camX, 0, camZ });
 		renderer()->shadow()->draw();
 		});
-	//shadowTimer.start();
+	// shadowTimer.start();
 
 	// rasterizer states
 	D3D11_RASTERIZER_DESC descWireframe{};
@@ -240,16 +230,25 @@ void DXGLApp::create() {
 	governor()->registerComponent<TransformComponent>();
 	governor()->registerComponent<MeshComponent>();
 	governor()->registerComponent<PickableComponent>();
-	governor()->registerComponent<FoliageComponent>();
 
-	governor()->registerComponent<VS_CBufferComponent>();
-	governor()->registerComponent<HS_CBufferComponent>();
-	governor()->registerComponent<DS_CBufferComponent>();
-	governor()->registerComponent<PS_CBufferComponent>();
+	// landscape
+	{
+		MeshDesc desc{};
+		desc.vertexAttributes = VERTEX_ALL;
+		desc.miscAttributes = MISC_ALL;
+		renderer()->terrain()->load(desc, "Assets/Meshes/landscapes/landscape_grass.fbx");
+	}
 
-	// shapes
-	for (int i = -5; i < 5; i++) {
-		for (int j = -5; j < 5; j++) {
+	// rocks
+	{
+		MeshDesc desc{};
+		desc.vertexAttributes = VERTEX_ALL;
+		desc.miscAttributes = MISC_DEFAULT;
+		resource()->storeMesh(desc, "Assets/Meshes/rock1.fbx", "rock1");
+	}
+
+	for (int i = -25; i < 25; i++) {
+		for (int j = -25; j < 25; j++) {
 			dxgl::governor::EntityId id = governor()->createEntity();
 
 			TransformComponent transform{};
@@ -258,11 +257,11 @@ void DXGLApp::create() {
 			float ry = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float) (std::rand() % 6);
 			float rz = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float) (std::rand() % 6);
 			transform.rotation = { rx, ry, rz };
-			transform.translation = { (float) i * 4, 15, (float) j * 4 };
+			transform.translation = { (float) i * 8, 0, (float) j * 8 };
 			governor()->addEntityComponent<TransformComponent>(transform, id);
 
 			MeshComponent mesh{};
-			mesh.mesh = resource()->get<SP_DXGLMesh>(m_shapes[std::rand() % 5]);
+			mesh.mesh = resource()->get<SP_Mesh>("rock1");
 			mesh.useTessellation = false;
 			mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
 			governor()->addEntityComponent<MeshComponent>(mesh, id);
@@ -273,20 +272,12 @@ void DXGLApp::create() {
 		}
 	}
 
-	// landscape
-	{
-		MeshDesc desc{};
-		desc.vertexAttributes = VERTEX_ALL;
-		desc.miscAttributes = MISC_ALL;
-		renderer()->terrain()->load(desc, "Assets/Meshes/landscapes/landscape_grass.fbx");
-	}
-
 	{ // guitar
 		MeshDesc desc{};
 		desc.vertexAttributes = VERTEX_ALL;
 		desc.miscAttributes = MISC_DEFAULT;
-		resource()->storeBasicMesh(desc, "Assets/Meshes/material test cube/explorer guitar.fbx", "guitar");
-		resource()->storeBasicMesh(desc, "Assets/Meshes/material test cube/cube.fbx", "cube02");
+		resource()->storeMesh(desc, "Assets/Meshes/material test cube/explorer guitar.fbx", "guitar");
+		resource()->storeMesh(desc, "Assets/Meshes/material test cube/cube.fbx", "cube02");
 
 		m_guitar = governor()->createEntity();
 
@@ -297,8 +288,7 @@ void DXGLApp::create() {
 		governor()->addEntityComponent<TransformComponent>(transform, m_guitar);
 
 		MeshComponent mesh{};
-		mesh.mesh = resource()->get<SP_DXGLMesh>("person");
-		mesh.basicmesh = resource()->get<SP_DXGLBasicMesh>("guitar");
+		mesh.mesh = resource()->get<SP_Mesh>("guitar");
 		mesh.useTessellation = false;
 		mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
 		governor()->addEntityComponent<MeshComponent>(mesh, m_guitar);
@@ -313,7 +303,7 @@ void DXGLApp::create() {
 		MeshDesc desc{};
 		desc.vertexAttributes = VERTEX_ALL;
 		desc.miscAttributes = MISC_DEFAULT;
-		m_fbxMesh = resource()->createBasicMesh(desc, "Assets/Meshes/material test cube/gun.fbx");
+		m_fbxMesh = resource()->createMesh(desc, "Assets/Meshes/material test cube/gun.fbx");
 
 		m_gun = governor()->createEntity();
 
@@ -324,20 +314,14 @@ void DXGLApp::create() {
 		governor()->addEntityComponent<TransformComponent>(transform, m_gun);
 
 		MeshComponent mesh{};
-		mesh.mesh = resource()->get<SP_DXGLMesh>("person");
-		mesh.basicmesh = m_fbxMesh;
+		mesh.mesh = m_fbxMesh;
 		mesh.useTessellation = false;
 		mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
 		governor()->addEntityComponent<MeshComponent>(mesh, m_gun);
-
-		PickableComponent pickable{};
-		pickable.isSelected = false;
-		governor()->addEntityComponent<PickableComponent>(pickable, m_gun);
 	}
 
 	governor()->group<TransformComponent, MeshComponent>(dxgl::governor::GroupSort::GROUP_ANY, m_groupEntity);
 	governor()->group<PickableComponent>(dxgl::governor::GroupSort::GROUP_ANY, m_groupPickable);
-	governor()->group<FoliageComponent>(dxgl::governor::GroupSort::GROUP_ANY, m_groupFoliage);
 
 	// Depth Stencils
 	D3D11_DEPTH_STENCIL_DESC depthStencilDesc{};
@@ -376,13 +360,13 @@ void DXGLApp::update(long double delta) {
 	UINT width = dim.right - dim.left;
 	UINT height = dim.bottom - dim.top;
 
-	m_postProcessor.update(delta, width, height);
+	//m_postProcessor.update(delta, width, height);
 
-	m_skybox.update(delta);
+	//m_skybox.update(delta);
 
-	renderer()->terrain()->update(delta);
+	//renderer()->terrain()->update(delta);
 
-	renderer()->foliage()->update(delta);
+	//renderer()->foliage()->update(delta);
 
 	// add entity start
 
@@ -400,7 +384,7 @@ void DXGLApp::update(long double delta) {
 
 		MeshComponent mesh{};
 		//mesh.mesh = resource()->get<SP_DXGLMesh>(m_shapes[std::rand() % 5]);
-		mesh.basicmesh = m_fbxMesh;
+		mesh.mesh = m_fbxMesh;
 		mesh.useTessellation = false;
 		mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
 		governor()->addEntityComponent<MeshComponent>(mesh, id);
@@ -438,60 +422,30 @@ void DXGLApp::update(long double delta) {
 
 	// rotate guitar end
 
-	// process foliage start
-	
-	for (dxgl::governor::EntityId id : *m_groupFoliage) {
-		auto& transform = governor()->getEntityComponent<TransformComponent>(id);
-		auto& foliage = governor()->getEntityComponent<FoliageComponent>(id);
-
-		float distToCam = Vec3f::dist(m_camera->getPosition(), transform.translation);
-		transform.translation.y = foliage.position.y - (distToCam / foliage.size) * 3;
-
-		if (std::abs(m_camera->getPosition().x - transform.translation.x) > (foliage.size / 2) && transform.translation.y < foliage.position.y - 1.0f) {
-			if (transform.translation.x < m_camera->getPosition().x) {
-				transform.translation.x += foliage.size;
-			} else {
-				transform.translation.x -= foliage.size;
-			}
-		}
-
-		if (std::abs(m_camera->getPosition().z - transform.translation.z) > (foliage.size / 2) && transform.translation.y < foliage.position.y - 1.0f) {
-			if (transform.translation.z < m_camera->getPosition().z) {
-				transform.translation.z += foliage.size;
-			}
-			else {
-				transform.translation.z -= foliage.size;
-			}
-		}
-	}
-
-	// process foliage end
-
 	// frustum cull check
-	m_visibleEntities = {};
-	for (dxgl::governor::EntityId id : *m_groupEntity) {
-		auto& transform = governor()->getEntityComponent<TransformComponent>(id);
-		auto& mesh = governor()->getEntityComponent<MeshComponent>(id);
+	//m_visibleEntities = {};
+	//for (dxgl::governor::EntityId id : *m_groupEntity) {
+	//	auto& transform = governor()->getEntityComponent<TransformComponent>(id);
+	//	auto& mesh = governor()->getEntityComponent<MeshComponent>(id);
 
-		if (mesh.basicmesh) {
-			m_visibleEntities.push_back(id);
-		} else
-
-		if (!m_camera->cull(transform.translation, transform.scale, mesh.mesh->getAABBMin(), mesh.mesh->getAABBMax())) {
-			m_visibleEntities.push_back(id);
-		}
-	}
+	//	if (!m_camera->cull(transform.translation, transform.scale, mesh.mesh->getAABB().min, mesh.mesh->getAABB().max)) {
+	//		m_visibleEntities.push_back(id);
+	//	}
+	//}
 }
 
 void DXGLApp::draw() {
 
-	renderer()->merger()->setDepthStencil("basic");
-	shadowTimer.execute();
+	//renderer()->merger()->setDepthStencil("basic");
+	//shadowTimer.execute();
 
 	RECT dim = getWindowSize();
 	UINT width = dim.right- dim.left;
 	UINT height = dim.bottom - dim.top;
 	renderer()->setViewport(width, height);
+
+	m_queue.draw();
+	return;
 
 	// mousepick start
 	governor::EntityId selectedEntity = -1;
@@ -515,9 +469,8 @@ void DXGLApp::draw() {
 
 	// Skybox
 	m_skybox.draw();
-	renderer()->shader()->PS_setResource(1, m_skybox.getCube()->get());
-	renderer()->shader()->PS_setResource(2, resource()->get<SP_DXGLTexture2D>("brdf")->get());
-
+	m_skybox.getCube()->bind(1);
+	resource()->get<SP_Texture2D>("brdf")->bind(2);
 
 	// render meshes
 	renderer()->merger()->setDepthStencil("basic");
@@ -538,22 +491,21 @@ void DXGLApp::draw() {
 	renderer()->terrain()->draw();
 
 	// general cbuffers
-	renderer()->shader()->VS_setCBuffer(0, 1, m_cbEntityBuffer->get());
-	renderer()->shader()->HS_setCBuffer(0, 1, m_cbEntityBuffer->get());
-	renderer()->shader()->PS_setCBuffer(0, 1, m_cbEntityBuffer->get());
-	renderer()->shader()->PS_setCBuffer(3, 1, renderer()->light()->getBuffer()->get());
+	m_vscbEntityBuffer->bind(0);
+	m_pscbEntityBuffer->bind(0);
+	renderer()->light()->getBuffer()->bind(3);
 
 	// automatic instancing with assimp
 	{
 		// map entities containing same meshes to that mesh
-		std::unordered_map<SP_DXGLBasicMesh, dxgl::governor::DXGLGroup> meshGroups{};
+		std::unordered_map<SP_Mesh, dxgl::governor::DXGLGroup> meshGroups{};
 		for (dxgl::governor::EntityId id : m_visibleEntities) {
 			auto& mesh = governor()->getEntityComponent<MeshComponent>(id);
-			if (meshGroups.find(mesh.basicmesh) != meshGroups.end()) {
-				meshGroups[mesh.basicmesh].push_back(id);
+			if (meshGroups.find(mesh.mesh) != meshGroups.end()) {
+				meshGroups[mesh.mesh].push_back(id);
 			} else {
-				meshGroups[mesh.basicmesh] = {};
-				meshGroups[mesh.basicmesh].push_back(id);
+				meshGroups[mesh.mesh] = {};
+				meshGroups[mesh.mesh].push_back(id);
 			}
 		}
 
@@ -561,7 +513,7 @@ void DXGLApp::draw() {
 		for (auto group = meshGroups.begin(); group != meshGroups.end(); group++) {
 			if (!group->first) continue;
 
-			const SP_DXGLBasicMesh& mesh = group->first;
+			const SP_Mesh& mesh = group->first;
 			const dxgl::governor::DXGLGroup& entities = group->second;
 
 			// set world transform to zero
@@ -586,7 +538,8 @@ void DXGLApp::draw() {
 			ebuff.height = height;
 			ebuff.materialFlags = mesh->getUsedMaterials();
 			ebuff.globalFlags = (m_fullscreen ? GLOBAL_USE_FULLSCREEN : 0);
-			m_cbEntityBuffer->update(&ebuff);
+			m_vscbEntityBuffer->update(&ebuff);
+			m_pscbEntityBuffer->update(&ebuff);
 
 			// get all entity transform data
 			bool useTessellation = false;
@@ -612,10 +565,10 @@ void DXGLApp::draw() {
 			}
 
 			// create an instance buffer for each group of entities
-			SP_DXGLInstanceBuffer buffer = resource()->createInstanceBuffer(&entityData[0], entities.size(), sizeof(InstanceData));
+			SP_InstanceBuffer buffer = resource()->createInstanceBuffer(&entityData[0], entities.size(), sizeof(InstanceData));
 
 			// set appropriate input data
-			renderer()->input()->setInputLayout(resource()->get<SP_DXGLInputLayout>("fbxLayout"));
+			renderer()->input()->setInputLayout(resource()->get<SP_InputLayout>("fbxLayout"));
 			renderer()->input()->setVertexBuffer(0, 1, &mesh->getMeshVertexBuffer());
 			if (mesh->getBoneVertexBuffer())
 				renderer()->input()->setVertexBuffer(2, 1, &mesh->getBoneVertexBuffer());
@@ -634,10 +587,10 @@ void DXGLApp::draw() {
 			if (meshes.size() > 0) {
 				for (int i = 0; i < meshes.size(); i++) {
 					//dxgl::MeshMaterialSlot mat = mesh->getMaterials()[i];
-					SP_DXGLMaterial material = resource()->get<SP_DXGLMaterial>(meshes[i].materialName);
+					SP_Material material = resource()->get<SP_Material>(meshes[i].materialName);
 					renderer()->shader()->PS_setMaterial(0, 1, material);
 					if (useTessellation) {
-						renderer()->shader()->DS_setMaterial(0, 1, resource()->get<SP_DXGLMaterial>(meshes[i].materialName));
+						renderer()->shader()->DS_setMaterial(0, 1, resource()->get<SP_Material>(meshes[i].materialName));
 						renderer()->drawIndexedTriangleListInstancedTess(meshes[i].indexCount, entities.size(), meshes[i].baseIndex, meshes[i].baseVertex, 0);
 					} else {
 						renderer()->drawIndexedTriangleListInstanced(meshes[i].indexCount, entities.size(), meshes[i].baseIndex, meshes[i].baseVertex, 0);
@@ -646,106 +599,6 @@ void DXGLApp::draw() {
 			}
 		}
 	}
-
-	// automatic instancing
-	/*{
-		// map entities containing same meshes to that mesh
-		std::unordered_map<SP_DXGLMesh, dxgl::governor::DXGLGroup> meshGroups{};
-		for (dxgl::governor::EntityId id : m_visibleEntities) {
-			auto& mesh = governor()->getEntityComponent<MeshComponent>(id);
-			if (meshGroups.find(mesh.mesh) != meshGroups.end()) {
-				meshGroups[mesh.mesh].push_back(id);
-			} else {
-				meshGroups[mesh.mesh] = {};
-				meshGroups[mesh.mesh].push_back(id);
-			}
-		}
-
-		// iterate each mesh group
-		for (auto group = meshGroups.begin(); group != meshGroups.end(); group++) {
-			const SP_DXGLMesh& mesh = group->first;
-			const dxgl::governor::DXGLGroup& entities = group->second;
-
-			// set world transform to zero
-			dxgl::TransformBuffer tbuff{};
-			tbuff.world.setIdentity();
-			tbuff.view = m_camera->view();
-			tbuff.proj = m_camera->proj();
-
-			// update entity
-			EntityBuffer ebuff{};
-			ebuff.entityWorld = tbuff.world;
-			ebuff.entityView = tbuff.view;
-			ebuff.entityProj = tbuff.proj;
-			ebuff.camPosition = m_camera->getPosition();
-			ebuff.camDirection = m_camera->getDirection();
-			ebuff.width = width;
-			ebuff.height = height;
-			ebuff.globalFlags = (m_fullscreen ? GLOBAL_USE_FULLSCREEN : 0);
-			m_cbEntityBuffer->update(&ebuff);
-
-			// get all entity transform data
-			bool useTessellation = false;
-
-			std::vector<InstanceData> entityData{};
-			for (dxgl::governor::EntityId id : entities) {
-				auto& transform = governor()->getEntityComponent<TransformComponent>(id);
-				auto& mesh = governor()->getEntityComponent<MeshComponent>(id);
-				InstanceData data{};
-				data.id = id;
-				data.scale = transform.scale;
-				data.rotation = transform.rotation;
-				data.translation = transform.translation;
-				data.flags = mesh.instanceFlags;
-
-				if (id == selectedEntity) {
-					data.flags |= INSTANCE_IS_SELECTED;
-				}
-
-				entityData.push_back(data);
-
-				useTessellation = mesh.useTessellation;
-			}
-
-			// create an instance buffer for each group of entities
-			SP_DXGLInstanceBuffer buffer = resource()->createInstanceBuffer(&entityData[0], entities.size(), sizeof(InstanceData));
-
-			// set appropriate input data
-			renderer()->input()->setInputLayout(resource()->get<SP_DXGLInputLayout>("instanceLayout"));
-			renderer()->input()->setVertexBuffers(1, &mesh->getVertexBuffer());
-			renderer()->input()->setInstanceBuffers(1, &buffer);
-			renderer()->input()->setIndexBuffer(mesh->getIndexBuffer());
-
-			// set shaders
-			if (useTessellation) {
-				renderer()->shader()->setShaderSet("tessellation");
-			}
-			else {
-				renderer()->shader()->setShaderSet("instance");
-			}
-
-			// draw entities based on mesh material
-			std::vector<dxgl::MeshMaterialSlot> mats = mesh->getMaterials();
-			if (mats.size() > 0) {
-				for (int i = 0; i < mats.size(); i++) {
-					dxgl::MeshMaterialSlot mat = mesh->getMaterials()[i];
-					renderer()->shader()->PS_setMaterial(0, 1, resource()->get<SP_DXGLMaterial>(mat.material));
-					if (useTessellation) {
-						renderer()->shader()->DS_setMaterial(0, 1, resource()->get<SP_DXGLMaterial>(mat.material));
-						renderer()->drawIndexedTriangleListInstancedTess(mat.indexCount, entities.size(), mat.startIndex, 0, 0);
-					} else {
-						renderer()->drawIndexedTriangleListInstanced(mat.indexCount, entities.size(), mat.startIndex, 0, 0);
-					}
-				}
-			} else {
-				if (useTessellation) {
-					renderer()->drawIndexedTriangleListInstancedTess(mesh->getIndices().size(), entities.size(), 0, 0, 0);
-				} else {
-					renderer()->drawIndexedTriangleListInstanced(mesh->getIndices().size(), entities.size(), 0, 0, 0);
-				}
-			}
-		}
-	}*/
 
 	// render meshes end
 

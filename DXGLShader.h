@@ -10,7 +10,7 @@
 #include "DXGLHullShader.h"
 #include "DXGLDomainShader.h"
 #include "DXGLPixelShader.h"
-#include "DXGLMaterial.h"
+#include "Material.h"
 #include "DXGLSamplerState.h"
 
 namespace dxgl {
@@ -45,9 +45,9 @@ namespace dxgl {
 		void PS_setResource(UINT slot, ID3D11ShaderResourceView* srv);
 		void PS_setResources(UINT slot, UINT count, ID3D11ShaderResourceView** srv);
 
-		void VS_setMaterial(UINT slot, UINT count, const SP_DXGLMaterial& material);
-		void DS_setMaterial(UINT slot, UINT count, const SP_DXGLMaterial& material);
-		void PS_setMaterial(UINT slot, UINT count, const SP_DXGLMaterial& material);
+		void VS_setMaterial(UINT slot, UINT count, const SP_Material& material);
+		void DS_setMaterial(UINT slot, UINT count, const SP_Material& material);
+		void PS_setMaterial(UINT slot, UINT count, const SP_Material& material);
 
 		void VS_setCBuffer(UINT slot, UINT count, ID3D11Buffer* buffers);
 		void HS_setCBuffer(UINT slot, UINT count, ID3D11Buffer* buffers);

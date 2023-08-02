@@ -236,11 +236,11 @@ void DXGLMesh::computeAABB() {
     };
 }
 
-const SP_DXGLVertexBuffer& DXGLMesh::getVertexBuffer() {
+const SP_VertexBuffer& DXGLMesh::getVertexBuffer() {
     return m_vertexBuffer;
 }
 
-const SP_DXGLIndexBuffer& DXGLMesh::getIndexBuffer() {
+const SP_IndexBuffer& DXGLMesh::getIndexBuffer() {
     return m_indexBuffer;
 }
 

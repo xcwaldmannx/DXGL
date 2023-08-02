@@ -2,15 +2,16 @@
 
 #include <vector>
 
+#include "DXGLMain.h"
+
+#include "Point2f.h"
 #include "Mat4f.h"
-#include "DXGLWindow.h"
-#include "DXGLInputManager.h"
 
 namespace dxgl {
 
 	class DXGLCamera {
 	public:
-		DXGLCamera(DXGLWindow* window, SP_DXGLInputManager input);
+		DXGLCamera();
 		~DXGLCamera();
 
 		void update(long double deltaTime);
@@ -26,9 +27,6 @@ namespace dxgl {
 		std::vector<Vec4f> getFrustum();
 
 	private:
-		DXGLWindow* m_window = nullptr;
-		SP_DXGLInputManager m_input = nullptr;
-
 		Mat4f m_world{};
 		Mat4f m_view{};
 		Mat4f m_proj{};

@@ -37,134 +37,226 @@ bool DXGLResourceManager::find(const std::string& alias) {
 }
 
 // get
-template SP_DXGLVertexBuffer   DXGLResourceManager::get<SP_DXGLVertexBuffer>(const std::string&);
-template SP_DXGLIndexBuffer    DXGLResourceManager::get<SP_DXGLIndexBuffer>(const std::string&);
-template SP_DXGLInstanceBuffer DXGLResourceManager::get<SP_DXGLInstanceBuffer>(const std::string&);
-template SP_DXGLCBuffer        DXGLResourceManager::get<SP_DXGLCBuffer>(const std::string&);
-template SP_DXGLInputLayout    DXGLResourceManager::get<SP_DXGLInputLayout>(const std::string&);
+template SP_VertexBuffer     DXGLResourceManager::get<SP_VertexBuffer>(const std::string&);
+template SP_IndexBuffer      DXGLResourceManager::get<SP_IndexBuffer>(const std::string&);
+template SP_InstanceBuffer   DXGLResourceManager::get<SP_InstanceBuffer>(const std::string&);
+template SP_VSConstantBuffer DXGLResourceManager::get<SP_VSConstantBuffer>(const std::string&);
+template SP_HSConstantBuffer DXGLResourceManager::get<SP_HSConstantBuffer>(const std::string&);
+template SP_DSConstantBuffer DXGLResourceManager::get<SP_DSConstantBuffer>(const std::string&);
+template SP_PSConstantBuffer DXGLResourceManager::get<SP_PSConstantBuffer>(const std::string&);
+template SP_InputLayout      DXGLResourceManager::get<SP_InputLayout>(const std::string&);
 
 template SP_DXGLSamplerState   DXGLResourceManager::get<SP_DXGLSamplerState>(const std::string&);
 
-template SP_DXGLTexture2D      DXGLResourceManager::get<SP_DXGLTexture2D>(const std::string&);
-template SP_DXGLTextureCube    DXGLResourceManager::get<SP_DXGLTextureCube>(const std::string&);
+template SP_Texture2D      DXGLResourceManager::get<SP_Texture2D>(const std::string&);
+template SP_TextureCube    DXGLResourceManager::get<SP_TextureCube>(const std::string&);
 
-template SP_DXGLMaterial       DXGLResourceManager::get<SP_DXGLMaterial>(const std::string&);
-template SP_DXGLMesh           DXGLResourceManager::get<SP_DXGLMesh>(const std::string&);
-template SP_DXGLBasicMesh      DXGLResourceManager::get<SP_DXGLBasicMesh>(const std::string&);
+template SP_Material       DXGLResourceManager::get<SP_Material>(const std::string&);
+template SP_Mesh           DXGLResourceManager::get<SP_Mesh>(const std::string&);
 
 // find
-template bool DXGLResourceManager::find<SP_DXGLVertexBuffer>(const std::string&);
-template bool DXGLResourceManager::find<SP_DXGLIndexBuffer>(const std::string&);
-template bool DXGLResourceManager::find<SP_DXGLInstanceBuffer>(const std::string&);
-template bool DXGLResourceManager::find<SP_DXGLCBuffer>(const std::string&);
-template bool DXGLResourceManager::find<SP_DXGLInputLayout>(const std::string&);
+template bool DXGLResourceManager::find<SP_VertexBuffer>(const std::string&);
+template bool DXGLResourceManager::find<SP_IndexBuffer>(const std::string&);
+template bool DXGLResourceManager::find<SP_InstanceBuffer>(const std::string&);
+template bool DXGLResourceManager::find<SP_VSConstantBuffer>(const std::string&);
+template bool DXGLResourceManager::find<SP_HSConstantBuffer>(const std::string&);
+template bool DXGLResourceManager::find<SP_DSConstantBuffer>(const std::string&);
+template bool DXGLResourceManager::find<SP_PSConstantBuffer>(const std::string&);
+template bool DXGLResourceManager::find<SP_InputLayout>(const std::string&);
 
 template bool DXGLResourceManager::find<SP_DXGLSamplerState>(const std::string&);
 
-template bool DXGLResourceManager::find<SP_DXGLTexture2D>(const std::string&);
-template bool DXGLResourceManager::find<SP_DXGLTextureCube>(const std::string&);
+template bool DXGLResourceManager::find<SP_Texture2D>(const std::string&);
+template bool DXGLResourceManager::find<SP_TextureCube>(const std::string&);
 
-template bool DXGLResourceManager::find<SP_DXGLMaterial>(const std::string&);
-template bool DXGLResourceManager::find<SP_DXGLMesh>(const std::string&);
-template bool DXGLResourceManager::find<SP_DXGLBasicMesh>(const std::string&);
+template bool DXGLResourceManager::find<SP_Material>(const std::string&);
+template bool DXGLResourceManager::find<SP_Mesh>(const std::string&);
 
-SP_DXGLVertexBuffer DXGLResourceManager::createVertexBuffer(void* vertices, int vertexCount, int vertexSize) {
-	SP_DXGLVertexBuffer buffer = nullptr;
+SP_VertexBuffer DXGLResourceManager::createVertexBuffer(void* vertices, int vertexCount, int vertexSize) {
+	SP_VertexBuffer buffer = nullptr;
 	try {
-		buffer = std::make_shared<DXGLVertexBuffer>(vertices, vertexCount, vertexSize, DXGLMain::graphics());
+		buffer = std::make_shared<VertexBuffer>(vertices, vertexCount, vertexSize);
 	} catch (...) {
-		throw std::runtime_error("DXGLVertexBuffer could ont be created.");
+		throw std::runtime_error("VertexBuffer could ont be created.");
 	}
 	return buffer;
 }
 
 void DXGLResourceManager::storeVertexBuffer(void* vertices, int vertexCount, int vertexSize, const std::string& alias) {
-	SP_DXGLVertexBuffer buffer = nullptr;
+	SP_VertexBuffer buffer = nullptr;
 	try {
-		buffer = std::make_shared<DXGLVertexBuffer>(vertices, vertexCount, vertexSize, DXGLMain::graphics());
-		m_resources[typeid(SP_DXGLVertexBuffer)][alias] = buffer;
+		buffer = std::make_shared<VertexBuffer>(vertices, vertexCount, vertexSize);
+		m_resources[typeid(SP_VertexBuffer)][alias] = buffer;
 	} catch (...) {
-		throw std::runtime_error("DXGLVertexBuffer could ont be stored.");
+		throw std::runtime_error("VertexBuffer could ont be stored.");
 	}
 }
 
-SP_DXGLIndexBuffer DXGLResourceManager::createIndexBuffer(void* indices, int indexCount) {
-	SP_DXGLIndexBuffer buffer = nullptr;
+SP_IndexBuffer DXGLResourceManager::createIndexBuffer(void* indices, int indexCount) {
+	SP_IndexBuffer buffer = nullptr;
 	try {
-		buffer = std::make_shared<DXGLIndexBuffer>(indices, indexCount, DXGLMain::graphics());
+		buffer = std::make_shared<IndexBuffer>(indices, indexCount);
 	} catch (...) {
-		throw std::runtime_error("DXGLIndexBuffer could ont be created.");
+		throw std::runtime_error("IndexBuffer could ont be created.");
 	}
 	return buffer;
 }
 
 void DXGLResourceManager::storeIndexBuffer(void* indices, int indexCount, const std::string& alias) {
-	SP_DXGLIndexBuffer buffer = nullptr;
+	SP_IndexBuffer buffer = nullptr;
 	try {
-		buffer = std::make_shared<DXGLIndexBuffer>(indices, indexCount, DXGLMain::graphics());
-		m_resources[typeid(SP_DXGLIndexBuffer)][alias] = buffer;
+		buffer = std::make_shared<IndexBuffer>(indices, indexCount);
+		m_resources[typeid(SP_IndexBuffer)][alias] = buffer;
 	} catch (...) {
-		throw std::runtime_error("DXGLIndexBuffer could ont be stored.");
+		throw std::runtime_error("IndexBuffer could ont be stored.");
 	}
 }
 
-SP_DXGLInstanceBuffer DXGLResourceManager::createInstanceBuffer(void* instances, int instanceCount, int instanceSize) {
-	SP_DXGLInstanceBuffer buffer = nullptr;
+SP_InstanceBuffer DXGLResourceManager::createInstanceBuffer(void* instances, int instanceCount, int instanceSize) {
+	SP_InstanceBuffer buffer = nullptr;
 	try {
-		buffer = std::make_shared<DXGLInstanceBuffer>(instances, instanceCount, instanceSize, DXGLMain::graphics());
+		buffer = std::make_shared<InstanceBuffer>(instances, instanceCount, instanceSize);
 	} catch (...) {
-		throw std::runtime_error("DXGLInstanceBuffer could ont be created.");
+		throw std::runtime_error("InstanceBuffer could ont be created.");
 	}
 	return buffer;
 }
 
 void DXGLResourceManager::storeInstanceBuffer(void* instances, int instanceCount, int instanceSize, const std::string& alias) {
-	SP_DXGLInstanceBuffer buffer = nullptr;
+	SP_InstanceBuffer buffer = nullptr;
 	try {
-		buffer = std::make_shared<DXGLInstanceBuffer>(instances, instanceCount, instanceSize, DXGLMain::graphics());
-		m_resources[typeid(SP_DXGLInstanceBuffer)][alias] = buffer;
+		buffer = std::make_shared<InstanceBuffer>(instances, instanceCount, instanceSize);
+		m_resources[typeid(SP_InstanceBuffer)][alias] = buffer;
 	} catch (...) {
-		throw std::runtime_error("DXGLInstanceBuffer could ont be stored.");
+		throw std::runtime_error("InstanceBuffer could ont be stored.");
 	}
 }
 
-SP_DXGLCBuffer DXGLResourceManager::createCBuffer(UINT bytes) {
-	SP_DXGLCBuffer buffer = nullptr;
+SP_VSConstantBuffer DXGLResourceManager::createVSConstantBuffer(UINT bytes) {
+	SP_VSConstantBuffer buffer = nullptr;
 	try {
-		buffer = std::make_shared<DXGLCBuffer>(bytes, DXGLMain::graphics());
+		buffer = std::make_shared<VSConstantBuffer>(bytes);
 	} catch (...) {
-		throw std::runtime_error("DXGLCBuffer could not be created.");
+		throw std::runtime_error("VSConstantBuffer could not be created.");
 	}
 	return buffer;
 }
 
-void DXGLResourceManager::storeCBuffer(UINT bytes, std::string alias) {
-	SP_DXGLCBuffer buffer = nullptr;
+void DXGLResourceManager::storeVSConstantBuffer(UINT bytes, std::string alias) {
+	SP_VSConstantBuffer buffer = nullptr;
 	try {
-		buffer = std::make_shared<DXGLCBuffer>(bytes, DXGLMain::graphics());
-		m_resources[typeid(SP_DXGLCBuffer)][alias] = buffer;
+		buffer = std::make_shared<VSConstantBuffer>(bytes);
+		m_resources[typeid(SP_VSConstantBuffer)][alias] = buffer;
 	} catch (...) {
-		throw std::runtime_error("DXGLCBuffer could not be stored.");
+		throw std::runtime_error("VSConstantBuffer could not be stored.");
 	}
 }
 
-SP_DXGLInputLayout DXGLResourceManager::createInputLayout(const InputLayoutDesc& desc, const std::string& filename) {
-	SP_DXGLInputLayout buffer = nullptr;
+SP_HSConstantBuffer DXGLResourceManager::createHSConstantBuffer(UINT bytes) {
+	SP_HSConstantBuffer buffer = nullptr;
 	try {
-		buffer = std::make_shared<DXGLInputLayout>(desc, filename, DXGLMain::graphics());
+		buffer = std::make_shared<HSConstantBuffer>(bytes);
+	}
+	catch (...) {
+		throw std::runtime_error("HSConstantBuffer could not be created.");
+	}
+	return buffer;
+}
+
+void DXGLResourceManager::storeHSConstantBuffer(UINT bytes, std::string alias) {
+	SP_HSConstantBuffer buffer = nullptr;
+	try {
+		buffer = std::make_shared<HSConstantBuffer>(bytes);
+		m_resources[typeid(SP_HSConstantBuffer)][alias] = buffer;
+	}
+	catch (...) {
+		throw std::runtime_error("HSConstantBuffer could not be stored.");
+	}
+}
+
+SP_DSConstantBuffer DXGLResourceManager::createDSConstantBuffer(UINT bytes) {
+	SP_DSConstantBuffer buffer = nullptr;
+	try {
+		buffer = std::make_shared<DSConstantBuffer>(bytes);
+	}
+	catch (...) {
+		throw std::runtime_error("DSConstantBuffer could not be created.");
+	}
+	return buffer;
+}
+
+void DXGLResourceManager::storeDSConstantBuffer(UINT bytes, std::string alias) {
+	SP_DSConstantBuffer buffer = nullptr;
+	try {
+		buffer = std::make_shared<DSConstantBuffer>(bytes);
+		m_resources[typeid(SP_DSConstantBuffer)][alias] = buffer;
+	}
+	catch (...) {
+		throw std::runtime_error("DSConstantBuffer could not be stored.");
+	}
+}
+
+SP_PSConstantBuffer DXGLResourceManager::createPSConstantBuffer(UINT bytes) {
+	SP_PSConstantBuffer buffer = nullptr;
+	try {
+		buffer = std::make_shared<PSConstantBuffer>(bytes);
+	}
+	catch (...) {
+		throw std::runtime_error("PSConstantBuffer could not be created.");
+	}
+	return buffer;
+}
+
+void DXGLResourceManager::storePSConstantBuffer(UINT bytes, std::string alias) {
+	SP_PSConstantBuffer buffer = nullptr;
+	try {
+		buffer = std::make_shared<PSConstantBuffer>(bytes);
+		m_resources[typeid(SP_PSConstantBuffer)][alias] = buffer;
+	}
+	catch (...) {
+		throw std::runtime_error("PSConstantBuffer could not be stored.");
+	}
+}
+
+SP_InputLayout DXGLResourceManager::createInputLayout(const InputLayoutDesc& desc, const std::string& filename) {
+	SP_InputLayout buffer = nullptr;
+	try {
+		buffer = std::make_shared<InputLayout>(desc, filename);
 	} catch (...) {
-		throw std::runtime_error("DXGLInputLayout could ont be created.");
+		throw std::runtime_error("InputLayout could ont be created.");
+	}
+	return buffer;
+}
+
+SP_InputLayout DXGLResourceManager::createInputLayout(const InputLayoutDesc& desc, ID3DBlob* shaderBytecode) {
+	SP_InputLayout buffer = nullptr;
+	try {
+		buffer = std::make_shared<InputLayout>(desc, shaderBytecode);
+	}
+	catch (...) {
+		throw std::runtime_error("InputLayout could ont be created.");
 	}
 	return buffer;
 }
 
 void DXGLResourceManager::storeInputLayout(const InputLayoutDesc& desc, const std::string& filename, const std::string& alias) {
-	SP_DXGLInputLayout buffer = nullptr;
+	SP_InputLayout buffer = nullptr;
 	try {
-		buffer = std::make_shared<DXGLInputLayout>(desc, filename, DXGLMain::graphics());
-		m_resources[typeid(SP_DXGLInputLayout)][alias] = buffer;
+		buffer = std::make_shared<InputLayout>(desc, filename);
+		m_resources[typeid(SP_InputLayout)][alias] = buffer;
 	} catch (...) {
-		throw std::runtime_error("DXGLInputLayout could ont be stored.");
+		throw std::runtime_error("InputLayout could ont be stored.");
+	}
+}
+
+void DXGLResourceManager::storeInputLayout(const InputLayoutDesc& desc, ID3DBlob* shaderBytecode, const std::string& alias) {
+	SP_InputLayout buffer = nullptr;
+	try {
+		buffer = std::make_shared<InputLayout>(desc, shaderBytecode);
+		m_resources[typeid(SP_InputLayout)][alias] = buffer;
+	}
+	catch (...) {
+		throw std::runtime_error("InputLayout could ont be stored.");
 	}
 }
 
@@ -255,159 +347,137 @@ void storeBlendState();
 // Assets //
 ////////////
 
-SP_DXGLTexture2D DXGLResourceManager::createTexture2D(const std::string& filename) {
-	SP_DXGLTexture2D texture = nullptr;
+SP_Texture2D DXGLResourceManager::createTexture2D(const std::string& filename) {
+	SP_Texture2D texture = nullptr;
 	try {
-		texture = std::make_shared<DXGLTexture2D>(filename, DXGLMain::graphics());
+		texture = std::make_shared<Texture2D>(filename);
 	} catch (...) {
-		throw std::exception("DXGLTexture2D could not be created.");
+		throw std::exception("Texture2D could not be created.");
 	}
 	return texture;
 }
 
-SP_DXGLTexture2D DXGLResourceManager::createTexture2D(unsigned int width, unsigned int height, unsigned char* data) {
-	SP_DXGLTexture2D texture = nullptr;
+SP_Texture2D DXGLResourceManager::createTexture2D(unsigned int width, unsigned int height, unsigned char* data) {
+	SP_Texture2D texture = nullptr;
 	try {
-		texture = std::make_shared<DXGLTexture2D>(width, height, data, DXGLMain::graphics());
+		texture = std::make_shared<Texture2D>(width, height, data);
 	} catch (...) {
-		throw std::exception("DXGLTexture2D could not be created.");
+		throw std::exception("Texture2D could not be created.");
 	}
 	return texture;
 }
 
 void DXGLResourceManager::storeTexture2D(const std::string& filename, const std::string& alias) {
-	SP_DXGLTexture2D texture = nullptr;
+	SP_Texture2D texture = nullptr;
 	try {
-		if (!find<SP_DXGLTexture2D>(alias)) {
-			texture = std::make_shared<DXGLTexture2D>(filename, DXGLMain::graphics());
-			m_resources[typeid(SP_DXGLTexture2D)][alias] = texture;
+		if (!find<SP_Texture2D>(alias)) {
+			texture = std::make_shared<Texture2D>(filename);
+			m_resources[typeid(SP_Texture2D)][alias] = texture;
 		}
 	} catch (...) {
-		throw std::exception("DXGLTextureManager could not be stored.");
+		throw std::exception("Texture2D could not be stored.");
 	}
 }
 
 void DXGLResourceManager::storeTexture2D(unsigned int width, unsigned int height, unsigned char* data, const std::string& alias) {
-	SP_DXGLTexture2D texture = nullptr;
+	SP_Texture2D texture = nullptr;
 	try {
-		if (!find<SP_DXGLTexture2D>(alias)) {
-			texture = std::make_shared<DXGLTexture2D>(width, height, data, DXGLMain::graphics());
-			m_resources[typeid(SP_DXGLTexture2D)][alias] = texture;
+		if (!find<SP_Texture2D>(alias)) {
+			texture = std::make_shared<Texture2D>(width, height, data);
+			m_resources[typeid(SP_Texture2D)][alias] = texture;
 		}
 	} catch (...) {
-		throw std::exception("DXGLTextureManager could not be stored.");
+		throw std::exception("Texture2D could not be stored.");
 	}
 }
 
-SP_DXGLTextureCube DXGLResourceManager::createTextureCube(const std::string& filename) {
-	SP_DXGLTextureCube texture = nullptr;
+SP_TextureCube DXGLResourceManager::createTextureCube(const std::string& filename) {
+	SP_TextureCube texture = nullptr;
 	try {
-		texture = std::make_shared<DXGLTextureCube>(filename, DXGLMain::graphics());
+		texture = std::make_shared<TextureCube>(filename);
 	}
 	catch (...) {
-		throw std::exception("DXGLTextureCube could not be created.");
+		throw std::exception("TextureCube could not be created.");
 	}
 	return texture;
 }
 
 void DXGLResourceManager::storeTextureCube(const std::string& filename, const std::string& alias) {
-	SP_DXGLTextureCube texture = nullptr;
+	SP_TextureCube texture = nullptr;
 	try {
-		if (!find<SP_DXGLTextureCube>(alias)) {
-			texture = std::make_shared<DXGLTextureCube>(filename, DXGLMain::graphics());
-			m_resources[typeid(SP_DXGLTextureCube)][alias] = texture;
+		if (!find<SP_TextureCube>(alias)) {
+			texture = std::make_shared<TextureCube>(filename);
+			m_resources[typeid(SP_TextureCube)][alias] = texture;
 		}
 	}
 	catch (...) {
-		throw std::exception("DXGLTextureCube could not be stored.");
+		throw std::exception("TextureCube could not be stored.");
 	}
 }
 
-SP_DXGLMaterial DXGLResourceManager::createMaterial(const std::string& filepath) {
-	SP_DXGLMaterial material = nullptr;
+SP_Material DXGLResourceManager::createMaterial(const std::string& filepath) {
+	SP_Material material = nullptr;
 	try {
-		material = std::make_shared<DXGLMaterial>(filepath, DXGLMain::graphics());
+		material = std::make_shared<Material>(filepath);
 	} catch (...) {
-		throw std::runtime_error("DXGLMaterial could not be created.");
+		throw std::runtime_error("Material could not be created.");
 	}
 	return material;
 }
 
-SP_DXGLMaterial DXGLResourceManager::createMaterial(const MaterialData& data) {
-	SP_DXGLMaterial material = nullptr;
+SP_Material DXGLResourceManager::createMaterial(const MaterialData& data) {
+	SP_Material material = nullptr;
 	try {
-		material = std::make_shared<DXGLMaterial>(data, DXGLMain::graphics());
+		material = std::make_shared<Material>(data);
 	} catch (...) {
-		throw std::runtime_error("DXGLMaterial could not be created.");
+		throw std::runtime_error("Material could not be created.");
 	}
 	return material;
 }
 
 void DXGLResourceManager::storeMaterial(const std::string& filepath, const std::string& alias) {
-	SP_DXGLMaterial material = nullptr;
+	SP_Material material = nullptr;
 	try {
-		if (!find<SP_DXGLMaterial>(alias)) {
-			material = std::make_shared<DXGLMaterial>(filepath, DXGLMain::graphics());
-			m_resources[typeid(SP_DXGLMaterial)][alias] = material;
+		if (!find<SP_Material>(alias)) {
+			material = std::make_shared<Material>(filepath);
+			m_resources[typeid(SP_Material)][alias] = material;
 		}
 	} catch (...) {
-		throw std::runtime_error("DXGLMaterial could not be stored.");
+		throw std::runtime_error("Material could not be stored.");
 	}
 }
 
 void DXGLResourceManager::storeMaterial(const MaterialData& data, const std::string& alias) {
-	SP_DXGLMaterial material = nullptr;
+	SP_Material material = nullptr;
 	try {
-		if (!find<SP_DXGLMaterial>(alias)) {
-			material = std::make_shared<DXGLMaterial>(data, DXGLMain::graphics());
-			m_resources[typeid(SP_DXGLMaterial)][alias] = material;
+		if (!find<SP_Material>(alias)) {
+			material = std::make_shared<Material>(data);
+			m_resources[typeid(SP_Material)][alias] = material;
 		}
 	} catch (...) {
-		throw std::runtime_error("DXGLMaterial could not be stored.");
+		throw std::runtime_error("Material could not be stored.");
 	}
 }
 
-SP_DXGLMesh DXGLResourceManager::createMesh(const std::string& filepath) {
-	SP_DXGLMesh mesh = nullptr;
+SP_Mesh DXGLResourceManager::createMesh(const MeshDesc& desc, const std::string& filepath) {
+	SP_Mesh mesh = nullptr;
 	try {
-		mesh = std::make_shared<DXGLMesh>(filepath);
+		mesh = std::make_shared<Mesh>(desc, filepath);
 	} catch (...) {
-		throw std::runtime_error("DXGLMesh could ont be created.");
+		throw std::runtime_error("Mesh could ont be created.");
 	}
 	return mesh;
 }
 
-SP_DXGLBasicMesh DXGLResourceManager::createBasicMesh(const MeshDesc& desc, const std::string& filepath) {
-	SP_DXGLBasicMesh mesh = nullptr;
+void DXGLResourceManager::storeMesh(const MeshDesc& desc, const std::string& filepath, const std::string& alias) {
+	SP_Mesh mesh = nullptr;
 	try {
-		mesh = std::make_shared<DXGLBasicMesh>(desc, filepath);
-	} catch (...) {
-		throw std::runtime_error("DXGLBasicMesh could ont be created.");
-	}
-	return mesh;
-}
-
-void DXGLResourceManager::storeMesh(const std::string& filepath, const std::string& alias) {
-	SP_DXGLMesh mesh = nullptr;
-	try {
-		if (!find<SP_DXGLMesh>(alias)) {
-			mesh = std::make_shared<DXGLMesh>(filepath);
-			m_resources[typeid(SP_DXGLMesh)][alias] = mesh;
-		}
-	} catch (...) {
-		throw std::runtime_error("DXGLMesh could ont be stored.");
-	}
-}
-
-void DXGLResourceManager::storeBasicMesh(const MeshDesc& desc, const std::string& filepath, const std::string& alias) {
-	SP_DXGLBasicMesh mesh = nullptr;
-	try {
-		if (!find<SP_DXGLBasicMesh>(alias)) {
-			mesh = std::make_shared<DXGLBasicMesh>(desc, filepath);
-			m_resources[typeid(SP_DXGLBasicMesh)][alias] = mesh;
+		if (!find<SP_Mesh>(alias)) {
+			mesh = std::make_shared<Mesh>(desc, filepath);
+			m_resources[typeid(SP_Mesh)][alias] = mesh;
 		}
 	}
 	catch (...) {
-		throw std::runtime_error("DXGLBasicMesh could ont be stored.");
+		throw std::runtime_error("Mesh could ont be stored.");
 	}
 }

@@ -69,14 +69,14 @@ namespace dxgl {
 		std::unordered_map<uint32_t, FoliageChunk> m_chunks{};
 		std::unordered_map<uint32_t, std::future<std::vector<FoliageChunk>>> m_futures{};
 
-		SP_DXGLInputLayout m_layout = nullptr;
+		SP_InputLayout m_layout = nullptr;
 		SP_DXGLVertexShader m_vs = nullptr;
 		SP_DXGLPixelShader m_ps = nullptr;
 
-		SP_DXGLBasicMesh m_mesh = nullptr;
+		SP_Mesh m_mesh = nullptr;
 
-		SP_DXGLCBuffer m_cb = nullptr;
-		SP_DXGLVertexBuffer m_vbInstance = nullptr;
+		SP_VSConstantBuffer m_cb = nullptr;
+		SP_VertexBuffer m_vbInstance = nullptr;
 
 		float m_timePassed = 0;
 	};

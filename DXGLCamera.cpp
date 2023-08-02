@@ -2,16 +2,15 @@
 
 using namespace dxgl;
 
-DXGLCamera::DXGLCamera(DXGLWindow* window, SP_DXGLInputManager input) : m_window(window), m_input(input) {
+DXGLCamera::DXGLCamera() {
 }
 
 DXGLCamera::~DXGLCamera() {
-    m_window = nullptr;
 }
 
 void DXGLCamera::update(long double deltaTime) {
     // get mouse input for rotation
-    Point2f delta = m_input->getMouseDelta();
+    Point2f delta = DXGLMain::input()->getMouseDelta();
 
     m_rotX += delta.y * (float)deltaTime / 5.0f;
     m_rotY += delta.x * (float)deltaTime / 5.0f;
@@ -37,9 +36,9 @@ void DXGLCamera::update(long double deltaTime) {
     camera *= temp;
 
     // set camera translation
-    float forward = m_input->getKeyPressState('W') - m_input->getKeyPressState('S');
-    float right = m_input->getKeyPressState('D') - m_input->getKeyPressState('A');
-    float up = m_input->getKeyPressState(VK_SPACE) - m_input->getKeyPressState(VK_SHIFT);
+    float forward = DXGLMain::input()->getKeyPressState('W') - DXGLMain::input()->getKeyPressState('S');
+    float right = DXGLMain::input()->getKeyPressState('D') - DXGLMain::input()->getKeyPressState('A');
+    float up = DXGLMain::input()->getKeyPressState(VK_SPACE) - DXGLMain::input()->getKeyPressState(VK_SHIFT);
 
     Vec3f camX{};
     Vec3f camY{};
@@ -65,7 +64,7 @@ void DXGLCamera::update(long double deltaTime) {
     // set view
     m_view = camera;
 
-    RECT window = m_window->getWindowSize();
+    RECT window = DXGLMain::window()->getWindowSize();
 
     int widthAspect = window.right;
     int heightAspect = window.bottom;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DXGLRenderer.h"
+#include "Point2f.h"
 
 namespace dxgl {
 	class DXGLMousePicker {
@@ -18,10 +19,10 @@ namespace dxgl {
 		SP_DXGLRenderTargetView m_rtv = nullptr;
 		SP_DXGLDepthStencilView m_dsv = nullptr;
 
-		SP_DXGLInputLayout m_layout = nullptr;
+		SP_InputLayout m_layout = nullptr;
 		SP_DXGLVertexShader m_vs = nullptr;
 		SP_DXGLPixelShader m_ps = nullptr;
-		SP_DXGLCBuffer m_cbTrans = nullptr;
+		SP_VSConstantBuffer m_cbTrans = nullptr;
 
 		governor::DXGLGroup* m_groupEntity{};
 		governor::DXGLGroup* m_groupPickable{};

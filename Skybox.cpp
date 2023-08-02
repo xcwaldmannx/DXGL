@@ -16,7 +16,7 @@ Skybox::Skybox() {
 	m_ps = dxgl::DXGLMain::renderer()->shader()->create<dxgl::DXGLPixelShader>("Assets/Shaders/PS_Skybox.cso");
 
 	// cbuffer
-	m_cb = dxgl::DXGLMain::resource()->createCBuffer(sizeof(dxgl::TransformBuffer));
+	m_vscb = dxgl::DXGLMain::resource()->createVSConstantBuffer(sizeof(dxgl::TransformBuffer));
 
 	// depth stencil
 	D3D11_DEPTH_STENCIL_DESC depthStencilDesc = {};
@@ -45,18 +45,22 @@ void Skybox::draw() {
 	sbuff.world = cam->world();
 	sbuff.view = cam->view();
 	sbuff.proj = cam->proj();
-	m_cb->update(&sbuff);
-	dxgl::DXGLMain::renderer()->shader()->VS_setCBuffer(0, 1, m_cb->get());
+	m_vscb->update(&sbuff);
+	m_vscb->bind(0);
+
 	dxgl::DXGLMain::renderer()->shader()->PS_setResource(0, m_desert->get());
 
-	dxgl::SP_DXGLMesh mesh = dxgl::DXGLMain::resource()->get<dxgl::SP_DXGLMesh>("sphereFlipped");
+	dxgl::SP_Mesh mesh = dxgl::DXGLMain::resource()->get<dxgl::SP_Mesh>("cubeFlipped");
 
 	dxgl::DXGLMain::renderer()->input()->setInputLayout(m_layout);
-	dxgl::DXGLMain::renderer()->input()->setVertexBuffer(0, 1, &mesh->getVertexBuffer());
+	dxgl::DXGLMain::renderer()->input()->setVertexBuffer(0, 1, &mesh->getMeshVertexBuffer());
 	dxgl::DXGLMain::renderer()->input()->setIndexBuffer(mesh->getIndexBuffer());
-	dxgl::DXGLMain::renderer()->drawIndexedTriangleList(mesh->getIndices().size(), 0, 0);
+
+	for (auto& subMesh : mesh->getMeshes()) {
+		dxgl::DXGLMain::renderer()->drawIndexedTriangleList(subMesh.indexCount, subMesh.baseIndex, subMesh.baseVertex);
+	}
 }
 
-dxgl::SP_DXGLTextureCube Skybox::getCube() {
+dxgl::SP_TextureCube Skybox::getCube() {
 	return m_desert;
 }

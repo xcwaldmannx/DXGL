@@ -5,7 +5,7 @@
 using namespace dxgl;
 
 DXGLLight::DXGLLight() {
-	m_cbLight = DXGLMain::resource()->createCBuffer(sizeof(LightBuffer));
+	m_pscbLight = DXGLMain::resource()->createPSConstantBuffer(sizeof(LightBuffer));
 }
 
 DXGLLight::~DXGLLight() {
@@ -18,11 +18,11 @@ void DXGLLight::addLight(Light& light) {
 		m_lightCount++;
 		m_lightBuffer.lightCount = m_lightCount;
 
-		m_cbLight->update(&m_lightBuffer);
+		m_pscbLight->update(&m_lightBuffer);
 	}
 
 }
 
-SP_DXGLCBuffer DXGLLight::getBuffer() {
-	return m_cbLight;
+SP_PSConstantBuffer DXGLLight::getBuffer() {
+	return m_pscbLight;
 }

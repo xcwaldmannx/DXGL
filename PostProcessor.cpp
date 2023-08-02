@@ -21,7 +21,7 @@ PostProcessor::PostProcessor() {
 
 	m_indexBuffer = dxgl::DXGLMain::resource()->createIndexBuffer(&indices[0], indices.size());
 
-	m_cbScreen = dxgl::DXGLMain::resource()->createCBuffer(sizeof(ScreenBuffer));
+	m_pscbScreen = dxgl::DXGLMain::resource()->createPSConstantBuffer(sizeof(ScreenBuffer));
 
 	m_vs = dxgl::DXGLMain::resource()->createShader<dxgl::DXGLVertexShader>("Assets/Shaders/VS_PostProcess.cso");
 	m_ps = dxgl::DXGLMain::resource()->createShader<dxgl::DXGLPixelShader>("Assets/Shaders/PS_PostProcess.cso");
@@ -43,31 +43,31 @@ void PostProcessor::update(long double delta, float width, float height) {
 		height,
 	};
 
-	m_cbScreen->update(&screen);
+	m_pscbScreen->update(&screen);
 
 	// use no vision
 	if (dxgl::DXGLMain::input()->getKeyTapState('1')) {
-		m_cbEffect.reset();
+		m_pscbEffect.reset();
 		m_mode = 0;
 	}
 
 	// use drunk vision
 	if (dxgl::DXGLMain::input()->getKeyTapState('2')) {
-		m_cbEffect.reset();
-		m_cbEffect = dxgl::DXGLMain::resource()->createCBuffer(sizeof(DrunkVisionBuffer));
+		m_pscbEffect.reset();
+		m_pscbEffect = dxgl::DXGLMain::resource()->createPSConstantBuffer(sizeof(DrunkVisionBuffer));
 		m_mode = 1;
 	}
 
 	// use night vision
 	if (dxgl::DXGLMain::input()->getKeyTapState('3')) {
-		m_cbEffect.reset();
-		m_cbEffect = dxgl::DXGLMain::resource()->createCBuffer(sizeof(NightVisionBuffer));
+		m_pscbEffect.reset();
+		m_pscbEffect = dxgl::DXGLMain::resource()->createPSConstantBuffer(sizeof(NightVisionBuffer));
 		m_mode = 2;
 	}
 
 	// use pixel vision
 	if (dxgl::DXGLMain::input()->getKeyTapState('4')) {
-		m_cbEffect.reset();
+		m_pscbEffect.reset();
 		m_mode = 3;
 	}
 
@@ -77,7 +77,7 @@ void PostProcessor::update(long double delta, float width, float height) {
 		dvbuff.time = m_timePassed;
 		dvbuff.period = 8.0f;
 		dvbuff.amplitude = 0.0125f;
-		m_cbEffect->update(&dvbuff);
+		m_pscbEffect->update(&dvbuff);
 	}
 
 	if (m_mode == 2) {
@@ -86,7 +86,7 @@ void PostProcessor::update(long double delta, float width, float height) {
 		nvbuff.time = m_timePassed;
 		nvbuff.speed = 1.0f;
 		nvbuff.amplitude = 0.00125f;
-		m_cbEffect->update(&nvbuff);
+		m_pscbEffect->update(&nvbuff);
 	}
 }
 
@@ -103,10 +103,10 @@ void PostProcessor::draw() {
 
 	dxgl::DXGLMain::renderer()->shader()->VS_setCBuffer(0, 1, 0);
 
-	dxgl::DXGLMain::renderer()->shader()->PS_setCBuffer(0, 1, m_cbScreen->get());
+	dxgl::DXGLMain::renderer()->shader()->PS_setCBuffer(0, 1, m_pscbScreen->get());
 
-	if (m_cbEffect && m_cbEffect->get()) {
-		dxgl::DXGLMain::renderer()->shader()->PS_setCBuffer(1, 1, m_cbEffect->get());
+	if (m_pscbEffect && m_pscbEffect->get()) {
+		dxgl::DXGLMain::renderer()->shader()->PS_setCBuffer(1, 1, m_pscbEffect->get());
 	} else {
 		dxgl::DXGLMain::renderer()->shader()->PS_setCBuffer(1, 1, 0);
 	}

@@ -6,7 +6,7 @@
 #include "Math.h"
 #include "QuadTree.h"
 
-#include "DXGLBasicMesh.h"
+#include "Mesh.h"
 
 namespace dxgl {
 
@@ -53,17 +53,20 @@ namespace dxgl {
 
 		float chunkSize = 0;
 
-		SP_DXGLBasicMesh m_mesh = nullptr;
-		SP_DXGLIndexBuffer m_ib = nullptr;
+		SP_Mesh m_mesh = nullptr;
+		SP_IndexBuffer m_ib = nullptr;
 
-		SP_DXGLInputLayout m_layout = nullptr;
+		SP_InputLayout m_layout = nullptr;
 
 		SP_DXGLVertexShader m_vs = nullptr;
 		SP_DXGLPixelShader m_ps = nullptr;
 
-		SP_DXGLCBuffer m_cb = nullptr;
+		SP_VSConstantBuffer m_vscb = nullptr;
+		SP_PSConstantBuffer m_pscb = nullptr;
 
 		std::vector<unsigned int> m_indices{};
+
+		SP_DXGLCamera m_camera = nullptr;
 
 		QuadTreeRect m_area{};
 		QuadTreeRect m_searchArea{};

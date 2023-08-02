@@ -18,8 +18,9 @@ DXGLShadow::DXGLShadow() {
 	m_vs = DXGLMain::resource()->createShader<dxgl::DXGLVertexShader>("Assets/Shaders/VS_Simple.cso");
 	m_ps = DXGLMain::resource()->createShader<dxgl::DXGLPixelShader>("Assets/Shaders/PS_Simple.cso");
 
-	m_cbTrans = DXGLMain::resource()->createCBuffer(sizeof(TransformBuffer));
-	m_cbShadow = DXGLMain::resource()->createCBuffer(sizeof(ShadowBuffer));
+	m_cbTrans = DXGLMain::resource()->createVSConstantBuffer(sizeof(TransformBuffer));
+	m_vscbShadow = DXGLMain::resource()->createVSConstantBuffer(sizeof(ShadowBuffer));
+	m_pscbShadow = DXGLMain::resource()->createPSConstantBuffer(sizeof(ShadowBuffer));
 
 	m_srvs = new ID3D11ShaderResourceView*[4];
 
@@ -51,7 +52,8 @@ void  DXGLShadow::update(Vec3f position, Vec3f target) {
 		sb.cascades[i] = m_cascades[i].buffer;
 	}
 
-	m_cbShadow->update(&sb);
+	m_vscbShadow->update(&sb);
+	m_pscbShadow->update(&sb);
 
 	m_visibleEntities = {};
 	//governor::DXGLGroup groupInRange = DXGLMain::renderer()->governor()->group<TransformComponent, MeshComponent>(dxgl::GroupSort::GROUP_ANY);
@@ -99,8 +101,8 @@ void DXGLShadow::draw() {
 		DXGLMain::renderer()->setRenderTarget(nullptr, color, m_cascades[i].dsv);
 
 		// set shadow cbuffer
-		DXGLMain::renderer()->shader()->VS_setCBuffer(1, 1, m_cbShadow->get());
-		DXGLMain::renderer()->shader()->PS_setCBuffer(1, 1, m_cbShadow->get());
+		m_vscbShadow->bind(1);
+		m_pscbShadow->bind(1);
 
 		// set inputs that won't change per draw call
 		DXGLMain::renderer()->input()->setInputLayout(m_layout);
@@ -110,7 +112,7 @@ void DXGLShadow::draw() {
 		DXGLMain::renderer()->shader()->PS_setShader(m_ps);
 
 		for (auto group = m_meshGroups.begin(); group != m_meshGroups.end(); group++) {
-			const SP_DXGLMesh& mesh = group->first;
+			const SP_Mesh& mesh = group->first;
 			const governor::DXGLGroup& entities = group->second;
 
 			// set world transform to zero
@@ -135,15 +137,17 @@ void DXGLShadow::draw() {
 			}
 
 			// create an instance buffer for each group of entities
-			SP_DXGLInstanceBuffer buffer = DXGLMain::resource()->createInstanceBuffer(&entityData[0], entities.size(), sizeof(InstanceData));
+			SP_InstanceBuffer buffer = DXGLMain::resource()->createInstanceBuffer(&entityData[0], entities.size(), sizeof(InstanceData));
 
 			// set appropriate input data
-			DXGLMain::renderer()->input()->setVertexBuffer(0, 1, &mesh->getVertexBuffer());
+			DXGLMain::renderer()->input()->setVertexBuffer(0, 1, &mesh->getMeshVertexBuffer());
 			DXGLMain::renderer()->input()->setInstanceBuffers(1, &buffer);
 			DXGLMain::renderer()->input()->setIndexBuffer(mesh->getIndexBuffer());
 
 			// draw entities based on mesh material
-			DXGLMain::renderer()->drawIndexedTriangleListInstanced(mesh->getIndices().size(), entities.size(), 0, 0, 0);
+			for (auto& m : mesh->getMeshes()) {
+				DXGLMain::renderer()->drawIndexedTriangleListInstanced(m.indexCount, entities.size(), m.baseIndex, m.baseVertex, 0);
+			}
 		}
 	}
 }

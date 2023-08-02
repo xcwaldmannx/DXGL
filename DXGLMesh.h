@@ -20,8 +20,8 @@ namespace dxgl {
 		DXGLMesh(const std::string& filepath);
 		~DXGLMesh();
 
-		const SP_DXGLVertexBuffer& getVertexBuffer();
-		const SP_DXGLIndexBuffer& getIndexBuffer();
+		const SP_VertexBuffer& getVertexBuffer();
+		const SP_IndexBuffer& getIndexBuffer();
 
 		std::vector<Vertex> getVertices();
 		std::vector<unsigned int> getIndices();
@@ -43,8 +43,8 @@ namespace dxgl {
 		Vec3f m_axialMin = { 0, 0, 0 };
 		Vec3f m_axialMax = { 0, 0, 0 };
 
-		SP_DXGLVertexBuffer m_vertexBuffer = nullptr;
-		SP_DXGLIndexBuffer m_indexBuffer = nullptr;
+		SP_VertexBuffer m_vertexBuffer = nullptr;
+		SP_IndexBuffer m_indexBuffer = nullptr;
 	};
 
 }

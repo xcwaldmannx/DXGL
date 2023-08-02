@@ -21,6 +21,7 @@ namespace dxgl {
 		DXGLMain();
 		~DXGLMain();
 
+		static SP_DXGLMain               window();
 		static SP_DXGLGraphics           graphics();
 		static SP_DXGLRenderer           renderer();
 		static SP_DXGLResourceManager    resource();
@@ -44,6 +45,7 @@ namespace dxgl {
 		virtual void draw() = 0;
 
 	private:
+		static SP_DXGLMain               m_window;
 		static SP_DXGLGraphics           m_graphics;
 		static SP_DXGLRenderer           m_renderer;
 		static SP_DXGLResourceManager    m_resource;

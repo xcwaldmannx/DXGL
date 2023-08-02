@@ -21,12 +21,12 @@ DXGLFoliageManager::DXGLFoliageManager() {
 	m_vs = DXGLMain::resource()->createShader<DXGLVertexShader>("Assets/Shaders/VS_FoliageShader.cso");
 	m_ps = DXGLMain::resource()->createShader<DXGLPixelShader>("Assets/Shaders/PS_FoliageShader.cso");
 
-	m_cb = DXGLMain::resource()->createCBuffer(sizeof(FoliageBuffer));
+	m_cb = DXGLMain::resource()->createVSConstantBuffer(sizeof(FoliageBuffer));
 
 	MeshDesc meshDesc{};
 	meshDesc.vertexAttributes = VERTEX_POSITION | VERTEX_TEXCOORD | VERTEX_NORMAL;
 	meshDesc.miscAttributes = MISC_INDEX;
-	m_mesh = DXGLMain::resource()->createBasicMesh(meshDesc, "Assets/Meshes/landscapes/grass.fbx");
+	m_mesh = DXGLMain::resource()->createMesh(meshDesc, "Assets/Meshes/landscapes/grass.fbx");
 
 	m_foliage.reserve(2000000);
 }
@@ -228,7 +228,7 @@ std::vector<FoliageChunk> DXGLFoliageManager::generateChunks(const QuadTree<Terr
 			Vec2f B = { face->v1.x, face->v1.z };
 			Vec2f C = { face->v2.x, face->v2.z };
 
-			std::vector<Vec2f> foliagePositions = Math::fillTriangle(A, B, C, 20);
+			std::vector<Vec2f> foliagePositions = Math::fillTriangle(A, B, C, 30);
 
 			for (Vec2f& p : foliagePositions) {
 				FoliageInstance foliage{};
@@ -246,10 +246,11 @@ std::vector<FoliageChunk> DXGLFoliageManager::generateChunks(const QuadTree<Terr
 				p.y += dist(rd) * 0.25f;
 				foliage.translation = Vec3f{ p.x, Math::barycentricHeight(face->v0, face->v1, face->v2, p), p.y };
 
-				foliage.color0 = Vec3f{ 0.25f, 0.25f, 0.2f };
-				foliage.color1 = Vec3f{ 0.3f, 0.25f, 0.1f };
-				foliage.color2 = Vec3f{ 0.25f, 0.2f, 0.1f };
-				foliage.color3 = Vec3f{ 0.2f, 0.2f, 0.1f };
+				// Modify the colors to create a brownish-green transition with added green and yellow
+				foliage.color0 = Vec3f{ 0.2f, 0.25f, 0.15f };    // Lighter brownish-green with more green
+				foliage.color1 = Vec3f{ 0.18f, 0.18f, 0.1f };   // Light brownish-green with more green
+				foliage.color2 = Vec3f{ 0.15f, 0.16f, 0.08f };  // Dark brownish-green
+				foliage.color3 = Vec3f{ 0.1f, 0.14f, 0.05f };   // Darker brownish-green with a little yellow
 
 				foliage.timeOffset = p.x * (6.28f * 0.0075f) + p.y * (6.28f * 0.0075f);
 				chunk.foliage.push_back(std::move(foliage));

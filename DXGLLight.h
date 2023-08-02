@@ -26,10 +26,10 @@ namespace dxgl {
 		~DXGLLight();
 
 		void addLight(Light& light);
-		SP_DXGLCBuffer getBuffer();
+		SP_PSConstantBuffer getBuffer();
 
 	private:
-		SP_DXGLCBuffer m_cbLight = nullptr;
+		SP_PSConstantBuffer m_pscbLight = nullptr;
 		int m_lightCount = 0;
 		LightBuffer m_lightBuffer{};
 	};

@@ -5,12 +5,19 @@
 using namespace dxgl;
 
 
+SP_DXGLMain DXGLMain::m_window = nullptr;
+
 DXGLMain::DXGLMain() {
 	DXGLInputSystem::create(m_hwnd);
+	m_window = SP_DXGLMain(this, [](DXGLMain*) {});
 }
 
 DXGLMain::~DXGLMain() {
 	DXGLInputSystem::destroy();
+}
+
+SP_DXGLMain DXGLMain::window() {
+	return m_window;
 }
 
 SP_DXGLGraphics DXGLMain::m_graphics = std::make_shared<DXGLGraphics>();

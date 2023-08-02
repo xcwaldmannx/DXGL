@@ -13,6 +13,9 @@ namespace dxgl {
 	// DXGL //
 	//////////
 
+	class DXGLMain;
+	typedef std::shared_ptr<DXGLMain> SP_DXGLMain;
+
 	class DXGLGraphics;
 	typedef std::shared_ptr<DXGLGraphics> SP_DXGLGraphics;
 
@@ -66,21 +69,30 @@ namespace dxgl {
 	///////////////
 
 	// buffers
-	class DXGLVertexBuffer;
-	typedef std::shared_ptr<DXGLVertexBuffer> SP_DXGLVertexBuffer;
+	class VertexBuffer;
+	typedef std::shared_ptr<VertexBuffer> SP_VertexBuffer;
 
-	class DXGLInstanceBuffer;
-	typedef std::shared_ptr<DXGLInstanceBuffer> SP_DXGLInstanceBuffer;
+	class InstanceBuffer;
+	typedef std::shared_ptr<InstanceBuffer> SP_InstanceBuffer;
 
-	class DXGLIndexBuffer;
-	typedef std::shared_ptr<DXGLIndexBuffer> SP_DXGLIndexBuffer;
+	class IndexBuffer;
+	typedef std::shared_ptr<IndexBuffer> SP_IndexBuffer;
 
-	class DXGLCBuffer;
-	typedef std::shared_ptr<DXGLCBuffer> SP_DXGLCBuffer;
+	class VSConstantBuffer;
+	typedef std::shared_ptr<VSConstantBuffer> SP_VSConstantBuffer;
+
+	class HSConstantBuffer;
+	typedef std::shared_ptr<HSConstantBuffer> SP_HSConstantBuffer;
+
+	class DSConstantBuffer;
+	typedef std::shared_ptr<DSConstantBuffer> SP_DSConstantBuffer;
+
+	class PSConstantBuffer;
+	typedef std::shared_ptr<PSConstantBuffer> SP_PSConstantBuffer;
 
 	// input layouts
-	class DXGLInputLayout;
-	typedef std::shared_ptr<DXGLInputLayout> SP_DXGLInputLayout;
+	class InputLayout;
+	typedef std::shared_ptr<InputLayout> SP_InputLayout;
 
 	// Shaders
 	struct DXGLShaderSet;
@@ -99,20 +111,17 @@ namespace dxgl {
 	typedef std::shared_ptr<DXGLPixelShader> SP_DXGLPixelShader;
 
 	// Assets
-	class DXGLTexture2D;
-	typedef std::shared_ptr<DXGLTexture2D> SP_DXGLTexture2D;
+	class Texture2D;
+	typedef std::shared_ptr<Texture2D> SP_Texture2D;
 
-	class DXGLTextureCube;
-	typedef std::shared_ptr<DXGLTextureCube> SP_DXGLTextureCube;
+	class TextureCube;
+	typedef std::shared_ptr<TextureCube> SP_TextureCube;
 
-	class DXGLMaterial;
-	typedef std::shared_ptr<DXGLMaterial> SP_DXGLMaterial;
+	class Material;
+	typedef std::shared_ptr<Material> SP_Material;
 
-	class DXGLMesh;
-	typedef std::shared_ptr<DXGLMesh> SP_DXGLMesh;
-
-	class DXGLBasicMesh;
-	typedef std::shared_ptr<DXGLBasicMesh> SP_DXGLBasicMesh;
+	class Mesh;
+	typedef std::shared_ptr<Mesh> SP_Mesh;
 
 	// states
 	class DXGLSamplerState;

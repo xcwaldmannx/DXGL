@@ -73,9 +73,6 @@
     <Filter Include="DXGL\DXGLApp\Shaders\Current\MousePick">
       <UniqueIdentifier>{e6baaff2-74b9-44ee-a222-e5fce4aa9222}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DXGL\DXGLApp\RenderQueue">
-      <UniqueIdentifier>{e1171d60-d63d-4130-bdde-a1ecae7e9904}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DXGL\DXGLApp\PostProcessor">
       <UniqueIdentifier>{fee9e82e-8bd5-47b0-ba9e-185108f29958}</UniqueIdentifier>
     </Filter>
@@ -87,66 +84,6 @@
     </Filter>
     <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLSwapChain">
       <UniqueIdentifier>{a90b53ef-3ff1-4bf1-ad1f-b1dec8040b52}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLMousePicker">
-      <UniqueIdentifier>{07a3e320-be25-40df-bf38-a9ef4a1d95ec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager">
-      <UniqueIdentifier>{c3e17bbf-a8a2-40fa-a9b7-e56531b76a41}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources">
-      <UniqueIdentifier>{67d248fe-eaa8-41f4-98ab-60703ec68cb9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers">
-      <UniqueIdentifier>{1b24097d-9481-4af8-aa89-e85843cf3672}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLVertexBuffer">
-      <UniqueIdentifier>{720b6a13-6a48-427f-85ea-97859325f4a7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLIndexBuffer">
-      <UniqueIdentifier>{0f2d0bb0-9f7e-49ec-8e26-f566013670c7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLCBuffer">
-      <UniqueIdentifier>{64b0ddd4-3446-4ff9-8d1b-f7673a2d1c80}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLInstanceBuffer">
-      <UniqueIdentifier>{c802e37e-cb83-4d44-8058-2eab0f883e14}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Assets">
-      <UniqueIdentifier>{78ecd767-5d73-478b-8e62-ce28e054beea}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Assets\DXGLTexture">
-      <UniqueIdentifier>{83d6084e-c8ff-4c04-897f-22f4020cf3a3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Assets\DXGLMaterial">
-      <UniqueIdentifier>{0a01adb2-f646-42fe-a026-d40e4b2853e5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Assets\DXGLMesh">
-      <UniqueIdentifier>{5350deeb-fb80-434b-abcb-4a2c21dd4034}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\InputLayouts">
-      <UniqueIdentifier>{1b3ed19d-9baa-4d35-8d4d-b2f4daa0e9d8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\InputLayouts\DXGLInputLayout">
-      <UniqueIdentifier>{9453aa38-949a-4098-b998-0a7b6e17944d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\PipelineStates">
-      <UniqueIdentifier>{0449f173-3a8d-421b-acc4-cd7f27e3c429}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\PipelineStates\DXGLSamplerState">
-      <UniqueIdentifier>{2f4fb73f-6c0d-4420-88b8-cb45bd396ef2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Views">
-      <UniqueIdentifier>{dda24b9b-1588-4b1c-acb0-6f5a62eb5e9b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Views\DXGLShaderResourceView">
-      <UniqueIdentifier>{f2ac9f3c-71d5-4aa3-9ddd-11f5c4fd0c7f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Views\DXGLRenderTargetView">
-      <UniqueIdentifier>{e97e9cd8-4a68-46bd-ac93-55d49d42c145}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Views\DXGLDepthStencilView">
-      <UniqueIdentifier>{efc22efc-fa51-4331-bcdd-90a4d84188e4}</UniqueIdentifier>
     </Filter>
     <Filter Include="DXGL\DXGLSource\DXGLUserInput">
       <UniqueIdentifier>{80d996ae-b347-4b75-a7e1-ef2ddd8c310c}</UniqueIdentifier>
@@ -187,12 +124,6 @@
     <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLRenderer">
       <UniqueIdentifier>{a6bfcfaf-6284-4bd3-8c03-71822ecf77b6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLCamera">
-      <UniqueIdentifier>{afcd8d9f-14c5-4391-ad82-61f7df57940f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLShadow">
-      <UniqueIdentifier>{cf116397-0c4f-4f57-81c4-4187a7c9b8cf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLLight">
       <UniqueIdentifier>{1e53c0e9-5337-4114-b973-1afcc1b82072}</UniqueIdentifier>
     </Filter>
@@ -223,20 +154,98 @@
     <Filter Include="DXGL\DXGLApp\Shaders\Current\Lighting">
       <UniqueIdentifier>{8b4a2678-9c44-4817-aa47-6dba1a10f4d5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLFoliageManager">
-      <UniqueIdentifier>{920ffc7f-8e56-4e7d-bcae-f811c103aaa4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DXGL\DXGLApp\Shaders\Current\Foliage">
       <UniqueIdentifier>{832ec898-7021-42f8-8f48-396eb0608f7d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLTerrainSystem">
-      <UniqueIdentifier>{c44dcf8e-fb2c-4198-a8cd-a64957077b1d}</UniqueIdentifier>
     </Filter>
     <Filter Include="DXGL\DXGLApp\Shaders\Current\Terrain">
       <UniqueIdentifier>{8580c7b3-a6cc-44af-a6bb-db7821086bdc}</UniqueIdentifier>
     </Filter>
     <Filter Include="DXGL\DXGLSource\Util\Structure">
       <UniqueIdentifier>{ba3cb4b8-d634-4eb1-8038-1a138808d3d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers">
+      <UniqueIdentifier>{41be26b4-b7bd-4a51-b2f0-41e26a3606a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLFoliageManager">
+      <UniqueIdentifier>{920ffc7f-8e56-4e7d-bcae-f811c103aaa4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager">
+      <UniqueIdentifier>{c3e17bbf-a8a2-40fa-a9b7-e56531b76a41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources">
+      <UniqueIdentifier>{67d248fe-eaa8-41f4-98ab-60703ec68cb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Buffers">
+      <UniqueIdentifier>{1b24097d-9481-4af8-aa89-e85843cf3672}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets">
+      <UniqueIdentifier>{78ecd767-5d73-478b-8e62-ce28e054beea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\DXGLTexture">
+      <UniqueIdentifier>{83d6084e-c8ff-4c04-897f-22f4020cf3a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\DXGLMaterial">
+      <UniqueIdentifier>{0a01adb2-f646-42fe-a026-d40e4b2853e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\DXGLMesh">
+      <UniqueIdentifier>{5350deeb-fb80-434b-abcb-4a2c21dd4034}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\InputLayouts">
+      <UniqueIdentifier>{1b3ed19d-9baa-4d35-8d4d-b2f4daa0e9d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\InputLayouts\DXGLInputLayout">
+      <UniqueIdentifier>{9453aa38-949a-4098-b998-0a7b6e17944d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\PipelineStates">
+      <UniqueIdentifier>{0449f173-3a8d-421b-acc4-cd7f27e3c429}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\PipelineStates\DXGLSamplerState">
+      <UniqueIdentifier>{2f4fb73f-6c0d-4420-88b8-cb45bd396ef2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Views">
+      <UniqueIdentifier>{dda24b9b-1588-4b1c-acb0-6f5a62eb5e9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Views\DXGLShaderResourceView">
+      <UniqueIdentifier>{f2ac9f3c-71d5-4aa3-9ddd-11f5c4fd0c7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Views\DXGLRenderTargetView">
+      <UniqueIdentifier>{e97e9cd8-4a68-46bd-ac93-55d49d42c145}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Views\DXGLDepthStencilView">
+      <UniqueIdentifier>{efc22efc-fa51-4331-bcdd-90a4d84188e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLTerrainManager">
+      <UniqueIdentifier>{c44dcf8e-fb2c-4198-a8cd-a64957077b1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLMousePicker">
+      <UniqueIdentifier>{07a3e320-be25-40df-bf38-a9ef4a1d95ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLShadowManager">
+      <UniqueIdentifier>{cf116397-0c4f-4f57-81c4-4187a7c9b8cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLCameraManager">
+      <UniqueIdentifier>{afcd8d9f-14c5-4391-ad82-61f7df57940f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLRenderPass">
+      <UniqueIdentifier>{f3dd7c1f-e94a-4e33-bf72-9ab0f4cff6b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLRenderPass\RenderPasses">
+      <UniqueIdentifier>{fdf4bb30-4676-4ee8-902d-ababdd48bfc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLBindable">
+      <UniqueIdentifier>{b3f8cce2-a023-481a-aa83-45f80d96b328}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Buffers\ConstantBuffer">
+      <UniqueIdentifier>{64b0ddd4-3446-4ff9-8d1b-f7673a2d1c80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Buffers\IndexBuffer">
+      <UniqueIdentifier>{0f2d0bb0-9f7e-49ec-8e26-f566013670c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Buffers\InstanceBuffer">
+      <UniqueIdentifier>{c802e37e-cb83-4d44-8058-2eab0f883e14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Buffers\VertexBuffer">
+      <UniqueIdentifier>{720b6a13-6a48-427f-85ea-97859325f4a7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -267,14 +276,14 @@
     <ClCompile Include="DXGLInput.cpp">
       <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLInput</Filter>
     </ClCompile>
-    <ClCompile Include="DXGLVertexBuffer.cpp">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLVertexBuffer</Filter>
+    <ClCompile Include="VertexBuffer.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Buffers\VertexBuffer</Filter>
     </ClCompile>
-    <ClCompile Include="DXGLIndexBuffer.cpp">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLIndexBuffer</Filter>
+    <ClCompile Include="IndexBuffer.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Buffers\IndexBuffer</Filter>
     </ClCompile>
-    <ClCompile Include="DXGLInputLayout.cpp">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\InputLayouts\DXGLInputLayout</Filter>
+    <ClCompile Include="InputLayout.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\InputLayouts\DXGLInputLayout</Filter>
     </ClCompile>
     <ClCompile Include="DXGLApp.cpp">
       <Filter>DXGL\DXGLApp</Filter>
@@ -288,23 +297,23 @@
     <ClCompile Include="DXGLVertexShader.cpp">
       <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLShader\DXGLVertexShader</Filter>
     </ClCompile>
-    <ClCompile Include="DXGLTexture2D.cpp">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Assets\DXGLTexture</Filter>
+    <ClCompile Include="Texture2D.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\DXGLTexture</Filter>
     </ClCompile>
     <ClCompile Include="DXGLCamera.cpp">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLCamera</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLCameraManager</Filter>
     </ClCompile>
-    <ClCompile Include="DXGLCBuffer.cpp">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLCBuffer</Filter>
+    <ClCompile Include="VSConstantBuffer.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Buffers\ConstantBuffer</Filter>
     </ClCompile>
     <ClCompile Include="DXGLMesh.cpp">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Assets\DXGLMesh</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\DXGLMesh</Filter>
     </ClCompile>
     <ClCompile Include="DXGLCameraManager.cpp">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLCamera</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLCameraManager</Filter>
     </ClCompile>
     <ClCompile Include="DXGLShadow.cpp">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLShadow</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLShadowManager</Filter>
     </ClCompile>
     <ClCompile Include="DXGLImage.cpp">
       <Filter>DXGL\DXGLSource\Util\DXGLImage</Filter>
@@ -339,41 +348,38 @@
     <ClCompile Include="DXGLGroup.cpp">
       <Filter>DXGL\DXGLSource\DXGLGovernor\DXGLGroup</Filter>
     </ClCompile>
-    <ClCompile Include="DXGLInstanceBuffer.cpp">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLInstanceBuffer</Filter>
+    <ClCompile Include="InstanceBuffer.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Buffers\InstanceBuffer</Filter>
     </ClCompile>
-    <ClCompile Include="DXGLTextureCube.cpp">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Assets\DXGLTexture</Filter>
+    <ClCompile Include="TextureCube.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\DXGLTexture</Filter>
     </ClCompile>
     <ClCompile Include="DXGLOutputMerger.cpp">
       <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLOutputMerger</Filter>
     </ClCompile>
     <ClCompile Include="DXGLMousePicker.cpp">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLMousePicker</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderQueue.cpp">
-      <Filter>DXGL\DXGLApp\RenderQueue</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLMousePicker</Filter>
     </ClCompile>
     <ClCompile Include="DXGLSamplerState.cpp">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\PipelineStates\DXGLSamplerState</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\PipelineStates\DXGLSamplerState</Filter>
     </ClCompile>
     <ClCompile Include="DXGLResourceManager.cpp">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager</Filter>
     </ClCompile>
-    <ClCompile Include="DXGLMaterial.cpp">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Assets\DXGLMaterial</Filter>
+    <ClCompile Include="Material.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\DXGLMaterial</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>DXGL\DXGLApp</Filter>
     </ClCompile>
     <ClCompile Include="DXGLShaderResourceView.cpp">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Views\DXGLShaderResourceView</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Views\DXGLShaderResourceView</Filter>
     </ClCompile>
     <ClCompile Include="DXGLRenderTargetView.cpp">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Views\DXGLRenderTargetView</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Views\DXGLRenderTargetView</Filter>
     </ClCompile>
     <ClCompile Include="DXGLDepthStencilView.cpp">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Views\DXGLDepthStencilView</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Views\DXGLDepthStencilView</Filter>
     </ClCompile>
     <ClCompile Include="PostProcessor.cpp">
       <Filter>DXGL\DXGLApp\PostProcessor</Filter>
@@ -381,14 +387,35 @@
     <ClCompile Include="Skybox.cpp">
       <Filter>DXGL\DXGLApp\Skybox</Filter>
     </ClCompile>
-    <ClCompile Include="DXGLBasicMesh.cpp">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Assets\DXGLMesh</Filter>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\DXGLMesh</Filter>
     </ClCompile>
     <ClCompile Include="DXGLFoliageManager.cpp">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLFoliageManager</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLFoliageManager</Filter>
     </ClCompile>
     <ClCompile Include="DXGLTerrainManager.cpp">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLTerrainSystem</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLTerrainManager</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderQueue.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderPass.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLRenderPass</Filter>
+    </ClCompile>
+    <ClCompile Include="EarlyZRenderPass.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLRenderPass\RenderPasses</Filter>
+    </ClCompile>
+    <ClCompile Include="PSConstantBuffer.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Buffers\ConstantBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="HSConstantBuffer.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Buffers\ConstantBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="DSConstantBuffer.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Buffers\ConstantBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="LightingRenderPass.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLRenderPass\RenderPasses</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -437,14 +464,14 @@
     <ClInclude Include="DXGLInput.h">
       <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLInput</Filter>
     </ClInclude>
-    <ClInclude Include="DXGLVertexBuffer.h">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLVertexBuffer</Filter>
+    <ClInclude Include="VertexBuffer.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Buffers\VertexBuffer</Filter>
     </ClInclude>
-    <ClInclude Include="DXGLIndexBuffer.h">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLIndexBuffer</Filter>
+    <ClInclude Include="IndexBuffer.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Buffers\IndexBuffer</Filter>
     </ClInclude>
-    <ClInclude Include="DXGLInputLayout.h">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\InputLayouts\DXGLInputLayout</Filter>
+    <ClInclude Include="InputLayout.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\InputLayouts\DXGLInputLayout</Filter>
     </ClInclude>
     <ClInclude Include="DXGLApp.h">
       <Filter>DXGL\DXGLApp</Filter>
@@ -458,23 +485,23 @@
     <ClInclude Include="DXGLVertexShader.h">
       <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLShader\DXGLVertexShader</Filter>
     </ClInclude>
-    <ClInclude Include="DXGLTexture2D.h">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Assets\DXGLTexture</Filter>
+    <ClInclude Include="Texture2D.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\DXGLTexture</Filter>
     </ClInclude>
     <ClInclude Include="DXGLCamera.h">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLCamera</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLCameraManager</Filter>
     </ClInclude>
-    <ClInclude Include="DXGLCBuffer.h">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLCBuffer</Filter>
+    <ClInclude Include="VSConstantBuffer.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Buffers\ConstantBuffer</Filter>
     </ClInclude>
     <ClInclude Include="DXGLMesh.h">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Assets\DXGLMesh</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\DXGLMesh</Filter>
     </ClInclude>
     <ClInclude Include="DXGLCameraManager.h">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLCamera</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLCameraManager</Filter>
     </ClInclude>
     <ClInclude Include="DXGLShadow.h">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLShadow</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLShadowManager</Filter>
     </ClInclude>
     <ClInclude Include="DXGLImage.h">
       <Filter>DXGL\DXGLSource\Util\DXGLImage</Filter>
@@ -518,32 +545,29 @@
     <ClInclude Include="DXGLDefinitions.h">
       <Filter>DXGL</Filter>
     </ClInclude>
-    <ClInclude Include="DXGLInstanceBuffer.h">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Buffers\DXGLInstanceBuffer</Filter>
+    <ClInclude Include="InstanceBuffer.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Buffers\InstanceBuffer</Filter>
     </ClInclude>
-    <ClInclude Include="DXGLTextureCube.h">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Assets\DXGLTexture</Filter>
+    <ClInclude Include="TextureCube.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\DXGLTexture</Filter>
     </ClInclude>
     <ClInclude Include="DXGLOutputMerger.h">
       <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLOutputMerger</Filter>
     </ClInclude>
     <ClInclude Include="DXGLMousePicker.h">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLMousePicker</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderQueue.h">
-      <Filter>DXGL\DXGLApp\RenderQueue</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLMousePicker</Filter>
     </ClInclude>
     <ClInclude Include="DXGLSamplerState.h">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\PipelineStates\DXGLSamplerState</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\PipelineStates\DXGLSamplerState</Filter>
     </ClInclude>
     <ClInclude Include="DXGLResourceManager.h">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager</Filter>
     </ClInclude>
-    <ClInclude Include="DXGLMaterial.h">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Assets\DXGLMaterial</Filter>
+    <ClInclude Include="Material.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\DXGLMaterial</Filter>
     </ClInclude>
     <ClInclude Include="DXGLShaderResourceView.h">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Views\DXGLShaderResourceView</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Views\DXGLShaderResourceView</Filter>
     </ClInclude>
     <ClInclude Include="Vertex.h">
       <Filter>DXGL\DXGLSource\Util\Math</Filter>
@@ -552,10 +576,10 @@
       <Filter>DXGL\DXGLSource\Util\DXGLImage</Filter>
     </ClInclude>
     <ClInclude Include="DXGLRenderTargetView.h">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Views\DXGLRenderTargetView</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Views\DXGLRenderTargetView</Filter>
     </ClInclude>
     <ClInclude Include="DXGLDepthStencilView.h">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Views\DXGLDepthStencilView</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Views\DXGLDepthStencilView</Filter>
     </ClInclude>
     <ClInclude Include="PostProcessor.h">
       <Filter>DXGL\DXGLApp\PostProcessor</Filter>
@@ -563,20 +587,44 @@
     <ClInclude Include="Skybox.h">
       <Filter>DXGL\DXGLApp\Skybox</Filter>
     </ClInclude>
-    <ClInclude Include="DXGLBasicMesh.h">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLResourceManager\Resources\Assets\DXGLMesh</Filter>
+    <ClInclude Include="Mesh.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\DXGLMesh</Filter>
     </ClInclude>
     <ClInclude Include="DXGLFoliageManager.h">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLFoliageManager</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLFoliageManager</Filter>
     </ClInclude>
     <ClInclude Include="DXGLTerrainManager.h">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLTerrainSystem</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLTerrainManager</Filter>
     </ClInclude>
     <ClInclude Include="Math.h">
       <Filter>DXGL\DXGLSource\Util\Math</Filter>
     </ClInclude>
     <ClInclude Include="QuadTree.h">
       <Filter>DXGL\DXGLSource\Util\Structure</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderQueue.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderPass.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLRenderPass</Filter>
+    </ClInclude>
+    <ClInclude Include="EarlyZRenderPass.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLRenderPass\RenderPasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLBindable</Filter>
+    </ClInclude>
+    <ClInclude Include="PSConstantBuffer.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Buffers\ConstantBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="HSConstantBuffer.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Buffers\ConstantBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="DSConstantBuffer.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Buffers\ConstantBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="LightingRenderPass.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLRenderPass\RenderPasses</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

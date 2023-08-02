@@ -35,49 +35,18 @@ struct TransformComponent {
 };
 
 struct MeshComponent {
-	SP_DXGLMesh mesh = nullptr;
-	SP_DXGLBasicMesh basicmesh = nullptr;
+	SP_Mesh mesh = nullptr;
 	bool useTessellation = false;
 	int instanceFlags = 0;
 };
 
+struct RenderPassComponent {
+	bool useEarlyZ = false;
+	bool useShadows = false;
+	bool useBloom = false;
+	bool useTransparency = false;
+};
+
 struct PickableComponent {
 	bool isSelected = false;
-};
-
-struct FoliageComponent {
-	Vec3f position;
-	float size;
-};
-
-struct VS_CBufferComponent {
-	std::vector<std::pair<SP_DXGLCBuffer, int>> cbuffers{};
-
-	void add(SP_DXGLCBuffer cbuffer, int slot) {
-		cbuffers.push_back(std::pair<SP_DXGLCBuffer, int>(cbuffer, slot));
-	}
-};
-
-struct HS_CBufferComponent {
-	std::vector<std::pair<SP_DXGLCBuffer, int>> cbuffers{};
-
-	void add(SP_DXGLCBuffer cbuffer, int slot) {
-		cbuffers.push_back(std::pair<SP_DXGLCBuffer, int>(cbuffer, slot));
-	}
-};
-
-struct DS_CBufferComponent {
-	std::vector<std::pair<SP_DXGLCBuffer, int>> cbuffers{};
-
-	void add(SP_DXGLCBuffer cbuffer, int slot) {
-		cbuffers.push_back(std::pair<SP_DXGLCBuffer, int>(cbuffer, slot));
-	}
-};
-
-struct PS_CBufferComponent {
-	std::vector<std::pair<SP_DXGLCBuffer, int>> cbuffers{};
-
-	void add(SP_DXGLCBuffer cbuffer, int slot) {
-		cbuffers.push_back(std::pair<SP_DXGLCBuffer, int>(cbuffer, slot));
-	}
 };
