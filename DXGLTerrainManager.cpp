@@ -179,10 +179,10 @@ void DXGLTerrainManager::update(long double delta) {
 }
 
 void DXGLTerrainManager::draw() {
-	DXGLMain::renderer()->input()->setInputLayout(m_layout);
-	DXGLMain::renderer()->input()->setVertexBuffer(0, 1, &m_mesh->getMeshVertexBuffer());
+	m_layout->bind();
+	m_mesh->getMeshVertexBuffer()->bind(0);
 	if (m_ib)
-	DXGLMain::renderer()->input()->setIndexBuffer(m_ib);
+	m_ib->bind();
 
 	DXGLMain::renderer()->shader()->VS_setShader(m_vs);
 	DXGLMain::renderer()->shader()->PS_setShader(m_ps);

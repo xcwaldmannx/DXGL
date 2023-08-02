@@ -113,18 +113,18 @@ void DXGLFoliageManager::update(long double delta) {
 }
 
 void DXGLFoliageManager::draw() {
-	DXGLMain::renderer()->input()->setInputLayout(m_layout);
-	DXGLMain::renderer()->input()->setVertexBuffer(0, 1, &m_mesh->getMeshVertexBuffer());
-	DXGLMain::renderer()->input()->setIndexBuffer(m_mesh->getIndexBuffer());
+	m_layout->bind();
+	m_mesh->getMeshVertexBuffer()->bind(0);
+	m_mesh->getIndexBuffer()->bind();
 
 	if (!m_foliage.empty()) {
-		DXGLMain::renderer()->input()->setVertexBuffer(1, 1, &m_vbInstance);
+		m_vbInstance->bind(1);
 	}
 
 	DXGLMain::renderer()->shader()->VS_setShader(m_vs);
 	DXGLMain::renderer()->shader()->PS_setShader(m_ps);
 
-	DXGLMain::renderer()->shader()->VS_setCBuffer(0, 1, m_cb->get());
+	m_cb->bind(0);
 
 	for (auto& mesh : m_mesh->getMeshes()) {
 		DXGLMain::renderer()->drawIndexedTriangleListInstanced(mesh.indexCount, m_foliage.size(), mesh.baseIndex, mesh.baseVertex, 0);

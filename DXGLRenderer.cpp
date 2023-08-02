@@ -5,7 +5,6 @@ using namespace dxgl;
 DXGLRenderer::DXGLRenderer() {
 	m_swapchain = std::make_shared<DXGLSwapChain>();
 
-	m_input = std::make_shared<DXGLInput>(DXGLMain::graphics());
 	m_shader = std::make_shared<DXGLShader>(DXGLMain::graphics());
 	m_raster = std::make_shared<DXGLRaster>(DXGLMain::graphics());
 	m_merger = std::make_shared<DXGLOutputMerger>(DXGLMain::graphics());
@@ -72,10 +71,6 @@ void DXGLRenderer::drawLineList(UINT vertexCount, UINT baseVertexLocation) {
 	DXGLMain::graphics()->context()->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_LINELIST);
 	DXGLMain::graphics()->context()->Draw(vertexCount, baseVertexLocation);
 	m_drawCallCount++;
-}
-
-SP_DXGLInput DXGLRenderer::input() {
-	return m_input;
 }
 
 SP_DXGLShader DXGLRenderer::shader() {

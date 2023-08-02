@@ -17,7 +17,7 @@ namespace dxgl {
 	private:
 		governor::DXGLGroup* m_entities{};
 		std::unordered_set<SP_Mesh> m_meshes{};
-		std::unordered_map<SP_Mesh, std::vector<Instance>> m_meshToInstances{};
+		std::unordered_map<SP_Mesh, std::vector<InstanceTransform>> m_meshToInstances{};
 		EarlyZRenderPass earlyZ{};
 		LightingRenderPass lighting{};
 	};

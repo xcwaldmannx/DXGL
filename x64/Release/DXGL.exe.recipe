@@ -19,6 +19,9 @@
       <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\HullShader.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\MaterialShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\PS.cso</FullPath>
     </ContentFile>
     <ContentFile>

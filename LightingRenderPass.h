@@ -8,12 +8,17 @@
 #include "RenderPass.h"
 
 namespace dxgl {
+
+	struct alignas(16) MaterialId {
+		int materialId = 0;
+	};
+
 	class LightingRenderPass : public RenderPass {
 	public:
 		LightingRenderPass();
 		~LightingRenderPass();
 
-		void draw(std::unordered_map<SP_Mesh, std::vector<Instance>>& instances) override;
+		void draw(std::unordered_map<SP_Mesh, std::vector<InstanceTransform>>& instances) override;
 
 	private:
 		ID3D11DepthStencilState* m_dsState = nullptr;
@@ -23,6 +28,7 @@ namespace dxgl {
 		ID3D11VertexShader* m_vertexShader = nullptr;
 		ID3D11PixelShader* m_pixelShader = nullptr;
 		SP_VSConstantBuffer m_vcb = nullptr;
+		SP_PSConstantBuffer m_pcb = nullptr;
 
 		struct Transform {
 			Mat4f view;

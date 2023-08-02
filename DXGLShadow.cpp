@@ -105,7 +105,7 @@ void DXGLShadow::draw() {
 		m_pscbShadow->bind(1);
 
 		// set inputs that won't change per draw call
-		DXGLMain::renderer()->input()->setInputLayout(m_layout);
+		m_layout->bind();
 		DXGLMain::renderer()->shader()->VS_setShader(m_vs);
 		DXGLMain::renderer()->shader()->HS_setShader(nullptr);
 		DXGLMain::renderer()->shader()->DS_setShader(nullptr);
@@ -140,9 +140,9 @@ void DXGLShadow::draw() {
 			SP_InstanceBuffer buffer = DXGLMain::resource()->createInstanceBuffer(&entityData[0], entities.size(), sizeof(InstanceData));
 
 			// set appropriate input data
-			DXGLMain::renderer()->input()->setVertexBuffer(0, 1, &mesh->getMeshVertexBuffer());
-			DXGLMain::renderer()->input()->setInstanceBuffers(1, &buffer);
-			DXGLMain::renderer()->input()->setIndexBuffer(mesh->getIndexBuffer());
+			mesh->getMeshVertexBuffer()->bind(0);
+			buffer->bind(1);
+			mesh->getIndexBuffer()->bind();
 
 			// draw entities based on mesh material
 			for (auto& m : mesh->getMeshes()) {

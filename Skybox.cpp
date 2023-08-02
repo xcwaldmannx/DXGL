@@ -52,9 +52,9 @@ void Skybox::draw() {
 
 	dxgl::SP_Mesh mesh = dxgl::DXGLMain::resource()->get<dxgl::SP_Mesh>("cubeFlipped");
 
-	dxgl::DXGLMain::renderer()->input()->setInputLayout(m_layout);
-	dxgl::DXGLMain::renderer()->input()->setVertexBuffer(0, 1, &mesh->getMeshVertexBuffer());
-	dxgl::DXGLMain::renderer()->input()->setIndexBuffer(mesh->getIndexBuffer());
+	m_layout->bind();
+	mesh->getMeshVertexBuffer()->bind(0);
+	mesh->getIndexBuffer()->bind();
 
 	for (auto& subMesh : mesh->getMeshes()) {
 		dxgl::DXGLMain::renderer()->drawIndexedTriangleList(subMesh.indexCount, subMesh.baseIndex, subMesh.baseVertex);

@@ -5,7 +5,7 @@
 #include "DXGLComponentTypes.h"
 
 namespace dxgl {
-	struct Instance {
+	struct InstanceTransform {
 		Vec3f scale{};
 		Vec3f rotation{};
 		Vec3f translation{};
@@ -16,6 +16,6 @@ namespace dxgl {
 		RenderPass();
 		~RenderPass();
 
-		virtual void draw(std::unordered_map<SP_Mesh, std::vector<Instance>>& instances) = 0;
+		virtual void draw(std::unordered_map<SP_Mesh, std::vector<InstanceTransform>>& instances) = 0;
 	};
 }

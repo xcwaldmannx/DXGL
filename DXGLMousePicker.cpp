@@ -78,7 +78,7 @@ void DXGLMousePicker::draw() {
 	}
 
 	// set inputs that won't change per draw call
-	DXGLMain::renderer()->input()->setInputLayout(m_layout);
+	m_layout->bind();
 	DXGLMain::renderer()->shader()->VS_setShader(m_vs);
 	DXGLMain::renderer()->shader()->HS_setShader(nullptr);
 	DXGLMain::renderer()->shader()->DS_setShader(nullptr);
@@ -94,7 +94,7 @@ void DXGLMousePicker::draw() {
 		tbuff.view = DXGLMain::renderer()->camera()->get("primary")->view();
 		tbuff.proj = DXGLMain::renderer()->camera()->get("primary")->proj();
 		m_cbTrans->update(&tbuff);
-		DXGLMain::renderer()->shader()->VS_setCBuffer(0, 1, m_cbTrans->get());
+		m_cbTrans->bind(0);
 
 		std::vector<InstanceData> entityData{};
 		for (governor::EntityId id : entities) {
@@ -113,17 +113,14 @@ void DXGLMousePicker::draw() {
 		SP_InstanceBuffer buffer = DXGLMain::resource()->createInstanceBuffer(&entityData[0], entities.size(), sizeof(InstanceData));
 
 		// set appropriate input data
-		DXGLMain::renderer()->input()->setVertexBuffer(0, 1, &mesh->getMeshVertexBuffer());
-		DXGLMain::renderer()->input()->setInstanceBuffers(1, &buffer);
-		DXGLMain::renderer()->input()->setIndexBuffer(mesh->getIndexBuffer());
+		mesh->getMeshVertexBuffer()->bind(0);
+		buffer->bind(1);
+		mesh->getIndexBuffer()->bind();
 
 		// draw entities based on mesh material
-
 		std::vector<BasicMesh> meshes = mesh->getMeshes();
 		if (meshes.size() > 0) {
 			for (int i = 0; i < meshes.size(); i++) {
-				//dxgl::MeshMaterialSlot mat = mesh->getMaterials()[i];
-				SP_Material material = DXGLMain::resource()->get<SP_Material>(meshes[i].materialName);
 				DXGLMain::renderer()->drawIndexedTriangleListInstanced(meshes[i].indexCount, entities.size(), meshes[i].baseIndex, meshes[i].baseVertex, 0);
 			}
 		}

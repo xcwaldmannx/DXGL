@@ -127,9 +127,6 @@
     <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLLight">
       <UniqueIdentifier>{1e53c0e9-5337-4114-b973-1afcc1b82072}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLInput">
-      <UniqueIdentifier>{53fa77e8-8627-48e2-996d-5417edaa7866}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLRaster">
       <UniqueIdentifier>{95be12fb-590b-41ea-b805-a1964a37bd6d}</UniqueIdentifier>
     </Filter>
@@ -193,9 +190,6 @@
     <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\InputLayouts">
       <UniqueIdentifier>{1b3ed19d-9baa-4d35-8d4d-b2f4daa0e9d8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\InputLayouts\DXGLInputLayout">
-      <UniqueIdentifier>{9453aa38-949a-4098-b998-0a7b6e17944d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\PipelineStates">
       <UniqueIdentifier>{0449f173-3a8d-421b-acc4-cd7f27e3c429}</UniqueIdentifier>
     </Filter>
@@ -247,6 +241,12 @@
     <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Buffers\VertexBuffer">
       <UniqueIdentifier>{720b6a13-6a48-427f-85ea-97859325f4a7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\InputLayouts\InputLayout">
+      <UniqueIdentifier>{9453aa38-949a-4098-b998-0a7b6e17944d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLApp\Shaders\ReworkedShaders">
+      <UniqueIdentifier>{8c584433-4df2-4044-b455-7aed537aee11}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ComputeShader.cpp">
@@ -273,9 +273,6 @@
     <ClCompile Include="DXGLInputSystem.cpp">
       <Filter>DXGL\DXGLSource\DXGLUserInput</Filter>
     </ClCompile>
-    <ClCompile Include="DXGLInput.cpp">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLInput</Filter>
-    </ClCompile>
     <ClCompile Include="VertexBuffer.cpp">
       <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Buffers\VertexBuffer</Filter>
     </ClCompile>
@@ -283,7 +280,7 @@
       <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Buffers\IndexBuffer</Filter>
     </ClCompile>
     <ClCompile Include="InputLayout.cpp">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\InputLayouts\DXGLInputLayout</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\InputLayouts\InputLayout</Filter>
     </ClCompile>
     <ClCompile Include="DXGLApp.cpp">
       <Filter>DXGL\DXGLApp</Filter>
@@ -461,9 +458,6 @@
     <ClInclude Include="DXGLInputSystem.h">
       <Filter>DXGL\DXGLSource\DXGLUserInput</Filter>
     </ClInclude>
-    <ClInclude Include="DXGLInput.h">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLInput</Filter>
-    </ClInclude>
     <ClInclude Include="VertexBuffer.h">
       <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Buffers\VertexBuffer</Filter>
     </ClInclude>
@@ -471,7 +465,7 @@
       <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Buffers\IndexBuffer</Filter>
     </ClInclude>
     <ClInclude Include="InputLayout.h">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\InputLayouts\DXGLInputLayout</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\InputLayouts\InputLayout</Filter>
     </ClInclude>
     <ClInclude Include="DXGLApp.h">
       <Filter>DXGL\DXGLApp</Filter>
@@ -753,6 +747,9 @@
     </FxCompile>
     <FxCompile Include="PS_TerrainShader.hlsl">
       <Filter>DXGL\DXGLApp\Shaders\Current\Terrain</Filter>
+    </FxCompile>
+    <FxCompile Include="MaterialShader.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\ReworkedShaders</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

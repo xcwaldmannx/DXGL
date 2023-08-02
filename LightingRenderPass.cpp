@@ -78,6 +78,7 @@ LightingRenderPass::LightingRenderPass() {
 
     struct VSInput {
         float3 position : POSITION;
+        float2 texcoord : TEXCOORD;
 		float3 iS : INSTANCE_S;
 		float3 iR : INSTANCE_R;
 		float3 iT : INSTANCE_T;
@@ -87,6 +88,7 @@ LightingRenderPass::LightingRenderPass() {
 
     struct PSInput {
         float4 position : SV_POSITION;
+		float2 texcoord : TEXCOORD;
 		nointerpolation float4 color : COLOR;
     };
 
@@ -96,6 +98,8 @@ LightingRenderPass::LightingRenderPass() {
         output.position = mul(float4(input.position, 1.0f), world);
         output.position = mul(output.position, view);
         output.position = mul(output.position, proj);
+
+		output.texcoord = input.texcoord;
 
 		// Assign a unique color for each triangle based on the SV_VertexID
 		// SV_VertexID will contain the index of the vertex within the primitive (0, 1, or 2 for triangles)
@@ -107,13 +111,17 @@ LightingRenderPass::LightingRenderPass() {
 	)";
 
 	const char* pixelShaderCode = R"(
+	SamplerState textureSampler;
+	Texture2DArray<float4> material : register(t0);
+
     struct PSInput {
         float4 position : SV_POSITION;
+		float2 texcoord : TEXCOORD;
 		nointerpolation float4 color : COLOR;
     };
 
     float4 main(PSInput input) : SV_TARGET {
-        return input.color;
+        return float4(pow(material.Sample(textureSampler, float3(input.texcoord, 1)).rgb, 2.2333f), 1.0f);
     }
 	)";
 
@@ -133,6 +141,7 @@ LightingRenderPass::LightingRenderPass() {
 	// create input layout
 	InputLayoutDesc ilDesc{};
 	ilDesc.add("POSITION", 0, FLOAT3, false);
+	ilDesc.add("TEXCOORD", 0, FLOAT2, false);
 	ilDesc.add("INSTANCE_S", 1, FLOAT3, true);
 	ilDesc.add("INSTANCE_R", 1, FLOAT3, true);
 	ilDesc.add("INSTANCE_T", 1, FLOAT3, true);
@@ -154,6 +163,7 @@ LightingRenderPass::LightingRenderPass() {
 
 	// create constant buffers
 	m_vcb = DXGLMain::resource()->createVSConstantBuffer(sizeof(Transform));
+	m_pcb = DXGLMain::resource()->createPSConstantBuffer(sizeof(MaterialId));
 }
 
 LightingRenderPass::~LightingRenderPass() {
@@ -164,7 +174,7 @@ LightingRenderPass::~LightingRenderPass() {
 	m_pixelShader->Release();
 }
 
-void LightingRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<Instance>>& instances) {
+void LightingRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<InstanceTransform>>& instances) {
 	// Step 2: Bind the depth-stencil view and render target view to the output merger stage
 	SP_DXGLRenderTargetView rtv = DXGLMain::renderer()->getRTV(RESOURCE_VIEW_SLOT_BACK_BUFFER);
 	ID3D11RenderTargetView* rtvv = rtv->get();
@@ -203,15 +213,18 @@ void LightingRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<Instance>>
 	m_vcb->update(&t);
 	m_vcb->bind(0);
 
+	// process entities if necessary...
+	// ...
+
 	// combine all instances in one list
-	std::vector<Instance> combinedInstances{};
+	std::vector<InstanceTransform> combinedInstances{};
 	for (const auto& pair : instances) {
-		const std::vector<Instance>& list = pair.second;
+		const std::vector<InstanceTransform>& list = pair.second;
 		combinedInstances.insert(combinedInstances.end(), list.begin(), list.end());
 	}
 
 	// create and bind instance buffer
-	SP_InstanceBuffer instanceBuffer = DXGLMain::resource()->createInstanceBuffer(&combinedInstances[0], combinedInstances.size(), sizeof(Instance));
+	SP_InstanceBuffer instanceBuffer = DXGLMain::resource()->createInstanceBuffer(&combinedInstances[0], combinedInstances.size(), sizeof(InstanceTransform));
 	instanceBuffer->bind(1);
 
 	int entityCount = 0;
@@ -221,8 +234,13 @@ void LightingRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<Instance>>
 		mesh->getMeshVertexBuffer()->bind(0);
 		mesh->getIndexBuffer()->bind();
 
-		// draw entities
+		// get sub meshes
 		for (auto& subMesh : mesh->getMeshes()) {
+			// set material
+			SP_Material material = DXGLMain::resource()->get<SP_Material>(subMesh.materialName);
+			material->bind(0);
+
+			// draw sub meshes
 			DXGLMain::renderer()->drawIndexedTriangleListInstanced(subMesh.indexCount, instances[mesh].size(), subMesh.baseIndex, subMesh.baseVertex, entityCount);
 		}
 		entityCount += instances[mesh].size();

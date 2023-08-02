@@ -26,7 +26,7 @@ void RenderQueue::createInstances() {
 			m_meshes.emplace(mesh.mesh);
 
 			m_meshToInstances[mesh.mesh].emplace_back(
-				Instance{
+				InstanceTransform {
 					.scale = transform.scale,
 					.rotation = transform.rotation,
 					.translation = transform.translation

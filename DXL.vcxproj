@@ -240,7 +240,6 @@
     <ClCompile Include="DXGLSamplerState.cpp" />
     <ClCompile Include="DXGLShaderResourceView.cpp" />
     <ClCompile Include="DXGLShadow.cpp" />
-    <ClCompile Include="DXGLInput.cpp" />
     <ClCompile Include="DXGLRaster.cpp" />
     <ClCompile Include="DXGLShader.cpp" />
     <ClCompile Include="DXGLSwapChain.cpp" />
@@ -302,7 +301,6 @@
     <ClInclude Include="DXGLSamplerState.h" />
     <ClInclude Include="DXGLShaderResourceView.h" />
     <ClInclude Include="DXGLShadow.h" />
-    <ClInclude Include="DXGLInput.h" />
     <ClInclude Include="DXGLRaster.h" />
     <ClInclude Include="DXGLShader.h" />
     <ClInclude Include="DXGLSwapChain.h" />
@@ -368,6 +366,12 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Hull</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="MaterialShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>

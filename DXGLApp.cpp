@@ -568,12 +568,11 @@ void DXGLApp::draw() {
 			SP_InstanceBuffer buffer = resource()->createInstanceBuffer(&entityData[0], entities.size(), sizeof(InstanceData));
 
 			// set appropriate input data
-			renderer()->input()->setInputLayout(resource()->get<SP_InputLayout>("fbxLayout"));
-			renderer()->input()->setVertexBuffer(0, 1, &mesh->getMeshVertexBuffer());
-			if (mesh->getBoneVertexBuffer())
-				renderer()->input()->setVertexBuffer(2, 1, &mesh->getBoneVertexBuffer());
-			renderer()->input()->setInstanceBuffers(1, &buffer);
-			renderer()->input()->setIndexBuffer(mesh->getIndexBuffer());
+			resource()->get<SP_InputLayout>("fbxLayout")->bind();
+			mesh->getMeshVertexBuffer()->bind(0);
+			if (mesh->getBoneVertexBuffer()) mesh->getBoneVertexBuffer()->bind(2);
+			buffer->bind(1);
+			mesh->getIndexBuffer()->bind();
 
 			// set shaders
 			if (useTessellation) {

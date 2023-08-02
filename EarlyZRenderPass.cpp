@@ -144,7 +144,7 @@ EarlyZRenderPass::~EarlyZRenderPass() {
 	m_vertexShader->Release();
 }
 
-void EarlyZRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<Instance>>& instances) {
+void EarlyZRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<InstanceTransform>>& instances) {
 	// Step 2: Bind the depth-stencil view to the output merger stage
 	SP_DXGLDepthStencilView dsv = DXGLMain::renderer()->getDSV(RESOURCE_VIEW_SLOT_BACK_BUFFER);
 	DXGLMain::graphics()->context()->OMSetRenderTargets(0, nullptr, dsv->get());
@@ -178,15 +178,18 @@ void EarlyZRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<Instance>>& 
 	m_vcb->update(&t);
 	m_vcb->bind(0);
 
+	// sort entities if necessary...
+	// ...
+
 	// combine all instances in one list
-	std::vector<Instance> combinedInstances{};
+	std::vector<InstanceTransform> combinedInstances{};
 	for (const auto& pair : instances) {
-		const std::vector<Instance>& list = pair.second;
+		const std::vector<InstanceTransform>& list = pair.second;
 		combinedInstances.insert(combinedInstances.end(), list.begin(), list.end());
 	}
 
 	// create and bind instance buffer
-	SP_InstanceBuffer instanceBuffer = DXGLMain::resource()->createInstanceBuffer(&combinedInstances[0], combinedInstances.size(), sizeof(Instance));
+	SP_InstanceBuffer instanceBuffer = DXGLMain::resource()->createInstanceBuffer(&combinedInstances[0], combinedInstances.size(), sizeof(InstanceTransform));
 	instanceBuffer->bind(1);
 
 	int triangleCount = 0;

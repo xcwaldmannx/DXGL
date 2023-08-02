@@ -29,8 +29,6 @@ namespace dxgl {
 	typedef std::shared_ptr<DXGLResourceManager> SP_DXGLResourceManager;
 
 	// STAGES
-	class DXGLInput;
-	typedef std::shared_ptr<DXGLInput> SP_DXGLInput;
 	class DXGLShader;
 	typedef std::shared_ptr<DXGLShader> SP_DXGLShader;
 	class DXGLRaster;

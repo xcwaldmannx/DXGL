@@ -97,9 +97,9 @@ void PostProcessor::draw() {
 	dxgl::SP_DXGLDepthStencilView dsv = dxgl::DXGLMain::renderer()->getDSV(dxgl::RESOURCE_VIEW_SLOT_BACK_BUFFER);
 	dxgl::DXGLMain::renderer()->setRenderTarget(rtv, color, dsv);
 
-	dxgl::DXGLMain::renderer()->input()->setInputLayout(m_inputLayout);
-	dxgl::DXGLMain::renderer()->input()->setVertexBuffer(0, 1, &m_vertexBuffer);
-	dxgl::DXGLMain::renderer()->input()->setIndexBuffer(m_indexBuffer);
+	m_inputLayout->bind();
+	m_vertexBuffer->bind(0);
+	m_indexBuffer->bind();
 
 	dxgl::DXGLMain::renderer()->shader()->VS_setCBuffer(0, 1, 0);
 

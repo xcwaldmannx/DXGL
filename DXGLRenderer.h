@@ -7,7 +7,6 @@
 
 #include "DXGLGovernor.h"
 
-#include "DXGLInput.h"
 #include "DXGLShader.h"
 #include "DXGLRaster.h"
 #include "DXGLOutputMerger.h"
@@ -46,7 +45,6 @@ namespace dxgl {
 			UINT startIndexLocation, UINT baseVertexLocation, UINT startInstanceLocation);
 		void drawLineList(UINT vertexCount, UINT baseVertexLocation);
 
-		SP_DXGLInput input();
 		SP_DXGLShader shader();
 		SP_DXGLRaster raster();
 		SP_DXGLOutputMerger merger();
@@ -80,7 +78,6 @@ namespace dxgl {
 	private:
 		SP_DXGLSwapChain m_swapchain = nullptr;
 
-		SP_DXGLInput m_input = nullptr;
 		SP_DXGLShader m_shader = nullptr;
 		SP_DXGLRaster m_raster = nullptr;
 		SP_DXGLOutputMerger m_merger = nullptr;
