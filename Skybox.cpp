@@ -2,7 +2,12 @@
 
 Skybox::Skybox() {
 	// cubemaps
-	m_desert = dxgl::DXGLMain::resource()->createTextureCube("Assets/Cubemaps/desert/");
+	dxgl::DXGLMain::resource()->storeTextureCube("Assets/Cubemaps/desert/", "desert");
+	m_desert = dxgl::DXGLMain::resource()->get<dxgl::SP_TextureCube>("desert");
+
+	dxgl::DXGLMain::resource()->storeTextureCube("Assets/Cubemaps/space/", "space");
+	m_space = dxgl::DXGLMain::resource()->get<dxgl::SP_TextureCube>("space");
+
 	m_sky = dxgl::DXGLMain::resource()->createTextureCube("Assets/Cubemaps/Sky/");
 	m_test = dxgl::DXGLMain::resource()->createTextureCube("Assets/Cubemaps/test/");
 
@@ -48,7 +53,7 @@ void Skybox::draw() {
 	m_vscb->update(&sbuff);
 	m_vscb->bind(0);
 
-	dxgl::DXGLMain::renderer()->shader()->PS_setResource(0, m_desert->get());
+	dxgl::DXGLMain::renderer()->shader()->PS_setResource(0, m_space->get());
 
 	dxgl::SP_Mesh mesh = dxgl::DXGLMain::resource()->get<dxgl::SP_Mesh>("cubeFlipped");
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DXGLDefinitions.h"
+//#include "DXGLDefinitions.h"
 #include "DXGLMain.h"
 
 class Skybox {
@@ -16,6 +16,7 @@ public:
 private:
 	dxgl::SP_TextureCube m_desert = nullptr;
 	dxgl::SP_TextureCube m_sky = nullptr;
+	dxgl::SP_TextureCube m_space = nullptr;
 	dxgl::SP_TextureCube m_test = nullptr;
 
 	dxgl::SP_InputLayout m_layout = nullptr;

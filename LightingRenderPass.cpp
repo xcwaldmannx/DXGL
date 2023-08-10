@@ -7,7 +7,7 @@ LightingRenderPass::LightingRenderPass() {
 
 	// Configure the depth test settings
 	depthStencilDesc.DepthEnable = true;
-	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO; // Disable depth writes
+	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL; // Disable depth writes
 	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
 
 	// Optional: Configure stencil test settings if needed
@@ -121,9 +121,20 @@ LightingRenderPass::LightingRenderPass() {
     };
 
     float4 main(PSInput input) : SV_TARGET {
-        return float4(pow(material.Sample(textureSampler, float3(input.texcoord, 1)).rgb, 2.2333f), 1.0f);
+		float3 color = material.Sample(textureSampler, float3(input.texcoord, 1)).rgb;
+
+		// HDR tone mapping and gamma correction
+		float exposure = 2.0f;
+		float gamma = 2.2333f;
+
+		float3 toneMap = float3(1.0f, 1.0f, 1.0f) - exp((-color) * exposure);
+		float3 toneMappedColor = pow(toneMap, gamma);
+
+        return float4(toneMappedColor, 1.0f);
     }
 	)";
+
+	/*
 
 	// compile shaders
 	ID3DBlob* vsBlob = nullptr;
@@ -137,16 +148,24 @@ LightingRenderPass::LightingRenderPass() {
 	if (FAILED(result)) {
 		throw std::runtime_error("Lighting Pixel Shader could not be compiled.");
 	}
+	*/
+
+	m_vertexShader = DXGLMain::resource()->createShader<DXGLVertexShader>("Assets/Shaders/VSMaterialShader.cso");
+	m_pixelShader = DXGLMain::resource()->createShader<DXGLPixelShader>("Assets/Shaders/PSMaterialShader.cso");
 
 	// create input layout
 	InputLayoutDesc ilDesc{};
 	ilDesc.add("POSITION", 0, FLOAT3, false);
 	ilDesc.add("TEXCOORD", 0, FLOAT2, false);
+	ilDesc.add("NORMAL",   0, FLOAT3, false);
+	ilDesc.add("TANGENT",  0, FLOAT3, false);
 	ilDesc.add("INSTANCE_S", 1, FLOAT3, true);
 	ilDesc.add("INSTANCE_R", 1, FLOAT3, true);
 	ilDesc.add("INSTANCE_T", 1, FLOAT3, true);
 
-	m_layout = DXGLMain::resource()->createInputLayout(ilDesc, vsBlob);
+	m_layout = DXGLMain::resource()->createInputLayout(ilDesc, "Assets/Shaders/VSMaterialShader.cso");
+
+	/*
 
 	// create shaders
 	result = DXGLMain::graphics()->device()->CreateVertexShader(vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), nullptr, &m_vertexShader);
@@ -161,17 +180,18 @@ LightingRenderPass::LightingRenderPass() {
 	}
 	psBlob->Release();
 
+	*/
+
 	// create constant buffers
-	m_vcb = DXGLMain::resource()->createVSConstantBuffer(sizeof(Transform));
-	m_pcb = DXGLMain::resource()->createPSConstantBuffer(sizeof(MaterialId));
+	m_vcbTransform = DXGLMain::resource()->createVSConstantBuffer(sizeof(Transform));
+	m_pcbMaterial = DXGLMain::resource()->createPSConstantBuffer(sizeof(MaterialId));
+
+	m_brdf = DXGLMain::resource()->createTexture2D("Assets/Textures/brdf.png");
 }
 
 LightingRenderPass::~LightingRenderPass() {
 	m_dsState->Release();
 	m_rasterState->Release();
-
-	m_vertexShader->Release();
-	m_pixelShader->Release();
 }
 
 void LightingRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<InstanceTransform>>& instances) {
@@ -183,8 +203,8 @@ void LightingRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<InstanceTr
 
 	// Step 3: Clear the render target buffer at the beginning of the render pass
 	float clearColor[4] = { 0.0f, 0.0f, 0.0f, 0.0f }; // Set your clear color
-	DXGLMain::graphics()->context()->ClearRenderTargetView(rtvv, clearColor);
-	//DXGLMain::graphics()->context()->ClearDepthStencilView(dsv->get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+	// DXGLMain::graphics()->context()->ClearRenderTargetView(rtvv, clearColor);
+	// DXGLMain::graphics()->context()->ClearDepthStencilView(dsv->get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 
 	// Step 4: Render the opaque objects with depth testing and depth writing enabled
 	// Bind shaders, vertex buffers, index buffers, etc.
@@ -202,16 +222,16 @@ void LightingRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<InstanceTr
 
 	// bind input layout and shaders
 	m_layout->bind();
-	DXGLMain::graphics()->context()->VSSetShader(m_vertexShader, nullptr, 0);
-	DXGLMain::graphics()->context()->PSSetShader(m_pixelShader, nullptr, 0);
+	DXGLMain::graphics()->context()->VSSetShader(m_vertexShader->get(), nullptr, 0);
+	DXGLMain::graphics()->context()->PSSetShader(m_pixelShader->get(), nullptr, 0);
 
 	// set up and bind view proj transform
 	SP_DXGLCamera cam = DXGLMain::renderer()->camera()->get("primary");
 	Transform t{};
 	t.view = cam->view();
 	t.proj = cam->proj();
-	m_vcb->update(&t);
-	m_vcb->bind(0);
+	m_vcbTransform->update(&t);
+	m_vcbTransform->bind(0);
 
 	// process entities if necessary...
 	// ...
@@ -227,6 +247,13 @@ void LightingRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<InstanceTr
 	SP_InstanceBuffer instanceBuffer = DXGLMain::resource()->createInstanceBuffer(&combinedInstances[0], combinedInstances.size(), sizeof(InstanceTransform));
 	instanceBuffer->bind(1);
 
+	// bind skybox and brdf
+	DXGLMain::resource()->get<SP_TextureCube>("desert")->bind(1);
+	m_brdf->bind(2);
+
+	// bind lights
+	DXGLMain::renderer()->light()->getBuffer()->bind(1);
+
 	int entityCount = 0;
 	for (const auto& instance : instances) {
 		const SP_Mesh& mesh = instance.first;
@@ -236,9 +263,17 @@ void LightingRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<InstanceTr
 
 		// get sub meshes
 		for (auto& subMesh : mesh->getMeshes()) {
-			// set material
+			// set and bind material data
 			SP_Material material = DXGLMain::resource()->get<SP_Material>(subMesh.materialName);
 			material->bind(0);
+
+			MaterialId matId{};
+			matId.textureIndex = mesh->getTextureIndex();
+			matId.amountMetallic = mesh->amountMetallic();
+			matId.amountRoughness = mesh->amountRoughness();
+			matId.camPosition = cam->getPosition();
+			m_pcbMaterial->update(&matId);
+			m_pcbMaterial->bind(0);
 
 			// draw sub meshes
 			DXGLMain::renderer()->drawIndexedTriangleListInstanced(subMesh.indexCount, instances[mesh].size(), subMesh.baseIndex, subMesh.baseVertex, entityCount);

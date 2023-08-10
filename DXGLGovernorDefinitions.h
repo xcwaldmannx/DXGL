@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <bitset>
 
-#define MAX_ENTITIES 8192
+#define MAX_ENTITIES 65535
 #define NULL_ENTITY (int) -1
 #define MAX_COMPONENTS 32
 #define NULL_COMPONENT (int) -1

@@ -19,7 +19,7 @@
       <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\HullShader.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\MaterialShader.cso</FullPath>
+      <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\PSMaterialShader.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\PS.cso</FullPath>
@@ -68,6 +68,9 @@
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\VS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\VSMaterialShader.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\xcwal\source\repos\DXL\x64\Release\Assets\Shaders\VS_FoliageShader.cso</FullPath>

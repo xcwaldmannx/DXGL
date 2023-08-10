@@ -60,7 +60,7 @@ float3 fresnelSchlickRoughness(float1 cosTheta, float3 F0, float1 roughness) {
     return F0 + (max(float3(1.0f - roughness, 1.0f - roughness, 1.0f - roughness), F0) - F0) * pow(clamp(1.0f - cosTheta, 0.0f, 1.0f), 5.0f);
 }
 
-float3 calcLighting(Texture2DArray materials, TextureCube skybox, Texture2D brdf, SamplerState textureSampler, float2 texcoord, float3 normal, float3 worldPos, unsigned int materialFlags) {
+float3 calcLighting(Texture2DArray<float4> materials, TextureCube skybox, Texture2D brdf, SamplerState textureSampler, float2 texcoord, float3 normal, float3 worldPos, unsigned int materialFlags) {
     float3 outputColor = float3(0.0f, 0.0f, 0.0f);
 
     Material mat = getMaterial(materialFlags);

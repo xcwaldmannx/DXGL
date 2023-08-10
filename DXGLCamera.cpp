@@ -44,7 +44,7 @@ void DXGLCamera::update(long double deltaTime) {
     Vec3f camY{};
     Vec3f camZ{};
     Vec3f currentPos = m_world.getTranslation();
-    float speed = 32.0f * (float) deltaTime;
+    float speed = 128.0f * (float) deltaTime;
 
     if (DXGLMain::input()->getMouseState(DXGLInputManager::RMB_STATE)) {
         speed = 8.0f * (float) deltaTime;

@@ -196,7 +196,7 @@ void DXGLTerrainManager::draw() {
 	tbuff.world.setScale(Vec3f{ scale, scale, scale });
 	tbuff.view = cam->view();
 	tbuff.proj = cam->proj();
-	tbuff.materialFlags = m_mesh->getUsedMaterials();
+	tbuff.materialFlags = m_mesh->getTextureIndex();
 	m_vscb->update(&tbuff);
 	m_pscb->update(&tbuff);
 

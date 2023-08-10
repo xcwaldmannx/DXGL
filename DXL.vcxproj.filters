@@ -181,12 +181,6 @@
     <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\DXGLTexture">
       <UniqueIdentifier>{83d6084e-c8ff-4c04-897f-22f4020cf3a3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\DXGLMaterial">
-      <UniqueIdentifier>{0a01adb2-f646-42fe-a026-d40e4b2853e5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\DXGLMesh">
-      <UniqueIdentifier>{5350deeb-fb80-434b-abcb-4a2c21dd4034}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\InputLayouts">
       <UniqueIdentifier>{1b3ed19d-9baa-4d35-8d4d-b2f4daa0e9d8}</UniqueIdentifier>
     </Filter>
@@ -244,7 +238,13 @@
     <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\InputLayouts\InputLayout">
       <UniqueIdentifier>{9453aa38-949a-4098-b998-0a7b6e17944d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DXGL\DXGLApp\Shaders\ReworkedShaders">
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\Mesh">
+      <UniqueIdentifier>{5350deeb-fb80-434b-abcb-4a2c21dd4034}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\Material">
+      <UniqueIdentifier>{0a01adb2-f646-42fe-a026-d40e4b2853e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLApp\Shaders\MaterialShader">
       <UniqueIdentifier>{8c584433-4df2-4044-b455-7aed537aee11}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -304,7 +304,7 @@
       <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Buffers\ConstantBuffer</Filter>
     </ClCompile>
     <ClCompile Include="DXGLMesh.cpp">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\DXGLMesh</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="DXGLCameraManager.cpp">
       <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLCameraManager</Filter>
@@ -364,7 +364,7 @@
       <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager</Filter>
     </ClCompile>
     <ClCompile Include="Material.cpp">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\DXGLMaterial</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\Material</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>DXGL\DXGLApp</Filter>
@@ -385,7 +385,7 @@
       <Filter>DXGL\DXGLApp\Skybox</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\DXGLMesh</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="DXGLFoliageManager.cpp">
       <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLFoliageManager</Filter>
@@ -412,6 +412,9 @@
       <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Buffers\ConstantBuffer</Filter>
     </ClCompile>
     <ClCompile Include="LightingRenderPass.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLRenderPass\RenderPasses</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyboxRenderPass.cpp">
       <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLRenderPass\RenderPasses</Filter>
     </ClCompile>
   </ItemGroup>
@@ -489,7 +492,7 @@
       <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Buffers\ConstantBuffer</Filter>
     </ClInclude>
     <ClInclude Include="DXGLMesh.h">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\DXGLMesh</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="DXGLCameraManager.h">
       <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLCameraManager</Filter>
@@ -558,7 +561,7 @@
       <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager</Filter>
     </ClInclude>
     <ClInclude Include="Material.h">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\DXGLMaterial</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\Material</Filter>
     </ClInclude>
     <ClInclude Include="DXGLShaderResourceView.h">
       <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Views\DXGLShaderResourceView</Filter>
@@ -582,7 +585,7 @@
       <Filter>DXGL\DXGLApp\Skybox</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\DXGLMesh</Filter>
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\Assets\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="DXGLFoliageManager.h">
       <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLFoliageManager</Filter>
@@ -619,6 +622,15 @@
     </ClInclude>
     <ClInclude Include="LightingRenderPass.h">
       <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLRenderPass\RenderPasses</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyboxRenderPass.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLRenderPass\RenderPasses</Filter>
+    </ClInclude>
+    <ClInclude Include="OctTree.h">
+      <Filter>DXGL\DXGLSource\Util\Structure</Filter>
+    </ClInclude>
+    <ClInclude Include="Point3f.h">
+      <Filter>DXGL\DXGLSource\Util\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -748,8 +760,11 @@
     <FxCompile Include="PS_TerrainShader.hlsl">
       <Filter>DXGL\DXGLApp\Shaders\Current\Terrain</Filter>
     </FxCompile>
-    <FxCompile Include="MaterialShader.hlsl">
-      <Filter>DXGL\DXGLApp\Shaders\ReworkedShaders</Filter>
+    <FxCompile Include="PSMaterialShader.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\MaterialShader</Filter>
+    </FxCompile>
+    <FxCompile Include="VSMaterialShader.hlsl">
+      <Filter>DXGL\DXGLApp\Shaders\MaterialShader</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

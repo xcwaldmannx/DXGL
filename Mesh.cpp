@@ -1,7 +1,7 @@
 #include "Mesh.h"
 
 using namespace dxgl;
-Mesh::Mesh(const MeshDesc& desc, const std::string& filename) {
+Mesh::Mesh(const MeshDesc& desc, const std::string& filename) : m_desc(desc) {
 
 	Assimp::DefaultLogger::create("", Assimp::Logger::VERBOSE);
 
@@ -35,7 +35,7 @@ Mesh::Mesh(const MeshDesc& desc, const std::string& filename) {
 			indexCount += m_meshes[i].indexCount;
 
 
-			if (desc.miscAttributes & MISC_ANIMATION) {
+			if (m_desc.miscAttributes & MISC_ANIMATION) {
 				m_bones.resize(vertexCount);
 
 				if (mesh->HasBones()) {
@@ -44,15 +44,15 @@ Mesh::Mesh(const MeshDesc& desc, const std::string& filename) {
 			}
 		}
 
-		if (desc.miscAttributes & MISC_ANIMATION) {
+		if (m_desc.miscAttributes & MISC_ANIMATION) {
 			m_vbBone = DXGLMain::resource()->createVertexBuffer(&m_bones[0], m_bones.size(), sizeof(unsigned int) * 4 + sizeof(float) * 4);
 		}
 
 		// create meshes
-		unsigned int vertexSizePosition = (desc.vertexAttributes & VERTEX_POSITION) ? (4 * 3) : 0;
-		unsigned int vertexSizeTexcoord = (desc.vertexAttributes & VERTEX_TEXCOORD) ? (4 * 2) : 0;
-		unsigned int vertexSizeNormal   = (desc.vertexAttributes & VERTEX_NORMAL)   ? (4 * 3) : 0;
-		unsigned int vertexSizeTangent  = (desc.vertexAttributes & VERTEX_TANGENT)  ? (4 * 3) : 0;
+		unsigned int vertexSizePosition = (m_desc.vertexAttributes & VERTEX_POSITION) ? (4 * 3) : 0;
+		unsigned int vertexSizeTexcoord = (m_desc.vertexAttributes & VERTEX_TEXCOORD) ? (4 * 2) : 0;
+		unsigned int vertexSizeNormal   = (m_desc.vertexAttributes & VERTEX_NORMAL)   ? (4 * 3) : 0;
+		unsigned int vertexSizeTangent  = (m_desc.vertexAttributes & VERTEX_TANGENT)  ? (4 * 3) : 0;
 		unsigned int vertexSize = vertexSizePosition + vertexSizeTexcoord + vertexSizeNormal + vertexSizeTangent;
 
 		m_vertices.reserve(vertexCount * vertexSize);
@@ -63,7 +63,7 @@ Mesh::Mesh(const MeshDesc& desc, const std::string& filename) {
 
 			for (unsigned int vertexIndex = 0; vertexIndex < mesh->mNumVertices; vertexIndex++) {
 
-				if (desc.vertexAttributes & VERTEX_POSITION) {
+				if (m_desc.vertexAttributes & VERTEX_POSITION) {
 					const aiVector3D& position = mesh->mVertices[vertexIndex];
 					m_vertices.push_back(position.x);
 					m_vertices.push_back(position.y);
@@ -71,20 +71,20 @@ Mesh::Mesh(const MeshDesc& desc, const std::string& filename) {
 					computeAxialMinAndMax(Vec3f{ position.x, position.y, position.z });
 				}
 
-				if (desc.vertexAttributes & VERTEX_TEXCOORD) {
+				if (m_desc.vertexAttributes & VERTEX_TEXCOORD) {
 					const aiVector3D& texcoord = mesh->HasTextureCoords(0) ? mesh->mTextureCoords[0][vertexIndex] : aiVector3D(0, 0, 0);
 					m_vertices.push_back(texcoord.x);
 					m_vertices.push_back(texcoord.y);
 				}
 
-				if (desc.vertexAttributes & VERTEX_NORMAL) {
+				if (m_desc.vertexAttributes & VERTEX_NORMAL) {
 					const aiVector3D& normal = mesh->mNormals[vertexIndex];
 					m_vertices.push_back(normal.x);
 					m_vertices.push_back(normal.y);
 					m_vertices.push_back(normal.z);
 				}
 
-				if (desc.vertexAttributes & VERTEX_TANGENT) {
+				if (m_desc.vertexAttributes & VERTEX_TANGENT) {
 					const aiVector3D& tangent = mesh->HasTangentsAndBitangents() ? mesh->mTangents[vertexIndex] : aiVector3D(0, 0, 0);
 					m_vertices.push_back(tangent.x);
 					m_vertices.push_back(tangent.y);
@@ -92,7 +92,7 @@ Mesh::Mesh(const MeshDesc& desc, const std::string& filename) {
 				}
 			}
 
-			if (desc.miscAttributes & MISC_INDEX) {
+			if (m_desc.miscAttributes & MISC_INDEX) {
 				for (unsigned int faceIndex = 0; faceIndex < mesh->mNumFaces; faceIndex++) {
 					const aiFace& face = mesh->mFaces[faceIndex];
 					unsigned int i0 = face.mIndices[0];
@@ -102,7 +102,7 @@ Mesh::Mesh(const MeshDesc& desc, const std::string& filename) {
 					m_indices.push_back(i1);
 					m_indices.push_back(i2);
 
-					if (desc.miscAttributes & MISC_FACE) {
+					if (m_desc.miscAttributes & MISC_FACE) {
 
 						Vec3f indices = {(float) i0, (float) i1, (float) i2};
 
@@ -122,12 +122,12 @@ Mesh::Mesh(const MeshDesc& desc, const std::string& filename) {
 
 		m_vbMesh = DXGLMain::resource()->createVertexBuffer(&m_vertices[0], vertexCount, vertexSize);
 
-		if (desc.miscAttributes & MISC_INDEX) {
+		if (m_desc.miscAttributes & MISC_INDEX) {
 			m_ib = DXGLMain::resource()->createIndexBuffer(&m_indices[0], m_indices.size());
 		}
 
 		// get materials embedded in fbx
-		if (desc.miscAttributes & MISC_MATERIAL) {
+		if (m_desc.miscAttributes & MISC_MATERIAL) {
 			loadMaterialTextures(m_scene);
 		}
 
@@ -201,7 +201,7 @@ void Mesh::loadMaterialTextures(const aiScene* scene) {
 							data,
 						};
 
-						m_usedMaterials = m_usedMaterials | (1 << textureTypeIndex);
+						m_textureIndex = m_textureIndex | (1 << textureTypeIndex);
 
 						m.textures.push_back(t);
 					}
@@ -269,6 +269,14 @@ void Mesh::getBoneTransforms(unsigned int animationIndex, long double deltaTime,
 	for (unsigned int i = 0; i < m_boneTransforms.size(); i++) {
 		transforms[i] = m_boneTransforms[i].transform;
 	}
+}
+
+float Mesh::amountMetallic() {
+	return m_desc.amountMetallic;
+}
+
+float Mesh::amountRoughness() {
+	return m_desc.amountRoughness;
 }
 
 const AABB Mesh::getAABB() {
@@ -485,6 +493,72 @@ void Mesh::computeAABB() {
 	};
 }
 
+float Mesh::calculateEdgeError(const std::vector<Vertex>& vertices, const Edge& edge) {
+	// Get the positions of the vertices connected by the edge
+	const Vec3f& position1 = vertices[edge.vIndex0].position;
+	const Vec3f& position2 = vertices[edge.vIndex1].position;
+
+	// Calculate the squared Euclidean distance as the error metric
+	return Vec3f::dist(position1, position2);
+}
+
+void Mesh::doEdgeCollapse(std::vector<Vertex>& vertices, std::vector<Edge>& edges, UINT collapseEdgeIndex) {
+	// Retrieve the edge to collapse
+	Edge& edgeToCollapse = edges[collapseEdgeIndex];
+
+	// Merge the two vertices connected by the edge
+	Vertex& vertex1 = vertices[edgeToCollapse.vIndex0];
+	Vertex& vertex2 = vertices[edgeToCollapse.vIndex1];
+
+	// Perform vertex position update (e.g., take the midpoint)
+	vertex1.position = Vec3f(
+		(vertex1.position.x + vertex2.position.x) * 0.5f,
+		(vertex1.position.y + vertex2.position.y) * 0.5f,
+		(vertex1.position.z + vertex2.position.z) * 0.5f
+	);
+
+	// Update the remaining edges to reflect the merged vertex
+	for (Edge& edge : edges) {
+		if (edge.vIndex0 == edgeToCollapse.vIndex1) {
+			edge.vIndex0 = edgeToCollapse.vIndex0;
+		}
+		
+		if (edge.vIndex1 == edgeToCollapse.vIndex1) {
+			edge.vIndex1 = edgeToCollapse.vIndex0;
+		}
+	}
+
+	// Remove the collapsed vertex and the edge from the lists
+	vertices.erase(vertices.begin() + edgeToCollapse.vIndex1);
+	edges.erase(edges.begin() + collapseEdgeIndex);
+	// You may need to update the indices in the remaining edges accordingly
+}
+
+void Mesh::simplifyMesh() {
+	// Initialize DirectX 11 context, create buffers, load mesh, etc.
+
+	std::vector<Vertex> vertices;
+	std::vector<Edge> edges;
+
+	// Populate vertices and edges with your 3D mesh data
+
+	// Iterate through the edges and select the least important ones based on your error metric
+	// For simplicity, let's assume you have a function that calculates an error value for each edge
+	for (UINT i = 0; i < edges.size(); ++i) {
+		Edge& edge = edges[i];
+		float edgeError = calculateEdgeError(vertices, edge);  // Implement this function
+		// Check if the edgeError is below a threshold or based on other criteria
+		float errorThreshold = 0.25f;
+		if (edgeError < errorThreshold) {
+			doEdgeCollapse(vertices, edges, i);
+			// After collapsing an edge, you may need to update the remaining edge error metrics
+		}
+	}
+
+	// Now, your "vertices" and "edges" vectors contain the simplified mesh
+	// You can use this data for rendering or further processing
+}
+
 void Mesh::convertMatrix(const aiMatrix4x4& input, Mat4f& output) {
 	output.mat[0][0] = input.a1;
 	output.mat[0][1] = input.a2;
@@ -519,12 +593,12 @@ const SP_IndexBuffer& Mesh::getIndexBuffer() {
 	return m_ib;
 }
 
-const std::vector<BasicMesh>& Mesh::getMeshes() {
+const std::vector<SubMesh>& Mesh::getMeshes() {
 	return m_meshes;
 }
 
-int Mesh::getUsedMaterials() {
-	return m_usedMaterials;
+unsigned int Mesh::getTextureIndex() {
+	return m_textureIndex;
 }
 
 const std::vector<Face>& Mesh::getFaces() {

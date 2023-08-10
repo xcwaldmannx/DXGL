@@ -46,9 +46,11 @@ namespace dxgl {
 	struct MeshDesc {
 		unsigned int vertexAttributes = 0;
 		unsigned int miscAttributes   = 0;
+		float amountMetallic  = 1;
+		float amountRoughness = 1;
 	};
 
-	struct BasicMesh {
+	struct SubMesh {
 		unsigned int indexCount    = 0;
 		unsigned int baseVertex    = 0;
 		unsigned int baseIndex     = 0;
@@ -88,6 +90,11 @@ namespace dxgl {
 		Mat4f transform;
 	};
 
+	struct Edge {
+		unsigned int vIndex0;
+		unsigned int vIndex1;
+	};
+
 	class Mesh {
 	public:
 		Mesh(const MeshDesc& desc, const std::string& filename);
@@ -97,10 +104,13 @@ namespace dxgl {
 		const SP_VertexBuffer& getBoneVertexBuffer();
 		const SP_IndexBuffer& getIndexBuffer();
 
-		const std::vector<BasicMesh>& getMeshes();
+		const std::vector<SubMesh>& getMeshes();
 		void getBoneTransforms(unsigned int animationIndex, long double deltaTime, std::vector<Mat4f>& transforms);
-		int getUsedMaterials();
+		unsigned int getTextureIndex();
 		const std::vector<Face>& getFaces();
+
+		float amountMetallic();
+		float amountRoughness();
 
 		const AABB getAABB();
 
@@ -118,6 +128,10 @@ namespace dxgl {
 		void computeAxialMinAndMax(const Vec3f& vec);
 		void computeAABB();
 
+		float calculateEdgeError(const std::vector<Vertex>& vertices, const Edge& edge);
+		void doEdgeCollapse(std::vector<Vertex>& vertices, std::vector<Edge>& edges, UINT collapseEdgeIndex);
+		void simplifyMesh();
+
 		void convertMatrix(const aiMatrix4x4& input, Mat4f& output);
 
 	private:
@@ -129,14 +143,15 @@ namespace dxgl {
 		SP_VertexBuffer m_vbMtl = nullptr;  // slot 2
 		SP_IndexBuffer m_ib = nullptr;
 
-		std::vector<BasicMesh> m_meshes{};
+		std::vector<SubMesh> m_meshes{};
 		std::vector<std::string> m_materialNames{};
 
 		std::vector<float> m_vertices{};
 		std::vector<unsigned int> m_indices{};
 		std::vector<Face> m_faces{};
 
-		int m_usedMaterials = 0;
+		unsigned int m_textureIndex = 0;
+		const MeshDesc m_desc;
 
 		std::vector<VertexBoneData> m_bones{};
 		std::vector<MatrixBoneData> m_boneTransforms{};

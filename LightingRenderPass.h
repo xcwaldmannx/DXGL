@@ -10,7 +10,12 @@
 namespace dxgl {
 
 	struct alignas(16) MaterialId {
-		int materialId = 0;
+		unsigned int textureIndex = 0;
+		float amountMetallic      = 0;
+		float amountRoughness     = 1;
+		float pad0;
+		Vec3f camPosition{};
+		float pad1;
 	};
 
 	class LightingRenderPass : public RenderPass {
@@ -25,10 +30,12 @@ namespace dxgl {
 		ID3D11RasterizerState* m_rasterState = nullptr;
 
 		SP_InputLayout m_layout = nullptr;
-		ID3D11VertexShader* m_vertexShader = nullptr;
-		ID3D11PixelShader* m_pixelShader = nullptr;
-		SP_VSConstantBuffer m_vcb = nullptr;
-		SP_PSConstantBuffer m_pcb = nullptr;
+		SP_DXGLVertexShader m_vertexShader = nullptr;
+		SP_DXGLPixelShader m_pixelShader = nullptr;
+		SP_VSConstantBuffer m_vcbTransform = nullptr;
+		SP_PSConstantBuffer m_pcbMaterial = nullptr;
+
+		SP_Texture2D m_brdf = nullptr;
 
 		struct Transform {
 			Mat4f view;

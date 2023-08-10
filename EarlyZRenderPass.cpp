@@ -150,7 +150,7 @@ void EarlyZRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<InstanceTran
 	DXGLMain::graphics()->context()->OMSetRenderTargets(0, nullptr, dsv->get());
 
 	// Step 3: Clear the depth buffer at the beginning of the render pass
-	DXGLMain::graphics()->context()->ClearDepthStencilView(dsv->get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+	// DXGLMain::graphics()->context()->ClearDepthStencilView(dsv->get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 
 	// Step 4: Render the opaque objects with depth testing and depth writing enabled
 	// Bind shaders, vertex buffers, index buffers, etc.

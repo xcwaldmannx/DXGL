@@ -120,16 +120,6 @@ void DXGLApp::create() {
 	};
 	renderer()->shader()->addSet(shaderSet, "tessellation");
 
-	resource()->storeTexture2D("Assets/Textures/brdf.png", "brdf");
-
-	resource()->storeMaterial("Assets/Materials/default/", "None");
-	resource()->storeMaterial("Assets/Materials/barren-ground-rock/", "rock");
-	resource()->storeMaterial("Assets/Materials/pine-tree-bark/", "bark");
-	resource()->storeMaterial("Assets/Materials/metal-grid/", "metal");
-	resource()->storeMaterial("Assets/Materials/gray-granite/", "granite");
-	resource()->storeMaterial("Assets/Materials/military-panel/", "panel");
-	resource()->storeMaterial("Assets/Materials/greasy-pan/", "greasy");
-
 	{
 		MeshDesc desc{};
 		desc.vertexAttributes = VERTEX_ALL;
@@ -247,28 +237,34 @@ void DXGLApp::create() {
 		resource()->storeMesh(desc, "Assets/Meshes/rock1.fbx", "rock1");
 	}
 
-	for (int i = -25; i < 25; i++) {
-		for (int j = -25; j < 25; j++) {
-			dxgl::governor::EntityId id = governor()->createEntity();
+	for (int i = -20; i < 20; i++) {
+		for (int j = -20; j < 20; j++) {
+			for (int k = -20; k < 20; k++) {
+				dxgl::governor::EntityId id = governor()->createEntity();
 
-			TransformComponent transform{};
-			transform.scale = { 0.5f + std::rand() % 2, 0.5f + std::rand() % 2, 0.5f + std::rand() % 2 };
-			float rx = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float) (std::rand() % 6);
-			float ry = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float) (std::rand() % 6);
-			float rz = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float) (std::rand() % 6);
-			transform.rotation = { rx, ry, rz };
-			transform.translation = { (float) i * 8, 0, (float) j * 8 };
-			governor()->addEntityComponent<TransformComponent>(transform, id);
+				TransformComponent transform{};
+				transform.scale = { 2.0f + std::rand() % 10, 2.0f + std::rand() % 10, 2.0f + std::rand() % 10 };
+				float rx = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 6);
+				float ry = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 6);
+				float rz = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 6);
+				transform.rotation = { rx, ry, rz };
 
-			MeshComponent mesh{};
-			mesh.mesh = resource()->get<SP_Mesh>("rock1");
-			mesh.useTessellation = false;
-			mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
-			governor()->addEntityComponent<MeshComponent>(mesh, id);
+				float tx = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 1000);
+				float ty = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 1000);
+				float tz = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 1000);
+				transform.translation = { (float) i * 192 + tx, (float) j * 192 + ty, (float) k * 192 + tz };
+				governor()->addEntityComponent<TransformComponent>(transform, id);
 
-			PickableComponent pickable{};
-			pickable.isSelected = false;
-			governor()->addEntityComponent<PickableComponent>(pickable, id);
+				MeshComponent mesh{};
+				mesh.mesh = resource()->get<SP_Mesh>("rock1");
+				mesh.useTessellation = false;
+				mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
+				governor()->addEntityComponent<MeshComponent>(mesh, id);
+
+				PickableComponent pickable{};
+				pickable.isSelected = false;
+				governor()->addEntityComponent<PickableComponent>(pickable, id);
+			}
 		}
 	}
 
@@ -360,13 +356,13 @@ void DXGLApp::update(long double delta) {
 	UINT width = dim.right - dim.left;
 	UINT height = dim.bottom - dim.top;
 
-	//m_postProcessor.update(delta, width, height);
+	m_postProcessor.update(delta, width, height);
 
-	//m_skybox.update(delta);
+	m_skybox.update(delta);
 
-	//renderer()->terrain()->update(delta);
+	renderer()->terrain()->update(delta);
 
-	//renderer()->foliage()->update(delta);
+	renderer()->foliage()->update(delta);
 
 	// add entity start
 
@@ -421,17 +417,6 @@ void DXGLApp::update(long double delta) {
 	}
 
 	// rotate guitar end
-
-	// frustum cull check
-	//m_visibleEntities = {};
-	//for (dxgl::governor::EntityId id : *m_groupEntity) {
-	//	auto& transform = governor()->getEntityComponent<TransformComponent>(id);
-	//	auto& mesh = governor()->getEntityComponent<MeshComponent>(id);
-
-	//	if (!m_camera->cull(transform.translation, transform.scale, mesh.mesh->getAABB().min, mesh.mesh->getAABB().max)) {
-	//		m_visibleEntities.push_back(id);
-	//	}
-	//}
 }
 
 void DXGLApp::draw() {
@@ -444,7 +429,12 @@ void DXGLApp::draw() {
 	UINT height = dim.bottom - dim.top;
 	renderer()->setViewport(width, height);
 
+	float color[4] = { 1, 1, 1, 1 };
+	renderer()->setRenderTarget(m_backBufferRTV, color, m_backBufferDSV);
+
 	m_queue.draw();
+	//m_postProcessor.draw();
+
 	return;
 
 	// mousepick start
@@ -461,14 +451,13 @@ void DXGLApp::draw() {
 	
 	// render start
 
-	float color[4] = { 1, 1, 1, 1 };
+	//float color[4] = { 1, 1, 1, 1 };
 	renderer()->setRenderTarget(m_backBufferRTV, color, m_backBufferDSV);
 
 	// set cascaded shadow textures
 	renderer()->shader()->PS_setResources(6, 4, renderer()->shadow()->getSRVs());
 
 	// Skybox
-	m_skybox.draw();
 	m_skybox.getCube()->bind(1);
 	resource()->get<SP_Texture2D>("brdf")->bind(2);
 
@@ -536,7 +525,7 @@ void DXGLApp::draw() {
 			ebuff.camDirection = m_camera->getDirection();
 			ebuff.width = width;
 			ebuff.height = height;
-			ebuff.materialFlags = mesh->getUsedMaterials();
+			ebuff.materialFlags = mesh->getTextureIndex();
 			ebuff.globalFlags = (m_fullscreen ? GLOBAL_USE_FULLSCREEN : 0);
 			m_vscbEntityBuffer->update(&ebuff);
 			m_pscbEntityBuffer->update(&ebuff);
@@ -582,7 +571,7 @@ void DXGLApp::draw() {
 			}
 
 			// draw entities based on mesh material
-			std::vector<BasicMesh> meshes = mesh->getMeshes();
+			std::vector<SubMesh> meshes = mesh->getMeshes();
 			if (meshes.size() > 0) {
 				for (int i = 0; i < meshes.size(); i++) {
 					//dxgl::MeshMaterialSlot mat = mesh->getMaterials()[i];

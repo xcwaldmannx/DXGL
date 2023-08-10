@@ -118,7 +118,7 @@ void DXGLMousePicker::draw() {
 		mesh->getIndexBuffer()->bind();
 
 		// draw entities based on mesh material
-		std::vector<BasicMesh> meshes = mesh->getMeshes();
+		std::vector<SubMesh> meshes = mesh->getMeshes();
 		if (meshes.size() > 0) {
 			for (int i = 0; i < meshes.size(); i++) {
 				DXGLMain::renderer()->drawIndexedTriangleListInstanced(meshes[i].indexCount, entities.size(), meshes[i].baseIndex, meshes[i].baseVertex, 0);

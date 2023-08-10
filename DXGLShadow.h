@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "DXGLMain.h"
-#include "DXGLMesh.h"
+#include "Mesh.h"
 #include "Mat4f.h"
 
 namespace dxgl {
