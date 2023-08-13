@@ -79,9 +79,10 @@ LightingRenderPass::LightingRenderPass() {
     struct VSInput {
         float3 position : POSITION;
         float2 texcoord : TEXCOORD;
-		float3 iS : INSTANCE_S;
-		float3 iR : INSTANCE_R;
-		float3 iT : INSTANCE_T;
+		uint1  iID : INSTANCE_ID;
+		float3 iS  : INSTANCE_S;
+		float3 iR  : INSTANCE_R;
+		float3 iT  : INSTANCE_T;
 
 		uint vertexId : SV_VERTEXID;
     };
@@ -159,9 +160,10 @@ LightingRenderPass::LightingRenderPass() {
 	ilDesc.add("TEXCOORD", 0, FLOAT2, false);
 	ilDesc.add("NORMAL",   0, FLOAT3, false);
 	ilDesc.add("TANGENT",  0, FLOAT3, false);
-	ilDesc.add("INSTANCE_S", 1, FLOAT3, true);
-	ilDesc.add("INSTANCE_R", 1, FLOAT3, true);
-	ilDesc.add("INSTANCE_T", 1, FLOAT3, true);
+	ilDesc.add("INSTANCE_ID", 1, UINT1,  true);
+	ilDesc.add("INSTANCE_S",  1, FLOAT3, true);
+	ilDesc.add("INSTANCE_R",  1, FLOAT3, true);
+	ilDesc.add("INSTANCE_T",  1, FLOAT3, true);
 
 	m_layout = DXGLMain::resource()->createInputLayout(ilDesc, "Assets/Shaders/VSMaterialShader.cso");
 
@@ -194,7 +196,7 @@ LightingRenderPass::~LightingRenderPass() {
 	m_rasterState->Release();
 }
 
-void LightingRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<InstanceTransform>>& instances) {
+void LightingRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<PerInstanceData>>& instances) {
 	// Step 2: Bind the depth-stencil view and render target view to the output merger stage
 	SP_DXGLRenderTargetView rtv = DXGLMain::renderer()->getRTV(RESOURCE_VIEW_SLOT_BACK_BUFFER);
 	ID3D11RenderTargetView* rtvv = rtv->get();
@@ -237,18 +239,18 @@ void LightingRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<InstanceTr
 	// ...
 
 	// combine all instances in one list
-	std::vector<InstanceTransform> combinedInstances{};
+	std::vector<PerInstanceData> combinedInstances{};
 	for (const auto& pair : instances) {
-		const std::vector<InstanceTransform>& list = pair.second;
+		const std::vector<PerInstanceData>& list = pair.second;
 		combinedInstances.insert(combinedInstances.end(), list.begin(), list.end());
 	}
 
 	// create and bind instance buffer
-	SP_InstanceBuffer instanceBuffer = DXGLMain::resource()->createInstanceBuffer(&combinedInstances[0], combinedInstances.size(), sizeof(InstanceTransform));
+	SP_InstanceBuffer instanceBuffer = DXGLMain::resource()->createInstanceBuffer(&combinedInstances[0], combinedInstances.size(), sizeof(PerInstanceData));
 	instanceBuffer->bind(1);
 
 	// bind skybox and brdf
-	DXGLMain::resource()->get<SP_TextureCube>("desert")->bind(1);
+	DXGLMain::resource()->get<SP_TextureCube>("space")->bind(1);
 	m_brdf->bind(2);
 
 	// bind lights

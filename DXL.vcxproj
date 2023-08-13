@@ -203,6 +203,7 @@
     <ClCompile Include="ComputeShader.cpp" />
     <ClCompile Include="DSConstantBuffer.cpp" />
     <ClCompile Include="DXGLApp.cpp" />
+    <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="LightingRenderPass.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="DXGLFoliageManager.cpp" />
@@ -210,6 +211,8 @@
     <ClCompile Include="DXGLCamera.cpp" />
     <ClCompile Include="DXGLCameraManager.cpp" />
     <ClCompile Include="HSConstantBuffer.cpp" />
+    <ClCompile Include="MousePickManager.cpp" />
+    <ClCompile Include="MousePickRenderPass.cpp" />
     <ClCompile Include="PSConstantBuffer.cpp" />
     <ClCompile Include="SkyboxRenderPass.cpp" />
     <ClCompile Include="VSConstantBuffer.cpp" />
@@ -230,7 +233,6 @@
     <ClCompile Include="DXGLLight.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="DXGLMesh.cpp" />
-    <ClCompile Include="DXGLMousePicker.cpp" />
     <ClCompile Include="DXGLOutputMerger.cpp" />
     <ClCompile Include="DXGLPixelShader.cpp" />
     <ClCompile Include="DXGLRenderer.cpp" />
@@ -261,6 +263,7 @@
     <ClInclude Include="ComputeShader.h" />
     <ClInclude Include="DSConstantBuffer.h" />
     <ClInclude Include="DXGLApp.h" />
+    <ClInclude Include="EntityManager.h" />
     <ClInclude Include="LightingRenderPass.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Bindable.h" />
@@ -269,6 +272,8 @@
     <ClInclude Include="DXGLCamera.h" />
     <ClInclude Include="DXGLCameraManager.h" />
     <ClInclude Include="HSConstantBuffer.h" />
+    <ClInclude Include="MousePickManager.h" />
+    <ClInclude Include="MousePickRenderPass.h" />
     <ClInclude Include="OctTree.h" />
     <ClInclude Include="Point3f.h" />
     <ClInclude Include="PSConstantBuffer.h" />
@@ -295,7 +300,6 @@
     <ClInclude Include="DXGLLight.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="DXGLMesh.h" />
-    <ClInclude Include="DXGLMousePicker.h" />
     <ClInclude Include="DXGLOutputMerger.h" />
     <ClInclude Include="DXGLPixelShader.h" />
     <ClInclude Include="DXGLRenderer.h" />

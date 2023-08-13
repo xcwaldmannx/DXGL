@@ -15,7 +15,6 @@
 
 #include "DXGLShadow.h"
 #include "DXGLLight.h"
-#include "DXGLMousePicker.h"
 #include "DXGLFoliageManager.h"
 #include "DXGLTerrainManager.h"
 
@@ -53,7 +52,6 @@ namespace dxgl {
 
 		SP_DXGLShadow shadow();
 		SP_DXGLLight light();
-		SP_DXGLMousePicker mousePicker();
 		SP_DXGLFoliageManager foliage();
 		SP_DXGLTerrainManager terrain();
 
@@ -87,8 +85,6 @@ namespace dxgl {
 		SP_DXGLShadow m_shadow = nullptr;
 
 		SP_DXGLLight m_light = nullptr;
-
-		SP_DXGLMousePicker m_mousePicker = nullptr;
 
 		SP_DXGLFoliageManager m_foliageManager = nullptr;
 

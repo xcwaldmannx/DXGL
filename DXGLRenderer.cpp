@@ -12,7 +12,6 @@ DXGLRenderer::DXGLRenderer() {
 	m_cameraManager = std::make_shared<DXGLCameraManager>();
 	m_shadow = std::make_shared<DXGLShadow>();
 	m_light = std::make_shared<DXGLLight>();
-	m_mousePicker = std::make_shared<DXGLMousePicker>();
 	m_foliageManager = std::make_shared<DXGLFoliageManager>();
 	m_terrainManager = std::make_shared<DXGLTerrainManager>();
 }
@@ -22,7 +21,6 @@ DXGLRenderer::~DXGLRenderer() {
 
 void DXGLRenderer::init() {
 	m_shadow->create();
-	m_mousePicker->create();
 }
 
 void DXGLRenderer::createSwapchain(DXGLWindow* window) {
@@ -95,10 +93,6 @@ SP_DXGLShadow DXGLRenderer::shadow() {
 
 SP_DXGLLight DXGLRenderer::light() {
 	return m_light;
-}
-
-SP_DXGLMousePicker DXGLRenderer::mousePicker() {
-	return m_mousePicker;
 }
 
 SP_DXGLFoliageManager DXGLRenderer::foliage() {

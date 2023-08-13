@@ -25,11 +25,14 @@ EntityId DXGLEntityManager::create() {
 }
 
 void DXGLEntityManager::destroy(EntityId entityId) {
-	m_entities[entityId].reset();
-	m_componentManager->destroy(entityId);
-	m_availableEntities.push_back(entityId);
 	auto it = std::find(m_activeEntities.begin(), m_activeEntities.end(), entityId);
-	m_activeEntities.erase(it);
+	if (it != m_activeEntities.end()) {
+		m_activeEntities.erase(it);
+		m_entities[entityId].reset();
+		m_componentManager->destroy(entityId);
+		m_availableEntities.push_back(entityId);
+	}
+
 }
 
 const DXGLGroup DXGLEntityManager::groupEntities(const Signature& signature, GroupSort sort) {

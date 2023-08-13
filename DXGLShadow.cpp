@@ -37,7 +37,7 @@ DXGLShadow::~DXGLShadow() {
 }
 
 void DXGLShadow::create() {
-	DXGLMain::governor()->group<TransformComponent, MeshComponent>(governor::GroupSort::GROUP_ANY, m_groupEntity);
+	DXGLMain::entities()->group<TransformComponent, MeshComponent>(governor::GroupSort::GROUP_ANY, m_groupEntity);
 }
 
 void  DXGLShadow::update(Vec3f position, Vec3f target) {
@@ -58,7 +58,7 @@ void  DXGLShadow::update(Vec3f position, Vec3f target) {
 	m_visibleEntities = {};
 	//governor::DXGLGroup groupInRange = DXGLMain::renderer()->governor()->group<TransformComponent, MeshComponent>(dxgl::GroupSort::GROUP_ANY);
 	for (governor::EntityId id : *m_groupEntity) {
-		auto& transform = DXGLMain::governor()->getEntityComponent<TransformComponent>(id);
+		auto& transform = DXGLMain::entities()->getEntityComponent<TransformComponent>(id);
 		SP_DXGLCamera cam = DXGLMain::renderer()->camera()->get("primary");
 
 		if (Vec3f::dist(cam->getPosition(), transform.translation) < 500.0f) {
@@ -69,7 +69,7 @@ void  DXGLShadow::update(Vec3f position, Vec3f target) {
 	// map entities containing same meshes to that mesh
 	m_meshGroups = {};
 	for (governor::EntityId id : m_visibleEntities) {
-		auto& mesh = DXGLMain::governor()->getEntityComponent<MeshComponent>(id);
+		auto& mesh = DXGLMain::entities()->getEntityComponent<MeshComponent>(id);
 
 		if ((mesh.instanceFlags & INSTANCE_USE_SHADOWING) == 0) {
 			continue;
@@ -125,8 +125,8 @@ void DXGLShadow::draw() {
 
 			std::vector<InstanceData> entityData{};
 			for (governor::EntityId id : entities) {
-				auto& transform = DXGLMain::governor()->getEntityComponent<TransformComponent>(id);
-				auto& mesh = DXGLMain::governor()->getEntityComponent<MeshComponent>(id);
+				auto& transform = DXGLMain::entities()->getEntityComponent<TransformComponent>(id);
+				auto& mesh = DXGLMain::entities()->getEntityComponent<MeshComponent>(id);
 				InstanceData data{};
 				data.id = id;
 				data.scale = transform.scale;

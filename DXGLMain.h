@@ -7,7 +7,8 @@
 #include "DXGLGraphics.h"
 #include "DXGLSwapChain.h"
 #include "DXGLRenderer.h"
-#include "DXGLGovernor.h"
+#include "EntityManager.h"
+#include "MousePickManager.h"
 #include "DXGLResourceManager.h"
 
 #include "DXGLWindow.h"
@@ -25,7 +26,8 @@ namespace dxgl {
 		static SP_DXGLGraphics           graphics();
 		static SP_DXGLRenderer           renderer();
 		static SP_DXGLResourceManager    resource();
-		static governor::SP_DXGLGovernor governor();
+		static SP_EntityManager          entities();
+		static SP_MousePickManager       mousePick();
 		static SP_DXGLInputManager       input();
 
 		void enableVSync(bool enable);
@@ -49,7 +51,8 @@ namespace dxgl {
 		static SP_DXGLGraphics           m_graphics;
 		static SP_DXGLRenderer           m_renderer;
 		static SP_DXGLResourceManager    m_resource;
-		static governor::SP_DXGLGovernor m_governor;
+		static SP_EntityManager          m_entities;
+		static SP_MousePickManager       m_mousePick;
 		static SP_DXGLInputManager       m_userInput;
 
 

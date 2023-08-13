@@ -217,9 +217,10 @@ void DXGLApp::create() {
 	renderer()->light()->addLight(light);
 
 	// ECS
-	governor()->registerComponent<TransformComponent>();
-	governor()->registerComponent<MeshComponent>();
-	governor()->registerComponent<PickableComponent>();
+	entities()->registerComponent<TransformComponent>();
+	entities()->registerComponent<MeshComponent>();
+	entities()->registerComponent<PickableComponent>();
+	entities()->registerComponent<DestroyableComponent>();
 
 	// landscape
 	{
@@ -227,6 +228,50 @@ void DXGLApp::create() {
 		desc.vertexAttributes = VERTEX_ALL;
 		desc.miscAttributes = MISC_ALL;
 		renderer()->terrain()->load(desc, "Assets/Meshes/landscapes/landscape_grass.fbx");
+	}
+
+	{ // guitar
+		MeshDesc desc{};
+		desc.vertexAttributes = VERTEX_ALL;
+		desc.miscAttributes = MISC_DEFAULT;
+		resource()->storeMesh(desc, "Assets/Meshes/material test cube/explorer guitar.fbx", "guitar");
+		resource()->storeMesh(desc, "Assets/Meshes/material test cube/cube.fbx", "cube02");
+
+		TransformComponent transform{};
+		transform.scale = { 1, 1, 1 };
+		transform.rotation = { 0, 0, 0 };
+		transform.translation = { 0, 0, 0 };
+
+		MeshComponent mesh{};
+		mesh.mesh = resource()->get<SP_Mesh>("guitar");
+		mesh.useTessellation = false;
+		mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
+
+		m_guitar = entities()->createEntity(transform, mesh);
+
+		PickableComponent pickable{};
+		pickable.isSelected = false;
+		entities()->addEntityComponent<PickableComponent>(pickable, m_guitar);
+	}
+
+	// gun
+	{
+		MeshDesc desc{};
+		desc.vertexAttributes = VERTEX_ALL;
+		desc.miscAttributes = MISC_DEFAULT;
+		m_fbxMesh = resource()->createMesh(desc, "Assets/Meshes/material test cube/gun.fbx");
+
+		TransformComponent transform{};
+		transform.scale = { 1, 1, 1 };
+		transform.rotation = { 0, 0, 0 };
+		transform.translation = { 0, 0, 0 };
+
+		MeshComponent mesh{};
+		mesh.mesh = m_fbxMesh;
+		mesh.useTessellation = false;
+		mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
+
+		m_gun = entities()->createEntity(transform, mesh);
 	}
 
 	// rocks
@@ -240,84 +285,37 @@ void DXGLApp::create() {
 	for (int i = -20; i < 20; i++) {
 		for (int j = -20; j < 20; j++) {
 			for (int k = -20; k < 20; k++) {
-				dxgl::governor::EntityId id = governor()->createEntity();
-
 				TransformComponent transform{};
-				transform.scale = { 2.0f + std::rand() % 10, 2.0f + std::rand() % 10, 2.0f + std::rand() % 10 };
+				transform.scale = { 2.0f + std::rand() % 5, 2.0f + std::rand() % 5, 2.0f + std::rand() % 5 };
 				float rx = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 6);
 				float ry = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 6);
 				float rz = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 6);
 				transform.rotation = { rx, ry, rz };
 
-				float tx = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 1000);
-				float ty = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 1000);
-				float tz = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 1000);
+				float tx = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 96);
+				float ty = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 96);
+				float tz = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 96);
 				transform.translation = { (float) i * 192 + tx, (float) j * 192 + ty, (float) k * 192 + tz };
-				governor()->addEntityComponent<TransformComponent>(transform, id);
 
 				MeshComponent mesh{};
 				mesh.mesh = resource()->get<SP_Mesh>("rock1");
 				mesh.useTessellation = false;
 				mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
-				governor()->addEntityComponent<MeshComponent>(mesh, id);
+
+				dxgl::governor::EntityId id = entities()->createEntity(transform, mesh);
 
 				PickableComponent pickable{};
 				pickable.isSelected = false;
-				governor()->addEntityComponent<PickableComponent>(pickable, id);
+				entities()->addEntityComponent<PickableComponent>(pickable, id);
+
+				DestroyableComponent destroyable{};
+				entities()->addEntityComponent<DestroyableComponent>(destroyable, id);
 			}
 		}
 	}
 
-	{ // guitar
-		MeshDesc desc{};
-		desc.vertexAttributes = VERTEX_ALL;
-		desc.miscAttributes = MISC_DEFAULT;
-		resource()->storeMesh(desc, "Assets/Meshes/material test cube/explorer guitar.fbx", "guitar");
-		resource()->storeMesh(desc, "Assets/Meshes/material test cube/cube.fbx", "cube02");
-
-		m_guitar = governor()->createEntity();
-
-		TransformComponent transform{};
-		transform.scale = { 1, 1, 1 };
-		transform.rotation = { 0, 0, 0 };
-		transform.translation = { 0, 0, 0 };
-		governor()->addEntityComponent<TransformComponent>(transform, m_guitar);
-
-		MeshComponent mesh{};
-		mesh.mesh = resource()->get<SP_Mesh>("guitar");
-		mesh.useTessellation = false;
-		mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
-		governor()->addEntityComponent<MeshComponent>(mesh, m_guitar);
-
-		PickableComponent pickable{};
-		pickable.isSelected = false;
-		governor()->addEntityComponent<PickableComponent>(pickable, m_guitar);
-	}
-
-	// gun
-	{
-		MeshDesc desc{};
-		desc.vertexAttributes = VERTEX_ALL;
-		desc.miscAttributes = MISC_DEFAULT;
-		m_fbxMesh = resource()->createMesh(desc, "Assets/Meshes/material test cube/gun.fbx");
-
-		m_gun = governor()->createEntity();
-
-		TransformComponent transform{};
-		transform.scale = { 1, 1, 1 };
-		transform.rotation = { 0, 0, 0 };
-		transform.translation = { 0, 0, 0 };
-		governor()->addEntityComponent<TransformComponent>(transform, m_gun);
-
-		MeshComponent mesh{};
-		mesh.mesh = m_fbxMesh;
-		mesh.useTessellation = false;
-		mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
-		governor()->addEntityComponent<MeshComponent>(mesh, m_gun);
-	}
-
-	governor()->group<TransformComponent, MeshComponent>(dxgl::governor::GroupSort::GROUP_ANY, m_groupEntity);
-	governor()->group<PickableComponent>(dxgl::governor::GroupSort::GROUP_ANY, m_groupPickable);
+	entities()->group<TransformComponent, MeshComponent>(dxgl::governor::GroupSort::GROUP_ANY, m_groupEntity);
+	entities()->group<PickableComponent>(dxgl::governor::GroupSort::GROUP_ANY, m_groupPickable);
 
 	// Depth Stencils
 	D3D11_DEPTH_STENCIL_DESC depthStencilDesc{};
@@ -358,8 +356,6 @@ void DXGLApp::update(long double delta) {
 
 	m_postProcessor.update(delta, width, height);
 
-	m_skybox.update(delta);
-
 	renderer()->terrain()->update(delta);
 
 	renderer()->foliage()->update(delta);
@@ -367,7 +363,6 @@ void DXGLApp::update(long double delta) {
 	// add entity start
 
 	if (input()->getKeyTapState('E')) {
-		dxgl::governor::EntityId id = governor()->createEntity();
 
 		TransformComponent transform{};
 		transform.scale = { 1, 1, 1 };
@@ -376,18 +371,20 @@ void DXGLApp::update(long double delta) {
 		float rz = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 6);
 		transform.rotation = { rx, ry, rz };
 		transform.translation = m_camera->getPosition() + m_camera->getDirection() * 2.0f;
-		governor()->addEntityComponent<TransformComponent>(transform, id);
 
 		MeshComponent mesh{};
-		//mesh.mesh = resource()->get<SP_DXGLMesh>(m_shapes[std::rand() % 5]);
 		mesh.mesh = m_fbxMesh;
 		mesh.useTessellation = false;
 		mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
-		governor()->addEntityComponent<MeshComponent>(mesh, id);
+
+		dxgl::governor::EntityId id = entities()->createEntity(transform, mesh);
 
 		PickableComponent pickable{};
 		pickable.isSelected = false;
-		governor()->addEntityComponent<PickableComponent>(pickable, id);
+		entities()->addEntityComponent<PickableComponent>(pickable, id);
+
+		DestroyableComponent destroyable{};
+		entities()->addEntityComponent<DestroyableComponent>(destroyable, id);
 	}
 
 	// add entity end
@@ -396,10 +393,10 @@ void DXGLApp::update(long double delta) {
 	{
 		Vec3f aim(-0.75f, -0.25f, 1.0f);
 		if (input()->getMouseState(DXGLInputManager::RMB_STATE)) {
-			aim = Vec3f(0.0f, -0.18f, 1.0f);
+			aim = Vec3f(0.0f, -0.185f, 1.0f);
 		}
 
-		auto& transform = governor()->getEntityComponent<TransformComponent>(m_gun);
+		auto& transform = entities()->getEntityComponent<TransformComponent>(m_gun);
 		transform.rotation = m_camera->world().getRotation();
 		Vec3f offsetX = m_camera->world().getXDirection() * aim.x;
 		Vec3f offsetY = m_camera->world().getYDirection() * aim.y;
@@ -412,11 +409,27 @@ void DXGLApp::update(long double delta) {
 	// rotate guitar start
 	
 	{
-		auto& transform = governor()->getEntityComponent<TransformComponent>(m_guitar);
+		auto& transform = entities()->getEntityComponent<TransformComponent>(m_guitar);
 		transform.rotation = Vec3f(0, m_timePassed, 0);
 	}
 
 	// rotate guitar end
+
+	// mouse picking start
+	if (input()->getMouseState(DXGLInputManager::LMB_STATE)) {
+		Point2f mouse = DXGLMain::input()->getMousePosition();
+		POINT clientMouse = { mouse.x, mouse.y };
+		ScreenToClient(getWindow(), &clientMouse);
+		governor::EntityId id = mousePick()->getColorId(Point2f{ (float)clientMouse.x, (float)clientMouse.y });
+		if (entities()->entityHasComponent<DestroyableComponent>(id)) {
+			entities()->destroyEntity(id);
+		}
+	}
+	// mouse picking end
+
+	// update entities start
+	m_queue.submit(entities()->searchEntities(1024));
+	// update entities end
 }
 
 void DXGLApp::draw() {
@@ -433,22 +446,17 @@ void DXGLApp::draw() {
 	renderer()->setRenderTarget(m_backBufferRTV, color, m_backBufferDSV);
 
 	m_queue.draw();
+
 	//m_postProcessor.draw();
+
+	if (input()->getKeyTapState('X')) {
+		std::cout << renderer()->getDrawCallCount() << "\n";
+	}
+
+	renderer()->resetDrawCallCount();
 
 	return;
 
-	// mousepick start
-	governor::EntityId selectedEntity = -1;
-	if (input()->getKeyPressState('Q')) {
-		renderer()->mousePicker()->update();
-		renderer()->mousePicker()->draw();
-		Point2f mouse = DXGLMain::input()->getMousePosition();
-		POINT clientMouse = { mouse.x, mouse.y };
-		ScreenToClient(getWindow(), &clientMouse);
-		selectedEntity = renderer()->mousePicker()->getColorId(Point2f{(float) clientMouse.x, (float) clientMouse.y });
-	}
-	// mousepick end
-	
 	// render start
 
 	//float color[4] = { 1, 1, 1, 1 };
@@ -479,129 +487,10 @@ void DXGLApp::draw() {
 	// terrain
 	renderer()->terrain()->draw();
 
-	// general cbuffers
-	m_vscbEntityBuffer->bind(0);
-	m_pscbEntityBuffer->bind(0);
-	renderer()->light()->getBuffer()->bind(3);
-
-	// automatic instancing with assimp
-	{
-		// map entities containing same meshes to that mesh
-		std::unordered_map<SP_Mesh, dxgl::governor::DXGLGroup> meshGroups{};
-		for (dxgl::governor::EntityId id : m_visibleEntities) {
-			auto& mesh = governor()->getEntityComponent<MeshComponent>(id);
-			if (meshGroups.find(mesh.mesh) != meshGroups.end()) {
-				meshGroups[mesh.mesh].push_back(id);
-			} else {
-				meshGroups[mesh.mesh] = {};
-				meshGroups[mesh.mesh].push_back(id);
-			}
-		}
-
-		// iterate each mesh group
-		for (auto group = meshGroups.begin(); group != meshGroups.end(); group++) {
-			if (!group->first) continue;
-
-			const SP_Mesh& mesh = group->first;
-			const dxgl::governor::DXGLGroup& entities = group->second;
-
-			// set world transform to zero
-			dxgl::TransformBuffer tbuff{};
-			tbuff.world.setIdentity();
-			tbuff.view = m_camera->view();
-			tbuff.proj = m_camera->proj();
-
-			// get boneSpace
-			std::vector<Mat4f> boneSpace{};
-			mesh->getBoneTransforms(0, m_timePassed, boneSpace);
-
-			// update entity
-			EntityBuffer ebuff{};
-			ebuff.entityWorld = tbuff.world;
-			ebuff.entityView = tbuff.view;
-			ebuff.entityProj = tbuff.proj;
-			std::copy(boneSpace.begin(), boneSpace.end(), ebuff.boneSpace);
-			ebuff.camPosition = m_camera->getPosition();
-			ebuff.camDirection = m_camera->getDirection();
-			ebuff.width = width;
-			ebuff.height = height;
-			ebuff.materialFlags = mesh->getTextureIndex();
-			ebuff.globalFlags = (m_fullscreen ? GLOBAL_USE_FULLSCREEN : 0);
-			m_vscbEntityBuffer->update(&ebuff);
-			m_pscbEntityBuffer->update(&ebuff);
-
-			// get all entity transform data
-			bool useTessellation = false;
-
-			std::vector<InstanceData> entityData{};
-			for (dxgl::governor::EntityId id : entities) {
-				auto& transform = governor()->getEntityComponent<TransformComponent>(id);
-				auto& mesh = governor()->getEntityComponent<MeshComponent>(id);
-				InstanceData data{};
-				data.id = id;
-				data.scale = transform.scale;
-				data.rotation = transform.rotation;
-				data.translation = transform.translation;
-				data.flags = mesh.instanceFlags;
-
-				if (id == selectedEntity) {
-					data.flags |= INSTANCE_IS_SELECTED;
-				}
-
-				entityData.push_back(data);
-
-				useTessellation = mesh.useTessellation;
-			}
-
-			// create an instance buffer for each group of entities
-			SP_InstanceBuffer buffer = resource()->createInstanceBuffer(&entityData[0], entities.size(), sizeof(InstanceData));
-
-			// set appropriate input data
-			resource()->get<SP_InputLayout>("fbxLayout")->bind();
-			mesh->getMeshVertexBuffer()->bind(0);
-			if (mesh->getBoneVertexBuffer()) mesh->getBoneVertexBuffer()->bind(2);
-			buffer->bind(1);
-			mesh->getIndexBuffer()->bind();
-
-			// set shaders
-			if (useTessellation) {
-				renderer()->shader()->setShaderSet("tessellation");
-			} else {
-				renderer()->shader()->setShaderSet("instance");
-			}
-
-			// draw entities based on mesh material
-			std::vector<SubMesh> meshes = mesh->getMeshes();
-			if (meshes.size() > 0) {
-				for (int i = 0; i < meshes.size(); i++) {
-					//dxgl::MeshMaterialSlot mat = mesh->getMaterials()[i];
-					SP_Material material = resource()->get<SP_Material>(meshes[i].materialName);
-					renderer()->shader()->PS_setMaterial(0, 1, material);
-					if (useTessellation) {
-						renderer()->shader()->DS_setMaterial(0, 1, resource()->get<SP_Material>(meshes[i].materialName));
-						renderer()->drawIndexedTriangleListInstancedTess(meshes[i].indexCount, entities.size(), meshes[i].baseIndex, meshes[i].baseVertex, 0);
-					} else {
-						renderer()->drawIndexedTriangleListInstanced(meshes[i].indexCount, entities.size(), meshes[i].baseIndex, meshes[i].baseVertex, 0);
-					}
-				}
-			}
-		}
-	}
-
-	// render meshes end
-
-	renderer()->raster()->RS_setState(nullptr);
-
 	// post process start
 
 	m_postProcessor.draw();
 
 	// post process end
-
-	if (input()->getKeyTapState('X')) {
-		std::cout << renderer()->getDrawCallCount() << "\n";
-	}
-
-	renderer()->resetDrawCallCount();
 
 }

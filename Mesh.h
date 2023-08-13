@@ -100,6 +100,7 @@ namespace dxgl {
 		Mesh(const MeshDesc& desc, const std::string& filename);
 		~Mesh();
 
+		const SP_VertexBuffer& getPositionVertexBuffer();
 		const SP_VertexBuffer& getMeshVertexBuffer();
 		const SP_VertexBuffer& getBoneVertexBuffer();
 		const SP_IndexBuffer& getIndexBuffer();
@@ -138,14 +139,16 @@ namespace dxgl {
 		Assimp::Importer m_importer;
 		const aiScene* m_scene;
 
-		SP_VertexBuffer m_vbMesh = nullptr; // slot 0
-		SP_VertexBuffer m_vbBone = nullptr; // slot 1
-		SP_VertexBuffer m_vbMtl = nullptr;  // slot 2
+		SP_VertexBuffer m_vbPosition = nullptr;
+		SP_VertexBuffer m_vbMesh = nullptr;
+		SP_VertexBuffer m_vbBone = nullptr;
+		SP_VertexBuffer m_vbMtl = nullptr;
 		SP_IndexBuffer m_ib = nullptr;
 
 		std::vector<SubMesh> m_meshes{};
 		std::vector<std::string> m_materialNames{};
 
+		std::vector<float> m_positions{};
 		std::vector<float> m_vertices{};
 		std::vector<unsigned int> m_indices{};
 		std::vector<Face> m_faces{};

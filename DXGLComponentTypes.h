@@ -4,6 +4,8 @@
 
 #include "DXGLDefinitions.h"
 
+#include "DXGLGovernor.h"
+
 #include "Vec3f.h"
 #include "Mat4f.h"
 
@@ -49,4 +51,7 @@ struct RenderPassComponent {
 
 struct PickableComponent {
 	bool isSelected = false;
+};
+
+struct DestroyableComponent {
 };

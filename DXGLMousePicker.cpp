@@ -27,20 +27,6 @@ void DXGLMousePicker::create() {
 	DXGLMain::governor()->group<TransformComponent, MeshComponent>(governor::GroupSort::GROUP_ANY, m_groupEntity);
 	DXGLMain::governor()->group<PickableComponent>(dxgl::governor::GroupSort::GROUP_ANY, m_groupPickable);
 
-	// mouse pick RTV
-	RESOURCE_VIEW_DESC rtvDesc = {
-		UNORM8,
-		1,
-		0,
-	};
-	DXGLMain::renderer()->createRenderTargetView(&rtvDesc, RESOURCE_VIEW_SLOT_1, &m_rtv);
-
-	RESOURCE_VIEW_DESC dsvDesc = {
-		D24_S8,
-		1,
-		0,
-	};
-	DXGLMain::renderer()->createDepthStencilView(&dsvDesc, RESOURCE_VIEW_SLOT_1, &m_dsv);
 }
 
 #include <iostream>
@@ -191,9 +177,9 @@ uint32_t DXGLMousePicker::getColorId(Point2f position) {
 	// Read the color value
 	uint32_t color = *(data + offset);
 
-	int red   = static_cast<int>((color & 0xFF));
+	int red = static_cast<int>((color & 0xFF));
 	int green = static_cast<int>(((color >> 8) & 0xFF));
-	int blue  = static_cast<int>(((color >> 16) & 0xFF));
+	int blue = static_cast<int>(((color >> 16) & 0xFF));
 
 	// Pack the color components into a 32-bit format
 	uint32_t colorId = (red << 16) | (green << 8) | blue;

@@ -10,7 +10,6 @@
 #include "DXGLGroup.h"
 
 namespace dxgl::governor {
-
 	struct GroupData {
 		DXGLGroup* group = nullptr;
 		GroupSort sort;
@@ -49,10 +48,16 @@ namespace dxgl::governor {
 			return component;
 		}
 
+		template<typename T>
+		bool entityHasComponent(EntityId entityId) {
+			return m_entityManager->hasComponent<T>(entityId);
+		}
+
 		const Signature& getEntitySignature(EntityId entityId);
 
 		template<typename... T>
 		void group(GroupSort sort, DXGLGroup*& group) {
+
 			Signature signature = m_componentManager->getSignature<T...>();
 
 			// Check if the group already exists
@@ -81,6 +86,17 @@ namespace dxgl::governor {
 				// Group exists, assign the existing group to the provided object
 				group = existingGroup.group;
 			}
+		}
+
+		template<typename... T>
+		DXGLGroup collectAllWith(DXGLGroup* group) {
+			DXGLGroup newGroup;
+			for (governor::EntityId entityId : *group) {
+				if (m_entityManager->hasComponent<T>(entityId)) {
+					newGroup.push_back(entityId);
+				}
+			}
+			return newGroup;
 		}
 
 	private:

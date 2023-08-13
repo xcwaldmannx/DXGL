@@ -3,11 +3,6 @@
 #include <d3d11.h>
 #include <memory>
 
-namespace dxgl::governor {
-	class DXGLGovernor;
-	typedef std::shared_ptr<DXGLGovernor> SP_DXGLGovernor;
-}
-
 namespace dxgl {
 	//////////
 	// DXGL //
@@ -27,6 +22,12 @@ namespace dxgl {
 
 	class DXGLResourceManager;
 	typedef std::shared_ptr<DXGLResourceManager> SP_DXGLResourceManager;
+
+	class MousePickManager;
+	typedef std::shared_ptr<MousePickManager> SP_MousePickManager;
+
+	class EntityManager;
+	typedef std::shared_ptr<EntityManager> SP_EntityManager;
 
 	// STAGES
 	class DXGLShader;
@@ -52,9 +53,6 @@ namespace dxgl {
 
 	class DXGLLight;
 	typedef std::shared_ptr<DXGLLight> SP_DXGLLight;
-
-	class DXGLMousePicker;
-	typedef std::shared_ptr<DXGLMousePicker> SP_DXGLMousePicker;
 
 	class DXGLFoliageManager;
 	typedef std::shared_ptr<DXGLFoliageManager> SP_DXGLFoliageManager;

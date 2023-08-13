@@ -35,9 +35,14 @@ SP_DXGLResourceManager DXGLMain::resource() {
 	return DXGLMain::m_resource;
 }
 
-governor::SP_DXGLGovernor DXGLMain::m_governor = std::make_shared<governor::DXGLGovernor>();
-governor::SP_DXGLGovernor DXGLMain::governor() {
-	return DXGLMain::m_governor;
+SP_EntityManager DXGLMain::m_entities = std::make_shared<EntityManager>();
+SP_EntityManager DXGLMain::entities() {
+	return DXGLMain::m_entities;
+}
+
+SP_MousePickManager DXGLMain::m_mousePick = std::make_shared<MousePickManager>();
+SP_MousePickManager DXGLMain::mousePick() {
+	return DXGLMain::m_mousePick;
 }
 
 SP_DXGLInputManager DXGLMain::m_userInput = std::make_shared<DXGLInputManager>();

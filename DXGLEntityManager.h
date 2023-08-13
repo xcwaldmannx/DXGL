@@ -35,6 +35,25 @@ namespace dxgl::governor {
 			return m_componentManager->remove<T>(entityId, m_entities[entityId]);
 		}
 
+		template<typename T>
+		bool hasComponent(EntityId entityId) {
+			auto it = std::find(m_activeEntities.begin(), m_activeEntities.end(), entityId);
+			if (it == m_activeEntities.end()) {
+				return false;
+			}
+
+			const Signature& search = m_componentManager->getSignature<T>();
+			const Signature& test = getSignature(entityId);
+
+			for (int i = 0; i < MAX_COMPONENTS; i++) {
+				if (search[i]) {
+					if (!test[i]) return false;
+				}
+			}
+			
+			return true;
+		}
+
 		const DXGLGroup groupEntities(const Signature& signature, GroupSort sort);
 		const DXGLGroup groupEntities(std::vector<EntityId> entities, const Signature& signature, GroupSort sort);
 

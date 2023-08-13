@@ -36,7 +36,9 @@ struct OctTreeRect {
 template<typename T>
 class OctTreeWrap {
 public:
-	OctTreeWrap(const OctTreeRect& rect = { Vec3f{ 0, 0, 0 }, Vec3f{ 1, 1, 1 } }, const size_t maxDepth = 4) : m_rect(rect), MAX_DEPTH(maxDepth) {
+	OctTreeWrap(const OctTreeRect& rect = { Vec3f{ 0, 0, 0 }, Vec3f{ 1, 1, 1 } },
+		const size_t maxSize = 1024, const size_t maxDepth = 4) : m_rect(rect), MAX_SIZE(maxSize), MAX_DEPTH(maxDepth) {
+		//m_items = std::array<std::pair<OctTreeRect, T>, MAX_SIZE>;
 	}
 
 	~OctTreeWrap() {
@@ -56,7 +58,34 @@ public:
 			}
 		}
 
+		//m_itemToIndex[item] = m_items.size();
 		m_items.push_back({ rect, item });
+	}
+
+	bool remove(T item) {
+		// Try to remove the item from the current node's items
+		auto it = std::find_if(m_items.begin(), m_items.end(),
+			[&item](const std::pair<OctTreeRect, T>& pair) {
+				return pair.second == item;
+			});
+
+		if (it != m_items.end()) {
+			m_items.erase(it);
+			return true;
+		}
+
+		// If the item is not in the current node, check child nodes
+		for (int i = 0; i < 8; i++) {
+			if (m_children[i] && m_children[i]->remove(item)) {
+				return true;
+			}
+		}
+
+		return false; // Item not found in this node or its children
+	}
+
+	bool contains(const T& item) {
+		return false;// m_itemToIndex.find(item) != m_itemToIndex.end();
 	}
 
 	std::list<T> search(const OctTreeRect& rect) {
@@ -134,11 +163,14 @@ private:
 	size_t m_depth = 0;
 	const size_t MAX_DEPTH;
 
+	const size_t MAX_SIZE;
+
 	std::array<OctTreeRect, 8> m_childRects{};
 
 	std::array<std::shared_ptr<OctTreeWrap<T>>, 8> m_children{};
 
 	std::vector<std::pair<OctTreeRect, T>> m_items;
+	//std::unordered_map<T, unsigned int> m_itemToIndex;
 };
 
 template<typename T>
@@ -157,6 +189,14 @@ public:
 		m_items.push_back(item);
 
 		m_root.insert(std::prev(m_items.end()), rect);
+	}
+
+	void remove(T item) {
+		auto it = std::find(m_items.begin(), m_items.end(), item);
+		if (it != m_items.end()) {
+			m_root.remove(it);
+			m_items.erase(it);
+		}
 	}
 
 	list search(const OctTreeRect& rect) {

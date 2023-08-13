@@ -205,9 +205,6 @@
     <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLTerrainManager">
       <UniqueIdentifier>{c44dcf8e-fb2c-4198-a8cd-a64957077b1d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLMousePicker">
-      <UniqueIdentifier>{07a3e320-be25-40df-bf38-a9ef4a1d95ec}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\DXGLShadowManager">
       <UniqueIdentifier>{cf116397-0c4f-4f57-81c4-4187a7c9b8cf}</UniqueIdentifier>
     </Filter>
@@ -246,6 +243,12 @@
     </Filter>
     <Filter Include="DXGL\DXGLApp\Shaders\MaterialShader">
       <UniqueIdentifier>{8c584433-4df2-4044-b455-7aed537aee11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\MousePickManager">
+      <UniqueIdentifier>{07a3e320-be25-40df-bf38-a9ef4a1d95ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\EntityManager">
+      <UniqueIdentifier>{18648e7a-1d5b-41fc-a9f9-2585aaf9ece4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -354,9 +357,6 @@
     <ClCompile Include="DXGLOutputMerger.cpp">
       <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLOutputMerger</Filter>
     </ClCompile>
-    <ClCompile Include="DXGLMousePicker.cpp">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLMousePicker</Filter>
-    </ClCompile>
     <ClCompile Include="DXGLSamplerState.cpp">
       <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\PipelineStates\DXGLSamplerState</Filter>
     </ClCompile>
@@ -416,6 +416,15 @@
     </ClCompile>
     <ClCompile Include="SkyboxRenderPass.cpp">
       <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLRenderPass\RenderPasses</Filter>
+    </ClCompile>
+    <ClCompile Include="MousePickRenderPass.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLRenderPass\RenderPasses</Filter>
+    </ClCompile>
+    <ClCompile Include="MousePickManager.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\MousePickManager</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityManager.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\EntityManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -551,9 +560,6 @@
     <ClInclude Include="DXGLOutputMerger.h">
       <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLOutputMerger</Filter>
     </ClInclude>
-    <ClInclude Include="DXGLMousePicker.h">
-      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLMousePicker</Filter>
-    </ClInclude>
     <ClInclude Include="DXGLSamplerState.h">
       <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\DXGLResourceManager\Resources\PipelineStates\DXGLSamplerState</Filter>
     </ClInclude>
@@ -631,6 +637,15 @@
     </ClInclude>
     <ClInclude Include="Point3f.h">
       <Filter>DXGL\DXGLSource\Util\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="MousePickRenderPass.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLRenderPass\RenderPasses</Filter>
+    </ClInclude>
+    <ClInclude Include="MousePickManager.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\MousePickManager</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityManager.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\EntityManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

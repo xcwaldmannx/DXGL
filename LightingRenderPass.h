@@ -23,7 +23,7 @@ namespace dxgl {
 		LightingRenderPass();
 		~LightingRenderPass();
 
-		void draw(std::unordered_map<SP_Mesh, std::vector<InstanceTransform>>& instances) override;
+		void draw(std::unordered_map<SP_Mesh, std::vector<PerInstanceData>>& instances) override;
 
 	private:
 		ID3D11DepthStencilState* m_dsState = nullptr;

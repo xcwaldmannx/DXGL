@@ -65,6 +65,10 @@ Mesh::Mesh(const MeshDesc& desc, const std::string& filename) : m_desc(desc) {
 
 				if (m_desc.vertexAttributes & VERTEX_POSITION) {
 					const aiVector3D& position = mesh->mVertices[vertexIndex];
+					m_positions.push_back(position.x);
+					m_positions.push_back(position.y);
+					m_positions.push_back(position.z);
+
 					m_vertices.push_back(position.x);
 					m_vertices.push_back(position.y);
 					m_vertices.push_back(position.z);
@@ -120,6 +124,7 @@ Mesh::Mesh(const MeshDesc& desc, const std::string& filename) : m_desc(desc) {
 
 		computeAABB();
 
+		m_vbPosition = DXGLMain::resource()->createVertexBuffer(&m_positions[0], m_positions.size() / 3, sizeof(float) * 3);
 		m_vbMesh = DXGLMain::resource()->createVertexBuffer(&m_vertices[0], vertexCount, vertexSize);
 
 		if (m_desc.miscAttributes & MISC_INDEX) {
@@ -579,6 +584,10 @@ void Mesh::convertMatrix(const aiMatrix4x4& input, Mat4f& output) {
 	output.mat[3][1] = input.d2;
 	output.mat[3][2] = input.d3;
 	output.mat[3][3] = input.d4;
+}
+
+const SP_VertexBuffer& Mesh::getPositionVertexBuffer() {
+	return m_vbPosition;
 }
 
 const SP_VertexBuffer& Mesh::getMeshVertexBuffer() {

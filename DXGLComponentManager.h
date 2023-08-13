@@ -19,7 +19,7 @@ namespace dxgl::governor {
 
 		template<typename T>
 		void registerComponent() {
-			assert(m_registeredComponentCount < 32 && "Component registration limit exceeded.");
+			assert(m_registeredComponentCount < MAX_COMPONENTS && "Component registration limit exceeded.");
 			assert(!exists<T>() && "Component already registered.");
 
 			std::type_index componentType = typeid(T);
@@ -67,11 +67,9 @@ namespace dxgl::governor {
 			return signature;
 		}
 
-
 		void destroy(EntityId entityId);
 
 	private:
-
 		template<typename T>
 		bool exists() {
 			std::type_index componentType = typeid(T);

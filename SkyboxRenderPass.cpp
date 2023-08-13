@@ -56,7 +56,7 @@ SkyboxRenderPass::~SkyboxRenderPass() {
 
 }
 
-void SkyboxRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<InstanceTransform>>& instances) {
+void SkyboxRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<PerInstanceData>>& instances) {
 	// Bind the depth-stencil view and render target view
 	SP_DXGLRenderTargetView rtv = DXGLMain::renderer()->getRTV(RESOURCE_VIEW_SLOT_BACK_BUFFER);
 	ID3D11RenderTargetView* rtvv = rtv->get();

@@ -223,7 +223,7 @@ SP_InputLayout DXGLResourceManager::createInputLayout(const InputLayoutDesc& des
 	try {
 		buffer = std::make_shared<InputLayout>(desc, filename);
 	} catch (...) {
-		throw std::runtime_error("InputLayout could ont be created.");
+		throw std::runtime_error("InputLayout could not be created.");
 	}
 	return buffer;
 }

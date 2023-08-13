@@ -31,7 +31,9 @@ struct QuadTreeRect {
 template<typename T>
 class QuadTreeWrap {
 public:
-	QuadTreeWrap(const QuadTreeRect& rect = { Vec2f{0, 0}, Vec2f{1, 1} }, const size_t maxDepth = 4) : m_rect(rect), MAX_DEPTH(maxDepth) {
+	QuadTreeWrap(const QuadTreeRect& rect = { Vec2f{0, 0}, Vec2f{1, 1} },
+		const size_t maxSize = 1024, const size_t maxDepth = 4) : m_rect(rect), MAX_SIZE(maxSize), MAX_DEPTH(maxDepth) {
+		//m_items = std::array<std::pair<QuadTreeRect, T>, MAX_SIZE>;
 	}
 
 	~QuadTreeWrap() {
@@ -51,7 +53,28 @@ public:
 			}
 		}
 
+		//m_itemToIndex[item] = m_items.size();
 		m_items.push_back({ rect, item });
+	}
+
+	//void remove(const T& item) {
+	//	for (int i = 0; i < 4; i++) {
+	//		if (m_children[i]) {
+	//			if (m_itemToIndex.find(item) != m_itemToIndex.end()) {
+	//				unsigned int index = m_itemToIndex[item];
+	//				m_items.erase(index);
+	//				m_itemToIndex.erase(item);
+	//				return;
+	//			}
+	//			else {
+	//				m_children[i]->remove(item);
+	//			}
+	//		}
+	//	}
+	//}
+
+	bool contains(const T& item) {
+		return false;// m_itemToIndex.find(item) != m_itemToIndex.end();
 	}
 
 	std::list<T> search(const QuadTreeRect& rect) {
@@ -123,11 +146,14 @@ private:
 	size_t m_depth = 0;
 	const size_t MAX_DEPTH;
 
+	const size_t MAX_SIZE;
+
 	std::array<QuadTreeRect, 4> m_childRects{};
 
 	std::array<std::shared_ptr<QuadTreeWrap<T>>, 4> m_children{};
 
 	std::vector<std::pair<QuadTreeRect, T>> m_items;
+	// std::unordered_map<T, unsigned int> m_itemToIndex;
 };
 
 template<typename T>
@@ -147,6 +173,10 @@ public:
 
 		m_root.insert(std::prev(m_items.end()), rect);
 	}
+
+	//void remove(const T& item) {
+	//	m_root.remove(item);
+	//}
 
 	list search(const QuadTreeRect& rect) {
 		list items{};
