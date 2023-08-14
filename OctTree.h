@@ -204,11 +204,14 @@ public:
 
 		m_items.back().location = m_root.insert(std::prev(m_items.end()), rect);
 
-		//m_itemToOctTreeItem[item] = std::prev(m_items.end());
+		m_itemToOctTreeItem[item] = std::prev(m_items.end());
 	}
 
+#define USE_NEW_REMOVE 0
+
 	void remove(T item) {
-		//auto pItem = m_itemToOctTreeItem[item];
+#if USE_NEW_REMOVE
+		// works, but is slow
 		auto it = std::find_if(m_items.begin(), m_items.end(),
 			[&item](const OctTreeItem<T>& i) {
 				return i.item == item;
@@ -216,13 +219,19 @@ public:
 
 		it->location.container->erase(it->location.iterator);
 		m_items.erase(it);
-		//m_itemToOctTreeItem.erase(item);
+#else
+		// new method
+		auto octTreeItem = m_itemToOctTreeItem[item];
+		octTreeItem->location.container->erase(octTreeItem->location.iterator);
+		m_items.erase(octTreeItem);
+		m_itemToOctTreeItem.erase(item);
+#endif
 	}
 
 	void relocate(T item, const OctTreeRect& rect) {
-		//auto pItem = m_itemToOctTreeItem[item];
-		//pItem->location.container->erase(pItem->location.iterator);
-		//pItem->location = m_root.insert(pItem, rect);
+		auto octTreeItem = m_itemToOctTreeItem[item];
+		octTreeItem->location.container->erase(octTreeItem->location.iterator);
+		octTreeItem->location = m_root.insert(octTreeItem, rect);
 	}
 
 	list search(const OctTreeRect& rect) {
@@ -272,5 +281,5 @@ protected:
 	std::list<OctTreeItem<T>> m_items{};
 	OctTreeWrap<typename ptr> m_root;
 
-	std::unordered_map<T, typename ptr> m_itemToOctTreeItem{};
+	std::unordered_map<T, typename ptr> m_itemToOctTreeItem;
 };
