@@ -10,7 +10,10 @@ int main() {
 	DXGLApp dxglApp{};
 	try {
 		while (dxglApp.isRunning());
-	} catch (...) {
+	} catch (const std::exception& e) {
+		std::cerr << "An exception occurred: " << e.what() << std::endl;
+		std::string wait;
+		std::cin >> wait;
 		return -1;
 	}
 

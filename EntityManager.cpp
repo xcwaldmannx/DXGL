@@ -14,7 +14,7 @@ EntityManager::~EntityManager() {
 
 }
 
-std::list<governor::EntityId> EntityManager::getEntities() {
+std::list<OctTreeItem<governor::EntityId>> EntityManager::getEntities() {
 	return m_entities.allItems();
 }
 
@@ -45,4 +45,13 @@ governor::EntityId EntityManager::createEntity(TransformComponent& transform, Me
 void EntityManager::destroyEntity(governor::EntityId id) {
 	m_governor.destroyEntity(id);
 	m_entities.remove(id);
+}
+
+void EntityManager::relocateEntity(governor::EntityId id) {
+	auto& transform = getEntityComponent<TransformComponent>(id);
+	auto& mesh = getEntityComponent<MeshComponent>(id);
+	OctTreeRect rect{};
+	rect.pos = transform.translation + mesh.mesh->getAABB().min;
+	rect.size = mesh.mesh->getAABB().max;
+	m_entities.relocate(id, rect);
 }

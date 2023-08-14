@@ -9,7 +9,7 @@ DXGLGovernor::DXGLGovernor() {
 
 DXGLGovernor::~DXGLGovernor() {
 	for (auto& groupData : m_groups) {
-		delete groupData.group;
+		if (groupData.group) delete groupData.group;
 	}
 }
 

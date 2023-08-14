@@ -282,9 +282,9 @@ void DXGLApp::create() {
 		resource()->storeMesh(desc, "Assets/Meshes/rock1.fbx", "rock1");
 	}
 
-	for (int i = -20; i < 20; i++) {
-		for (int j = -20; j < 20; j++) {
-			for (int k = -20; k < 20; k++) {
+	for (int i = -10; i < 10; i++) {
+		for (int j = -10; j < 10; j++) {
+			for (int k = -10; k < 10; k++) {
 				TransformComponent transform{};
 				transform.scale = { 2.0f + std::rand() % 5, 2.0f + std::rand() % 5, 2.0f + std::rand() % 5 };
 				float rx = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 6);
@@ -295,7 +295,7 @@ void DXGLApp::create() {
 				float tx = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 96);
 				float ty = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 96);
 				float tz = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 96);
-				transform.translation = { (float) i * 192 + tx, (float) j * 192 + ty, (float) k * 192 + tz };
+				transform.translation = { (float) i * 256 + tx, (float) j * 256 + ty, (float) k * 256 + tz };
 
 				MeshComponent mesh{};
 				mesh.mesh = resource()->get<SP_Mesh>("rock1");
@@ -313,9 +313,6 @@ void DXGLApp::create() {
 			}
 		}
 	}
-
-	entities()->group<TransformComponent, MeshComponent>(dxgl::governor::GroupSort::GROUP_ANY, m_groupEntity);
-	entities()->group<PickableComponent>(dxgl::governor::GroupSort::GROUP_ANY, m_groupPickable);
 
 	// Depth Stencils
 	D3D11_DEPTH_STENCIL_DESC depthStencilDesc{};
@@ -403,6 +400,7 @@ void DXGLApp::update(long double delta) {
 		Vec3f offsetZ = m_camera->world().getZDirection() * aim.z;
 		Vec3f offset = offsetX + offsetY + offsetZ;
 		transform.translation = m_camera->world().getTranslation() + offset;
+		entities()->relocateEntity(m_gun);
 	}
 	// point gun end
 
@@ -447,7 +445,7 @@ void DXGLApp::draw() {
 
 	m_queue.draw();
 
-	//m_postProcessor.draw();
+	// m_postProcessor.draw();
 
 	if (input()->getKeyTapState('X')) {
 		std::cout << renderer()->getDrawCallCount() << "\n";

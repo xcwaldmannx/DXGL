@@ -15,7 +15,7 @@ namespace dxgl {
 		EntityManager();
 		~EntityManager();
 
-		std::list<governor::EntityId> getEntities();
+		std::list<OctTreeItem<governor::EntityId>> getEntities();
 		OctTree<governor::EntityId>::list searchEntities(float searchSize);
 
 		template<typename T>
@@ -26,6 +26,8 @@ namespace dxgl {
 		governor::EntityId createEntity(TransformComponent& transform, MeshComponent& mesh);
 
 		void destroyEntity(governor::EntityId id);
+
+		void relocateEntity(governor::EntityId id);
 
 		template<typename T>
 		void addEntityComponent(T& component, governor::EntityId id) {

@@ -44,10 +44,6 @@ private:
 	SP_Mesh m_fbxMesh = nullptr;
 	SP_Mesh m_fbxMan = nullptr;
 
-	governor::DXGLGroup* m_groupEntity{};
-	governor::DXGLGroup* m_groupPickable{};
-	governor::DXGLGroup m_visibleEntities{};
-
 	std::vector<std::string> m_shapes{};
 
 	governor::EntityId m_gun = 0;

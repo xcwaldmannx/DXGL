@@ -34,6 +34,18 @@ struct OctTreeRect {
 };
 
 template<typename T>
+struct OctTreeItemLocation {
+	typename std::list<std::pair<OctTreeRect, T>>* container;
+	typename std::list<std::pair<OctTreeRect, T>>::iterator iterator;
+};
+
+template<typename T>
+struct OctTreeItem {
+	T item;
+	OctTreeItemLocation<typename std::list<OctTreeItem<T>>::iterator> location;
+};
+
+template<typename T>
 class OctTreeWrap {
 public:
 	OctTreeWrap(const OctTreeRect& rect = { Vec3f{ 0, 0, 0 }, Vec3f{ 1, 1, 1 } },
@@ -44,7 +56,7 @@ public:
 	~OctTreeWrap() {
 	}
 
-	void insert(const T& item, const OctTreeRect& rect) {
+	OctTreeItemLocation<T> insert(const T& item, const OctTreeRect& rect) {
 		for (int i = 0; i < 8; i++) {
 			if (m_childRects[i].contains(rect)) {
 				if (m_depth + 1 < MAX_DEPTH) {
@@ -52,14 +64,14 @@ public:
 						m_children[i] = std::make_shared<OctTreeWrap<T>>(m_childRects[i], m_depth + 1);
 					}
 
-					m_children[i]->insert(item, rect);
-					return;
+					return m_children[i]->insert(item, rect);
 				}
 			}
 		}
 
 		//m_itemToIndex[item] = m_items.size();
 		m_items.push_back({ rect, item });
+		return { &m_items, std::prev(m_items.end()) };
 	}
 
 	bool remove(T item) {
@@ -169,16 +181,15 @@ private:
 
 	std::array<std::shared_ptr<OctTreeWrap<T>>, 8> m_children{};
 
-	std::vector<std::pair<OctTreeRect, T>> m_items;
-	//std::unordered_map<T, unsigned int> m_itemToIndex;
+	std::list<std::pair<OctTreeRect, T>> m_items;
 };
 
 template<typename T>
 class OctTree {
 
 public:
-	typedef std::list<T>::iterator ptr;
-	typedef std::list<T>::const_iterator cptr;
+	typedef std::list<OctTreeItem<T>>::iterator ptr;
+	typedef std::list<OctTreeItem<T>>::const_iterator cptr;
 	typedef std::list<typename ptr> list;
 
 	OctTree(const OctTreeRect& rect = { Vec3f{0, 0, 0}, Vec3f{1, 1, 1} }, const size_t maxDepth = 4) : m_root(rect) {
@@ -186,17 +197,32 @@ public:
 	}
 
 	void insert(const T& item, const OctTreeRect& rect) {
-		m_items.push_back(item);
+		OctTreeItem<T> newItem{};
+		newItem.item = item;
 
-		m_root.insert(std::prev(m_items.end()), rect);
+		m_items.push_back(newItem);
+
+		m_items.back().location = m_root.insert(std::prev(m_items.end()), rect);
+
+		//m_itemToOctTreeItem[item] = std::prev(m_items.end());
 	}
 
 	void remove(T item) {
-		auto it = std::find(m_items.begin(), m_items.end(), item);
-		if (it != m_items.end()) {
-			m_root.remove(it);
-			m_items.erase(it);
-		}
+		//auto pItem = m_itemToOctTreeItem[item];
+		auto it = std::find_if(m_items.begin(), m_items.end(),
+			[&item](const OctTreeItem<T>& i) {
+				return i.item == item;
+			});
+
+		it->location.container->erase(it->location.iterator);
+		m_items.erase(it);
+		//m_itemToOctTreeItem.erase(item);
+	}
+
+	void relocate(T item, const OctTreeRect& rect) {
+		//auto pItem = m_itemToOctTreeItem[item];
+		//pItem->location.container->erase(pItem->location.iterator);
+		//pItem->location = m_root.insert(pItem, rect);
 	}
 
 	list search(const OctTreeRect& rect) {
@@ -222,7 +248,7 @@ public:
 		return m_items.empty();
 	}
 
-	std::list<T> allItems() {
+	std::list<OctTreeItem<T>> allItems() {
 		return m_items;
 	}
 
@@ -243,6 +269,8 @@ public:
 	}
 
 protected:
-	std::list<T> m_items{};
+	std::list<OctTreeItem<T>> m_items{};
 	OctTreeWrap<typename ptr> m_root;
+
+	std::unordered_map<T, typename ptr> m_itemToOctTreeItem{};
 };
