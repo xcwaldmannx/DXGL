@@ -10,6 +10,64 @@
 class Math {
 public:
 
+	static Vec3f getTriangleIntersection(const Vec3f& t1v0, const Vec3f& t1v1, const Vec3f& t1v2,
+		const Vec3f& t2v0, const Vec3f& t2v1, const Vec3f& t2v2) {
+		Vec3f intersectionPoint(0.0f, 0.0f, 0.0f);
+
+		Vec3f normal1 = Vec3f::cross(t1v1 - t1v0, t1v2 - t1v0).normalize();
+		Vec3f normal2 = Vec3f::cross(t2v1 - t2v0, t2v2 - t2v0).normalize();
+
+		Vec3f lineDirection = Vec3f::cross(normal1, normal2);
+
+		// Check if the triangles are parallel
+		float lineLengthSquared = Vec3f::dot(lineDirection, lineDirection);
+		if (lineLengthSquared < 1e-8) {
+			// Triangles are parallel or degenerate
+			return intersectionPoint;
+		}
+
+		// Calculate the intersection point
+		Vec3f diff = t1v0 - t2v0;
+		float d1 = Vec3f::dot(normal1, diff);
+		float d2 = Vec3f::dot(normal2, diff);
+
+		float invLineLengthSquared = 1.0f / lineLengthSquared;
+		intersectionPoint = (normal2 * d1 - normal1 * d2) * invLineLengthSquared;
+
+		return intersectionPoint;
+	}
+
+	static bool trianglesIntersect(const Vec3f& v1, const Vec3f& v2, const Vec3f& v3,
+		const Vec3f& w1, const Vec3f& w2, const Vec3f& w3) {
+		Vec3f e1 = v2 - v1;
+		Vec3f e2 = v3 - v1;
+		Vec3f h = w1 - v1;
+		Vec3f s1 = Vec3f::cross(h, e2);
+		Vec3f s2 = Vec3f::cross(e1, h);
+
+		float dot = Vec3f::dot(s1, e1);
+
+		if (dot == 0.0f) {
+			return false; // Triangles are parallel
+		}
+
+		float invDot = 1.0f / dot;
+
+		float u = Vec3f::dot(s1, h) * invDot;
+		float v = Vec3f::dot(s2, w1 - v1) * invDot;
+
+		if (u < 0.0f || u > 1.0f || v < 0.0f || u + v > 1.0f) {
+			return false; // Triangles do not intersect in the plane
+		}
+
+		float t = Vec3f::dot(s2, e1) * invDot;
+		if (t < 0.0f || t > 1.0f) {
+			return false; // Triangles do not intersect along the line
+		}
+
+		return true;
+	}
+
 	static float barycentricHeight(Vec3f p1, Vec3f p2, Vec3f p3, Vec2f pos) {
 		// Calculate the barycentric coordinates for the first triangle (p1, p2, p3)
 		float detT = (p2.z - p3.z) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.z - p3.z);

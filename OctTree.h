@@ -48,9 +48,7 @@ struct OctTreeItem {
 template<typename T>
 class OctTreeWrap {
 public:
-	OctTreeWrap(const OctTreeRect& rect = { Vec3f{ 0, 0, 0 }, Vec3f{ 1, 1, 1 } },
-		const size_t maxSize = 1024, const size_t maxDepth = 4) : m_rect(rect), MAX_SIZE(maxSize), MAX_DEPTH(maxDepth) {
-		//m_items = std::array<std::pair<OctTreeRect, T>, MAX_SIZE>;
+	OctTreeWrap(const OctTreeRect& rect = { Vec3f{ 0, 0, 0 }, Vec3f{ 1, 1, 1 } }, const size_t maxDepth = 4) : m_rect(rect), MAX_DEPTH(maxDepth) {
 	}
 
 	~OctTreeWrap() {
@@ -69,7 +67,6 @@ public:
 			}
 		}
 
-		//m_itemToIndex[item] = m_items.size();
 		m_items.push_back({ rect, item });
 		return { &m_items, std::prev(m_items.end()) };
 	}
@@ -175,8 +172,6 @@ private:
 	size_t m_depth = 0;
 	const size_t MAX_DEPTH;
 
-	const size_t MAX_SIZE;
-
 	std::array<OctTreeRect, 8> m_childRects{};
 
 	std::array<std::shared_ptr<OctTreeWrap<T>>, 8> m_children{};
@@ -192,7 +187,7 @@ public:
 	typedef std::list<OctTreeItem<T>>::const_iterator cptr;
 	typedef std::list<typename ptr> list;
 
-	OctTree(const OctTreeRect& rect = { Vec3f{0, 0, 0}, Vec3f{1, 1, 1} }, const size_t maxDepth = 4) : m_root(rect) {
+	OctTree(const OctTreeRect& rect = { Vec3f{0, 0, 0}, Vec3f{1, 1, 1} }, const size_t maxDepth = 4) : m_root(rect, maxDepth) {
 
 	}
 

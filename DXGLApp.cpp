@@ -221,6 +221,7 @@ void DXGLApp::create() {
 	entities()->registerComponent<MeshComponent>();
 	entities()->registerComponent<PickableComponent>();
 	entities()->registerComponent<DestroyableComponent>();
+	entities()->registerComponent<RigidBodyComponent>();
 
 	// landscape
 	{
@@ -278,15 +279,15 @@ void DXGLApp::create() {
 	{
 		MeshDesc desc{};
 		desc.vertexAttributes = VERTEX_ALL;
-		desc.miscAttributes = MISC_DEFAULT;
-		resource()->storeMesh(desc, "Assets/Meshes/rock1.fbx", "rock1");
+		desc.miscAttributes = MISC_DEFAULT | MISC_FACE;
+		resource()->storeMesh(desc, "Assets/Meshes/box.fbx", "rock1");
 	}
 
 	for (int i = -10; i < 10; i++) {
 		for (int j = -10; j < 10; j++) {
 			for (int k = -10; k < 10; k++) {
 				TransformComponent transform{};
-				transform.scale = { 2.0f + std::rand() % 5, 2.0f + std::rand() % 5, 2.0f + std::rand() % 5 };
+				transform.scale = { 5, 5, 5 };// { 2.0f + std::rand() % 5, 2.0f + std::rand() % 5, 2.0f + std::rand() % 5 };
 				float rx = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 6);
 				float ry = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 6);
 				float rz = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 6);
@@ -310,9 +311,29 @@ void DXGLApp::create() {
 
 				DestroyableComponent destroyable{};
 				entities()->addEntityComponent<DestroyableComponent>(destroyable, id);
+
+				RigidBodyComponent rigidbody{};
+				rigidbody.elasticity = 0.3f;
+				rigidbody.mass = transform.scale.x * 100.0f;
+				entities()->addEntityComponent<RigidBodyComponent>(rigidbody, id);
 			}
 		}
 	}
+
+	//{
+	//	// colliding player
+	//	TransformComponent transform{};
+	//	transform.scale = { 0.5f, 0.5f, 0.5f };
+	//	transform.translation = { 0, 0, 0 };
+	//	MeshComponent mesh{};
+	//	mesh.mesh = resource()->get<SP_Mesh>("rock1");
+	//	m_player = entities()->createEntity(transform, mesh);
+
+	//	RigidBodyComponent rigidbody{};
+	//	rigidbody.elasticity = 0.1f;
+	//	rigidbody.mass = 75.0f;
+	//	entities()->addEntityComponent<RigidBodyComponent>(rigidbody, m_player);
+	//}
 
 	// Depth Stencils
 	D3D11_DEPTH_STENCIL_DESC depthStencilDesc{};
@@ -370,18 +391,15 @@ void DXGLApp::update(long double delta) {
 		transform.translation = m_camera->getPosition() + m_camera->getDirection() * 2.0f;
 
 		MeshComponent mesh{};
-		mesh.mesh = m_fbxMesh;
-		mesh.useTessellation = false;
-		mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
+		mesh.mesh = resource()->get<SP_Mesh>("rock1");
 
 		dxgl::governor::EntityId id = entities()->createEntity(transform, mesh);
 
-		PickableComponent pickable{};
-		pickable.isSelected = false;
-		entities()->addEntityComponent<PickableComponent>(pickable, id);
-
-		DestroyableComponent destroyable{};
-		entities()->addEntityComponent<DestroyableComponent>(destroyable, id);
+		RigidBodyComponent rigidbody{};
+		rigidbody.linearVelocity = m_camera->getDirection() * 25.0f;
+		rigidbody.elasticity = 0.5f;
+		rigidbody.mass = 10.0f;
+		entities()->addEntityComponent<RigidBodyComponent>(rigidbody, id);
 	}
 
 	// add entity end
@@ -413,6 +431,17 @@ void DXGLApp::update(long double delta) {
 
 	// rotate guitar end
 
+	// player start
+	//{
+	//	auto& transform = entities()->getEntityComponent<TransformComponent>(m_player);
+	//	transform.rotation = m_camera->world().getRotation();
+	//	transform.translation = m_camera->world().getTranslation();
+
+	//	auto& rigidbody = entities()->getEntityComponent<RigidBodyComponent>(m_player);
+	//	rigidbody.linearVelocity = m_camera->getDirection() * m_camera->getCurrentSpeed();
+	//}
+	// player end
+
 	// mouse picking start
 	if (input()->getMouseState(DXGLInputManager::LMB_STATE)) {
 		Point2f mouse = DXGLMain::input()->getMousePosition();
@@ -426,7 +455,143 @@ void DXGLApp::update(long double delta) {
 	// mouse picking end
 
 	// update entities start
-	m_queue.submit(entities()->searchEntities(1024));
+	std::list<OctTree<governor::EntityId>::ptr> searchedEntities = entities()->searchEntities(512);
+
+	{ // physics manager
+		for (auto entity: searchedEntities) {
+			governor::EntityId id = entity->item;
+
+			if (entities()->entityHasComponent<RigidBodyComponent>(id)) {
+				auto& transform = entities()->getEntityComponent<TransformComponent>(id);
+				auto& mesh = entities()->getEntityComponent<MeshComponent>(id);
+				auto& rigidbody = entities()->getEntityComponent<RigidBodyComponent>(id);
+
+				Mat4f mat{};
+				mat.setIdentity();
+				mat.setScale(transform.scale * 1.25f);
+				//mat.setRotation(transform.rotation);
+				mat.setTranslation(transform.translation);
+
+				AABB aabb = mesh.mesh->getAABB();
+				aabb.min = mat * aabb.min;
+				aabb.max = mat * aabb.max;
+
+				// collision check
+				for (auto collider : searchedEntities) {
+					governor::EntityId colliderId = collider->item;
+					if (id != colliderId && entities()->entityHasComponent<RigidBodyComponent>(colliderId)) {
+						auto& colliderTransform = entities()->getEntityComponent<TransformComponent>(colliderId);
+						auto& colliderMesh = entities()->getEntityComponent<MeshComponent>(colliderId);
+						auto& colliderRigidbody = entities()->getEntityComponent<RigidBodyComponent>(colliderId);
+
+						Mat4f colliderMat{};
+						colliderMat.setIdentity();
+						colliderMat.setScale(colliderTransform.scale * 1.25f);
+						//colliderMat.setRotation(colliderTransform.rotation);
+						colliderMat.setTranslation(colliderTransform.translation);
+
+						AABB colliderAABB = colliderMesh.mesh->getAABB();
+						colliderAABB.min = colliderMat * colliderAABB.min;
+						colliderAABB.max = colliderMat * colliderAABB.max;
+
+
+						if (aabb.isCollided(colliderAABB)) {
+							Vec3f intersection{};
+							bool foundIntersection = false;
+
+							// loop through faces to determine exact contact point
+							const auto& faces = mesh.mesh->getFaces();
+							const auto& colliderFaces = colliderMesh.mesh->getFaces();
+
+							for (const auto& face : faces) {
+								mat.setIdentity();
+								mat.setScale(transform.scale * 1.25f);
+								mat.setRotation(transform.rotation);
+								mat.setTranslation(transform.translation);
+
+								Vec3f f0 = mat * face.v0;
+								Vec3f f1 = mat * face.v1;
+								Vec3f f2 = mat * face.v2;
+								for (const auto& colliderFace : colliderFaces) {
+									colliderMat.setIdentity();
+									colliderMat.setScale(colliderTransform.scale * 1.25f);
+									colliderMat.setRotation(colliderTransform.rotation);
+									colliderMat.setTranslation(colliderTransform.translation);
+
+									Vec3f cf0 = colliderMat * colliderFace.v0;
+									Vec3f cf1 = colliderMat * colliderFace.v1;
+									Vec3f cf2 = colliderMat * colliderFace.v2;
+									if (Math::trianglesIntersect(f0, f1, f2, cf0, cf1, cf2)) {
+										intersection = Math::getTriangleIntersection(f0, f1, f2, cf0, cf1, cf2);
+										foundIntersection = true;
+										break;
+									}
+								}
+
+								if (foundIntersection) {
+									break;
+								}
+							}
+
+							if (foundIntersection) {
+								// linear velocity
+
+								Vec3f v1f{};
+								Vec3f v2f{};
+
+								Vec3f relativeVelocity = rigidbody.linearVelocity - colliderRigidbody.linearVelocity;
+
+								float impulseDenominator = 1.0f / (rigidbody.mass + colliderRigidbody.mass);
+
+								v1f = rigidbody.linearVelocity - relativeVelocity * impulseDenominator * (1.0f + rigidbody.elasticity) * colliderRigidbody.mass;
+								v2f = colliderRigidbody.linearVelocity + relativeVelocity * impulseDenominator * (1.0f + colliderRigidbody.elasticity) * rigidbody.mass;
+
+								rigidbody.linearVelocity = v1f;
+								colliderRigidbody.linearVelocity = v2f;
+
+								transform.translation += v1f * delta;
+								colliderTransform.translation += v2f * delta;
+
+								// angular velocity
+
+								Vec3f w1f{};
+								Vec3f w2f{};
+
+								// force calculation for angular velocity
+								Vec3f force = (v1f * rigidbody.mass) + (v2f * colliderRigidbody.mass);
+
+								Vec3f distance1 = intersection - transform.translation;
+								Vec3f distance2 = intersection - colliderTransform.translation;
+
+								rigidbody.moi = (2.0f / 5.0f) * rigidbody.mass * (transform.scale.x * transform.scale.x);
+								Vec3f torque1 = Vec3f::cross(force, distance1);
+								w1f = torque1 / rigidbody.moi;
+								rigidbody.angularVelocity = w1f;
+
+								colliderRigidbody.moi = (2.0f / 5.0f) * colliderRigidbody.mass * (colliderTransform.scale.x * colliderTransform.scale.x) * 5.0f;
+								Vec3f torque2 = Vec3f::cross(force, distance2);
+								w2f = torque2 / colliderRigidbody.moi;
+								colliderRigidbody.angularVelocity = w2f;
+							}
+						}
+					}
+				}
+
+				if (Vec3f::length(rigidbody.linearVelocity) >= 0.01f) {
+					transform.translation += rigidbody.linearVelocity * delta;
+					rigidbody.linearVelocity *= 0.998f;
+					entities()->relocateEntity(id);
+				}
+
+				if (Vec3f::length(rigidbody.angularVelocity) >= 0.01f) {
+					transform.rotation += rigidbody.angularVelocity * delta;
+					rigidbody.angularVelocity *= 0.998f;
+				}
+			}
+		}
+	}
+
+	m_queue.submit(searchedEntities);
 	// update entities end
 }
 

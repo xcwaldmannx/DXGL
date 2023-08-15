@@ -46,8 +46,9 @@ private:
 
 	std::vector<std::string> m_shapes{};
 
-	governor::EntityId m_gun = 0;
-	governor::EntityId m_guitar = 0;
+	governor::EntityId m_player = -1;
+	governor::EntityId m_gun = -1;
+	governor::EntityId m_guitar = -1;
 
 	SP_DXGLRenderTargetView m_backBufferRTV = nullptr;
 	SP_DXGLDepthStencilView m_backBufferDSV = nullptr;

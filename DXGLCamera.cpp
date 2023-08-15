@@ -50,6 +50,12 @@ void DXGLCamera::update(long double deltaTime) {
         speed = 8.0f * (float) deltaTime;
     }
 
+    if (forward || right || up) {
+        m_speed = speed;
+    } else {
+        m_speed = 0;
+    }
+
     camX = m_world.getXDirection() * right * speed;
     camY = m_world.getYDirection() * up * speed;
     camZ = m_world.getZDirection() * forward * speed;
@@ -92,6 +98,10 @@ Vec3f DXGLCamera::getPosition() {
 
 Vec3f DXGLCamera::getDirection() {
     return m_direction;
+}
+
+float DXGLCamera::getCurrentSpeed() {
+    return m_speed;
 }
 
 bool DXGLCamera::cull(Vec3f position, Vec3f scale, Vec3f minVertex, Vec3f maxVertex) {

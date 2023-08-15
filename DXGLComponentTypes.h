@@ -55,3 +55,12 @@ struct PickableComponent {
 
 struct DestroyableComponent {
 };
+
+struct RigidBodyComponent {
+	Vec3f linearVelocity{};
+	Vec3f angularVelocity{};
+	float torque = 0;
+	float elasticity = 1;
+	float mass = 1;
+	float moi = 1;
+};

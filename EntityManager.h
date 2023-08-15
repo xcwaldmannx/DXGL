@@ -61,6 +61,6 @@ namespace dxgl {
 
 	private:
 		governor::DXGLGovernor m_governor;
-		OctTree<governor::EntityId> m_entities{ OctTreeRect{}, 8 };
+		OctTree<governor::EntityId> m_entities{ OctTreeRect{}, 12 };
 	};
 }

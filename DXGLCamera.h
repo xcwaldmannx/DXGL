@@ -23,6 +23,8 @@ namespace dxgl {
 		Vec3f getPosition();
 		Vec3f getDirection();
 
+		float getCurrentSpeed();
+
 		bool cull(Vec3f position, Vec3f scale, Vec3f minVertex, Vec3f maxVertex);
 		std::vector<Vec4f> getFrustum();
 
@@ -36,6 +38,8 @@ namespace dxgl {
 
 		Vec3f m_position{ 0, 0, 0 };
 		Vec3f m_direction{ 0, 0, 0 };
+
+		float m_speed = 0;
 	};
 
 }

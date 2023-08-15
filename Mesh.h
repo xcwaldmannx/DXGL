@@ -61,6 +61,26 @@ namespace dxgl {
 	struct AABB {
 		Vec3f min{};
 		Vec3f max{};
+
+		bool isCollided(const AABB& aabb) const {
+			// Check for separation along the x-axis
+			if (max.x < aabb.min.x || min.x > aabb.max.x) {
+				return false; // No collision along the x-axis
+			}
+
+			// Check for separation along the y-axis
+			if (max.y < aabb.min.y || min.y > aabb.max.y) {
+				return false; // No collision along the y-axis
+			}
+
+			// Check for separation along the z-axis
+			if (max.z < aabb.min.z || min.z > aabb.max.z) {
+				return false; // No collision along the z-axis
+			}
+
+			// If there's no separation along any axis, the AABBs are colliding
+			return true;
+		}
 	};
 
 	struct Face {

@@ -187,6 +187,22 @@ public:
 		return result;
 	}
 
+	Vec3f operator *(const Vec3f& vector) const {
+		float x = mat[0][0] * vector.x + mat[1][0] * vector.y + mat[2][0] * vector.z + mat[3][0];
+		float y = mat[0][1] * vector.x + mat[1][1] * vector.y + mat[2][1] * vector.z + mat[3][1];
+		float z = mat[0][2] * vector.x + mat[1][2] * vector.y + mat[2][2] * vector.z + mat[3][2];
+		float w = mat[0][3] * vector.x + mat[1][3] * vector.y + mat[2][3] * vector.z + mat[3][3];
+
+		// Perform perspective division (homogeneous coordinate)
+		if (w != 0.0f) {
+			x /= w;
+			y /= w;
+			z /= w;
+		}
+
+		return Vec3f(x, y, z);
+	}
+
 	void setMatrix(const Mat4f& matrix) {
 		memcpy(mat, matrix.mat, sizeof(float) * 16);
 	}
