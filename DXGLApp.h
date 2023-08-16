@@ -13,6 +13,8 @@
 
 #include "RenderQueue.h"
 
+#include "OOBB.h"
+
 struct DXGLVertex {
 	Vec3f pos{};
 	Vec2f texcoord{};

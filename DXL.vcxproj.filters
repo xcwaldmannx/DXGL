@@ -426,6 +426,9 @@
     <ClCompile Include="EntityManager.cpp">
       <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\EntityManager</Filter>
     </ClCompile>
+    <ClCompile Include="CollisionRenderPass.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLRenderPass\RenderPasses</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Point2f.h">
@@ -646,6 +649,15 @@
     </ClInclude>
     <ClInclude Include="EntityManager.h">
       <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\EntityManager</Filter>
+    </ClInclude>
+    <ClInclude Include="AABB.h">
+      <Filter>DXGL\DXGLSource\Util\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="OOBB.h">
+      <Filter>DXGL\DXGLSource\Util\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionRenderPass.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLRenderPass\RenderPasses</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

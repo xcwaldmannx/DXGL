@@ -1,25 +1,30 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(520,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
 C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(534,5): warning MSB8028: The intermediate directory (x64\Release\) contains files shared from another project (DXL.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   DXGLApp.cpp
-C:\Users\xcwal\source\repos\DXL\DXL\Math.h(133,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\Math.h(156,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\Math.h(157,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\Math.h(158,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(347,16): warning C4244: '=': conversion from 'long double' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(375,39): warning C4244: 'argument': conversion from 'UINT' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(375,32): warning C4244: 'argument': conversion from 'UINT' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(448,30): warning C4838: conversion from 'float' to 'LONG' requires a narrowing conversion
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(448,30): warning C4244: 'initializing': conversion from 'float' to 'LONG', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(448,39): warning C4838: conversion from 'float' to 'LONG' requires a narrowing conversion
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(448,39): warning C4244: 'initializing': conversion from 'float' to 'LONG', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(552,40): warning C4244: 'argument': conversion from 'long double' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(553,48): warning C4244: 'argument': conversion from 'long double' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(581,58): warning C4244: 'argument': conversion from 'long double' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(587,56): warning C4244: 'argument': conversion from 'long double' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(116,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(139,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(140,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(141,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(438,16): warning C4244: '=': conversion from 'long double' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(466,39): warning C4244: 'argument': conversion from 'UINT' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(466,32): warning C4244: 'argument': conversion from 'UINT' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(539,30): warning C4838: conversion from 'float' to 'LONG' requires a narrowing conversion
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(539,30): warning C4244: 'initializing': conversion from 'float' to 'LONG', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(539,39): warning C4838: conversion from 'float' to 'LONG' requires a narrowing conversion
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(539,39): warning C4244: 'initializing': conversion from 'float' to 'LONG', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(666,40): warning C4244: 'argument': conversion from 'long double' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(667,48): warning C4244: 'argument': conversion from 'long double' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(696,58): warning C4244: 'argument': conversion from 'long double' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(702,56): warning C4244: 'argument': conversion from 'long double' to 'float', possible loss of data
+  RenderQueue.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(116,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(139,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(140,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(141,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   Generating code
-  1 of 9184 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+  2 of 9189 functions (<0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    15 functions had inline decision re-evaluated but remain unchanged
+    22 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   DXL.vcxproj -> C:\Users\xcwal\source\repos\DXL\x64\Release\DXGL.exe
   0 File(s) copied

@@ -3,7 +3,7 @@
 #include "RenderPass.h"
 
 namespace dxgl {
-	class SkyboxRenderPass : public RenderPass {
+	class SkyboxRenderPass : public RenderPass<std::unordered_map<SP_Mesh, std::vector<PerInstanceData>>> {
 	public:
 		SkyboxRenderPass();
 		~SkyboxRenderPass();

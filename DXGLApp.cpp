@@ -287,7 +287,7 @@ void DXGLApp::create() {
 		for (int j = -10; j < 10; j++) {
 			for (int k = -10; k < 10; k++) {
 				TransformComponent transform{};
-				transform.scale = { 5, 5, 5 };// { 2.0f + std::rand() % 5, 2.0f + std::rand() % 5, 2.0f + std::rand() % 5 };
+				transform.scale = { 2.0f + std::rand() % 5, 2.0f + std::rand() % 5, 2.0f + std::rand() % 5 };
 				float rx = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 6);
 				float ry = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 6);
 				float rz = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 6);
@@ -296,7 +296,7 @@ void DXGLApp::create() {
 				float tx = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 96);
 				float ty = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 96);
 				float tz = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 96);
-				transform.translation = { (float) i * 256 + tx, (float) j * 256 + ty, (float) k * 256 + tz };
+				transform.translation = { (float)i * 256 + tx, (float)j * 256 + ty, (float)k * 256 + tz };
 
 				MeshComponent mesh{};
 				mesh.mesh = resource()->get<SP_Mesh>("rock1");
@@ -320,6 +320,69 @@ void DXGLApp::create() {
 		}
 	}
 
+	{ // rock move right
+		TransformComponent transform{};
+		transform.scale = { 5, 5, 5 };
+		//transform.rotation = { 0, 2, 1 };
+		transform.translation = { -50, 0, 0 };
+
+		MeshComponent mesh{};
+		mesh.mesh = resource()->get<SP_Mesh>("rock1");
+		mesh.useTessellation = false;
+		mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
+
+		dxgl::governor::EntityId id = entities()->createEntity(transform, mesh);
+
+		RigidBodyComponent rigidbody{};
+		rigidbody.linearVelocity = { 15, 0, 0 };
+		rigidbody.angularVelocity = { 2, 0, 0 };
+		rigidbody.elasticity = 0.3f;
+		rigidbody.mass = transform.scale.x * 100.0f;
+		entities()->addEntityComponent<RigidBodyComponent>(rigidbody, id);
+	}
+
+	{ // rock move left
+		TransformComponent transform{};
+		transform.scale = { 5, 5, 5 };
+		//transform.rotation = { 0, 3, 2 };
+		transform.translation = { 50, 0, 0 };
+
+		MeshComponent mesh{};
+		mesh.mesh = resource()->get<SP_Mesh>("rock1");
+		mesh.useTessellation = false;
+		mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
+
+		dxgl::governor::EntityId id = entities()->createEntity(transform, mesh);
+
+		RigidBodyComponent rigidbody{};
+		rigidbody.linearVelocity = { -15, 0, 0 };
+		rigidbody.angularVelocity = { -2, 0, 0 };
+		rigidbody.elasticity = 0.3f;
+		rigidbody.mass = transform.scale.x * 100.0f;
+		entities()->addEntityComponent<RigidBodyComponent>(rigidbody, id);
+	}
+
+	{ // rock move forward
+		TransformComponent transform{};
+		transform.scale = { 5, 5, 5 };
+		//transform.rotation = { 5, 3, 2 };
+		transform.translation = { 0, 0, -50 };
+
+		MeshComponent mesh{};
+		mesh.mesh = resource()->get<SP_Mesh>("rock1");
+		mesh.useTessellation = false;
+		mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
+
+		dxgl::governor::EntityId id = entities()->createEntity(transform, mesh);
+
+		RigidBodyComponent rigidbody{};
+		rigidbody.linearVelocity = { 0, 0, 15 };
+		rigidbody.angularVelocity = { -2, 0, 0 };
+		rigidbody.elasticity = 0.3f;
+		rigidbody.mass = transform.scale.x * 100.0f;
+		entities()->addEntityComponent<RigidBodyComponent>(rigidbody, id);
+	}
+
 	//{
 	//	// colliding player
 	//	TransformComponent transform{};
@@ -341,7 +404,35 @@ void DXGLApp::create() {
 	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
 	renderer()->merger()->createDepthStencil(depthStencilDesc, "basic");
-}
+
+	// TESTING FOR PHYSICS
+	Vec3f v{ 1, 1, 1 };
+
+	float d = 3.14159f / 4.0f;
+
+	Mat4f mat{};
+	mat.setTransform({2, 2, 2}, {d, 0, 0}, {5, 5, 5});
+	v = mat * v;
+	std::cout << v.toString() << "\n";
+
+	{ // Triangle inersect test
+		Vec3f triangle1[] = { Vec3f(0, 0, 0), Vec3f(1, 0, 0), Vec3f(0, 0, 1) };
+		Vec3f triangle2[] = { Vec3f(0, -1, 0), Vec3f(0.5f, 0, 0.5f), Vec3f(0, 1, 0) };
+
+		Vec3f intersectionPoint;
+		bool intersection = Math::getTriangleIntersection(triangle1[0], triangle1[1], triangle1[2],
+			triangle2[0], triangle2[1], triangle2[2],
+			intersectionPoint);
+
+		if (intersection) {
+			std::cout << "Triangles intersect. Intersection point: (" << intersectionPoint.x << ", "
+				<< intersectionPoint.y << ", " << intersectionPoint.z << ")" << std::endl;
+		}
+		else {
+			std::cout << "Triangles do not intersect." << std::endl;
+		}
+	}
+ }
 
 void DXGLApp::update(long double delta) {
 	m_timeDelta = delta;
@@ -384,10 +475,10 @@ void DXGLApp::update(long double delta) {
 
 		TransformComponent transform{};
 		transform.scale = { 1, 1, 1 };
-		float rx = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 6);
-		float ry = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 6);
-		float rz = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 6);
-		transform.rotation = { rx, ry, rz };
+		//float rx = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 6);
+		//float ry = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 6);
+		//float rz = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 6);
+		//transform.rotation = { rx, ry, rz };
 		transform.translation = m_camera->getPosition() + m_camera->getDirection() * 2.0f;
 
 		MeshComponent mesh{};
@@ -396,9 +487,9 @@ void DXGLApp::update(long double delta) {
 		dxgl::governor::EntityId id = entities()->createEntity(transform, mesh);
 
 		RigidBodyComponent rigidbody{};
-		rigidbody.linearVelocity = m_camera->getDirection() * 25.0f;
+		rigidbody.linearVelocity = m_camera->getDirection() * 10.0f;
 		rigidbody.elasticity = 0.5f;
-		rigidbody.mass = 10.0f;
+		rigidbody.mass = 50.0f;
 		entities()->addEntityComponent<RigidBodyComponent>(rigidbody, id);
 	}
 
@@ -457,7 +548,10 @@ void DXGLApp::update(long double delta) {
 	// update entities start
 	std::list<OctTree<governor::EntityId>::ptr> searchedEntities = entities()->searchEntities(512);
 
+	std::vector<OOBB> oobbs{};
+
 	{ // physics manager
+
 		for (auto entity: searchedEntities) {
 			governor::EntityId id = entity->item;
 
@@ -467,15 +561,29 @@ void DXGLApp::update(long double delta) {
 				auto& rigidbody = entities()->getEntityComponent<RigidBodyComponent>(id);
 
 				Mat4f mat{};
-				mat.setIdentity();
-				mat.setScale(transform.scale * 1.25f);
-				//mat.setRotation(transform.rotation);
-				mat.setTranslation(transform.translation);
+				mat.setTransform(transform.scale, transform.rotation, transform.translation);
 
 				AABB aabb = mesh.mesh->getAABB();
-				aabb.min = mat * aabb.min;
-				aabb.max = mat * aabb.max;
+				Vec3f center = {
+					(aabb.min.x + aabb.max.x) * 0.5f,
+					(aabb.min.y + aabb.max.y) * 0.5f,
+					(aabb.min.z + aabb.max.z) * 0.5f
+				};
 
+				Vec3f extents = {
+					(aabb.max.x - aabb.min.x) * 0.5f,
+					(aabb.max.y - aabb.min.y) * 0.5f,
+					(aabb.max.z - aabb.min.z) * 0.5f
+				};
+
+				if (extents.magnitude() == 0) {
+					extents = aabb.max * 0.5f;
+				}
+
+				OOBB oobb(center, extents, mat);
+
+				oobbs.push_back(oobb);
+				
 				// collision check
 				for (auto collider : searchedEntities) {
 					governor::EntityId colliderId = collider->item;
@@ -484,18 +592,31 @@ void DXGLApp::update(long double delta) {
 						auto& colliderMesh = entities()->getEntityComponent<MeshComponent>(colliderId);
 						auto& colliderRigidbody = entities()->getEntityComponent<RigidBodyComponent>(colliderId);
 
+
 						Mat4f colliderMat{};
-						colliderMat.setIdentity();
-						colliderMat.setScale(colliderTransform.scale * 1.25f);
-						//colliderMat.setRotation(colliderTransform.rotation);
-						colliderMat.setTranslation(colliderTransform.translation);
+						colliderMat.setTransform(colliderTransform.scale, colliderTransform.rotation, colliderTransform.translation);
 
 						AABB colliderAABB = colliderMesh.mesh->getAABB();
-						colliderAABB.min = colliderMat * colliderAABB.min;
-						colliderAABB.max = colliderMat * colliderAABB.max;
+						Vec3f colliderCenter = {
+							(colliderAABB.min.x + colliderAABB.max.x) * 0.5f,
+							(colliderAABB.min.y + colliderAABB.max.y) * 0.5f,
+							(colliderAABB.min.z + colliderAABB.max.z) * 0.5f
+						};
 
+						Vec3f colliderExtents = {
+							(colliderAABB.max.x - colliderAABB.min.x) * 0.5f,
+							(colliderAABB.max.y - colliderAABB.min.y) * 0.5f,
+							(colliderAABB.max.z - colliderAABB.min.z) * 0.5f
+						};
 
-						if (aabb.isCollided(colliderAABB)) {
+						if (colliderExtents.magnitude() == 0) {
+							colliderExtents = colliderAABB.max * 0.5f;
+						}
+
+						OOBB colliderOOBB(colliderCenter, colliderExtents, colliderMat);
+
+						if (oobb.isCollided(colliderOOBB)) {
+							/*
 							Vec3f intersection{};
 							bool foundIntersection = false;
 
@@ -504,25 +625,16 @@ void DXGLApp::update(long double delta) {
 							const auto& colliderFaces = colliderMesh.mesh->getFaces();
 
 							for (const auto& face : faces) {
-								mat.setIdentity();
-								mat.setScale(transform.scale * 1.25f);
-								mat.setRotation(transform.rotation);
-								mat.setTranslation(transform.translation);
-
 								Vec3f f0 = mat * face.v0;
 								Vec3f f1 = mat * face.v1;
 								Vec3f f2 = mat * face.v2;
-								for (const auto& colliderFace : colliderFaces) {
-									colliderMat.setIdentity();
-									colliderMat.setScale(colliderTransform.scale * 1.25f);
-									colliderMat.setRotation(colliderTransform.rotation);
-									colliderMat.setTranslation(colliderTransform.translation);
 
+								for (const auto& colliderFace : colliderFaces) {
 									Vec3f cf0 = colliderMat * colliderFace.v0;
 									Vec3f cf1 = colliderMat * colliderFace.v1;
 									Vec3f cf2 = colliderMat * colliderFace.v2;
-									if (Math::trianglesIntersect(f0, f1, f2, cf0, cf1, cf2)) {
-										intersection = Math::getTriangleIntersection(f0, f1, f2, cf0, cf1, cf2);
+
+									if (Math::getTriangleIntersection(f0, f1, f2, cf0, cf1, cf2, intersection)) {
 										foundIntersection = true;
 										break;
 									}
@@ -532,8 +644,10 @@ void DXGLApp::update(long double delta) {
 									break;
 								}
 							}
+							*/
 
-							if (foundIntersection) {
+							//if (foundIntersection && intersection.magnitude() != 0) {
+								// std::cout << intersection.toString() << "\n";
 								// linear velocity
 
 								Vec3f v1f{};
@@ -560,10 +674,11 @@ void DXGLApp::update(long double delta) {
 								// force calculation for angular velocity
 								Vec3f force = (v1f * rigidbody.mass) + (v2f * colliderRigidbody.mass);
 
-								Vec3f distance1 = intersection - transform.translation;
-								Vec3f distance2 = intersection - colliderTransform.translation;
+								//Vec3f distance1 = intersection - transform.translation;
+								Vec3f distance1 = transform.translation - colliderTransform.translation;
+								Vec3f distance2 = colliderTransform.translation - transform.translation;
 
-								rigidbody.moi = (2.0f / 5.0f) * rigidbody.mass * (transform.scale.x * transform.scale.x);
+								rigidbody.moi = (2.0f / 5.0f) * rigidbody.mass * (transform.scale.x * transform.scale.x) * 3.0f;
 								Vec3f torque1 = Vec3f::cross(force, distance1);
 								w1f = torque1 / rigidbody.moi;
 								rigidbody.angularVelocity = w1f;
@@ -572,7 +687,7 @@ void DXGLApp::update(long double delta) {
 								Vec3f torque2 = Vec3f::cross(force, distance2);
 								w2f = torque2 / colliderRigidbody.moi;
 								colliderRigidbody.angularVelocity = w2f;
-							}
+							//}
 						}
 					}
 				}
@@ -590,6 +705,8 @@ void DXGLApp::update(long double delta) {
 			}
 		}
 	}
+
+	m_queue.submit(oobbs);
 
 	m_queue.submit(searchedEntities);
 	// update entities end

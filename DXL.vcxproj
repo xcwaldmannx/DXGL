@@ -200,6 +200,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CollisionRenderPass.cpp" />
     <ClCompile Include="ComputeShader.cpp" />
     <ClCompile Include="DSConstantBuffer.cpp" />
     <ClCompile Include="DXGLApp.cpp" />
@@ -260,6 +261,8 @@
     <ClCompile Include="Skybox.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AABB.h" />
+    <ClInclude Include="CollisionRenderPass.h" />
     <ClInclude Include="ComputeShader.h" />
     <ClInclude Include="DSConstantBuffer.h" />
     <ClInclude Include="DXGLApp.h" />
@@ -274,6 +277,7 @@
     <ClInclude Include="HSConstantBuffer.h" />
     <ClInclude Include="MousePickManager.h" />
     <ClInclude Include="MousePickRenderPass.h" />
+    <ClInclude Include="OOBB.h" />
     <ClInclude Include="OctTree.h" />
     <ClInclude Include="Point3f.h" />
     <ClInclude Include="PSConstantBuffer.h" />

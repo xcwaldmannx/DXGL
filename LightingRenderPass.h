@@ -18,7 +18,7 @@ namespace dxgl {
 		float pad1;
 	};
 
-	class LightingRenderPass : public RenderPass {
+	class LightingRenderPass : public RenderPass<std::unordered_map<SP_Mesh, std::vector<PerInstanceData>>> {
 	public:
 		LightingRenderPass();
 		~LightingRenderPass();

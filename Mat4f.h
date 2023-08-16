@@ -63,27 +63,77 @@ public:
 		rotation.setIdentity();
 
 		rotation.mat[0][0] = cos(rot.y) * cos(rot.z);
-		rotation.mat[0][1] = cos(rot.y) * sin(rot.z);
-		rotation.mat[0][2] = -sin(rot.y);
-		rotation.mat[1][0] = sin(rot.x) * sin(rot.y) * cos(rot.z) - cos(rot.x) * sin(rot.z);
-		rotation.mat[1][1] = sin(rot.x) * sin(rot.y) * sin(rot.z) + cos(rot.x) * cos(rot.z);
-		rotation.mat[1][2] = sin(rot.x) * cos(rot.y);
-		rotation.mat[2][0] = cos(rot.x) * sin(rot.y) * cos(rot.z) + sin(rot.x) * sin(rot.z);
-		rotation.mat[2][1] = cos(rot.x) * sin(rot.y) * sin(rot.z) - sin(rot.x) * cos(rot.z);
+		rotation.mat[0][1] = -cos(rot.y) * sin(rot.z);
+		rotation.mat[0][2] = sin(rot.y);
+		rotation.mat[1][0] = sin(rot.x) * sin(rot.y) * cos(rot.z) + cos(rot.x) * sin(rot.z);
+		rotation.mat[1][1] = -sin(rot.x) * sin(rot.y) * sin(rot.z) + cos(rot.x) * cos(rot.z);
+		rotation.mat[1][2] = -sin(rot.x) * cos(rot.y);
+		rotation.mat[2][0] = cos(rot.x) * sin(rot.y) * cos(rot.z) - sin(rot.x) * sin(rot.z);
+		rotation.mat[2][1] = cos(rot.x) * sin(rot.y) * sin(rot.z) + sin(rot.x) * cos(rot.z);
 		rotation.mat[2][2] = cos(rot.x) * cos(rot.y);
 
-		Mat4f result;
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 4; j++) {
-				result.mat[i][j] =
-					mat[i][0] * rotation.mat[0][j] +
-					mat[i][1] * rotation.mat[1][j] +
-					mat[i][2] * rotation.mat[2][j] +
-					mat[i][3] * rotation.mat[3][j];
-			}
-		}
+		// Multiply the rotation matrix with the existing transformation matrix
+		Mat4f result = rotation * (*this);
 
+		// Copy the result back to the current transformation matrix
 		memcpy(mat, result.mat, sizeof(float) * 16);
+	}
+
+	void setTransform(const Vec3f& scale, const Vec3f& rotation, const Vec3f& translation) {
+		Mat4f transform;
+
+		// Set the scale
+		transform.mat[0][0] = scale.x;
+		transform.mat[1][1] = scale.y;
+		transform.mat[2][2] = scale.z;
+		transform.mat[3][3] = 1.0f;
+
+		Mat4f rotationMatrix;
+		rotationMatrix.setIdentity();
+
+		// set the rotations
+		float cx = cos(rotation.x);
+		float sx = sin(rotation.x);
+		float cy = cos(rotation.y);
+		float sy = sin(rotation.y);
+		float cz = cos(rotation.z);
+		float sz = sin(rotation.z);
+
+		// Calculate individual rotation matrices for each axis
+		Mat4f xRotation;
+		xRotation.setIdentity();
+		xRotation.mat[1][1] = cx;
+		xRotation.mat[1][2] = -sx;
+		xRotation.mat[2][1] = sx;
+		xRotation.mat[2][2] = cx;
+
+		Mat4f yRotation;
+		yRotation.setIdentity();
+		yRotation.mat[0][0] = cy;
+		yRotation.mat[0][2] = sy;
+		yRotation.mat[2][0] = -sy;
+		yRotation.mat[2][2] = cy;
+
+		Mat4f zRotation;
+		zRotation.setIdentity();
+		zRotation.mat[0][0] = cz;
+		zRotation.mat[0][1] = -sz;
+		zRotation.mat[1][0] = sz;
+		zRotation.mat[1][1] = cz;
+
+		rotationMatrix = zRotation * (yRotation * xRotation);
+
+		// Multiply rotation with scale
+		transform = rotationMatrix * transform;
+
+		// Set the translation
+		transform.mat[3][0] = translation.x;
+		transform.mat[3][1] = translation.y;
+		transform.mat[3][2] = translation.z;
+		transform.mat[3][3] = 1.0f;
+
+		// Copy the result back to the current transformation matrix
+		memcpy(mat, transform.mat, sizeof(float) * 16);
 	}
 
 	void lookAt(Vec3f position, Vec3f target, Vec3f up) {
@@ -117,13 +167,13 @@ public:
 		Vec4f minor, v1, v2, v3;
 		float det;
 
-		v1 = Vec4f(this->mat[0][0], this->mat[1][0], this->mat[2][0], this->mat[3][0]);
-		v2 = Vec4f(this->mat[0][1], this->mat[1][1], this->mat[2][1], this->mat[3][1]);
-		v3 = Vec4f(this->mat[0][2], this->mat[1][2], this->mat[2][2], this->mat[3][2]);
+		v1 = Vec4f(mat[0][0], mat[1][0], mat[2][0], mat[3][0]);
+		v2 = Vec4f(mat[0][1], mat[1][1], mat[2][1], mat[3][1]);
+		v3 = Vec4f(mat[0][2], mat[1][2], mat[2][2], mat[3][2]);
 
 
 		minor.cross(v1, v2, v3);
-		det = -(this->mat[0][3] * minor.x + this->mat[1][3] * minor.y + this->mat[2][3] * minor.z + this->mat[3][3] * minor.w);
+		det = -(mat[0][3] * minor.x + mat[1][3] * minor.y + mat[2][3] * minor.z + mat[3][3] * minor.w);
 		return det;
 	}
 
@@ -133,17 +183,17 @@ public:
 		Vec4f v, vec[3];
 		float det = 0.0f;
 
-		det = this->getDeterminant();
+		det = getDeterminant();
 		if (!det) return;
 		for (i = 0; i < 4; i++) {
 			for (j = 0; j < 4; j++) {
 				if (j != i) {
 					a = j;
 					if (j > i) a = a - 1;
-					vec[a].x = (this->mat[j][0]);
-					vec[a].y = (this->mat[j][1]);
-					vec[a].z = (this->mat[j][2]);
-					vec[a].w = (this->mat[j][3]);
+					vec[a].x = (mat[j][0]);
+					vec[a].y = (mat[j][1]);
+					vec[a].z = (mat[j][2]);
+					vec[a].w = (mat[j][3]);
 				}
 			}
 			v.cross(vec[0], vec[1], vec[2]);
@@ -154,7 +204,7 @@ public:
 			out.mat[3][i] = (float)pow(-1.0f, i) * v.w / det;
 		}
 
-		this->setMatrix(out);
+		setMatrix(out);
 	}
 
 	void operator *=(const Mat4f& matrix) {

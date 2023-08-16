@@ -7,7 +7,7 @@
 #include "RenderPass.h"
 
 namespace dxgl {
-	class EarlyZRenderPass : public RenderPass {
+	class EarlyZRenderPass : public RenderPass<std::unordered_map<SP_Mesh, std::vector<PerInstanceData>>> {
 	public:
 		EarlyZRenderPass();
 		~EarlyZRenderPass();

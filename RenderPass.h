@@ -12,11 +12,17 @@ namespace dxgl {
 		Vec3f translation{};
 	};
 
+	template<typename T>
 	class RenderPass {
 	public:
-		RenderPass();
-		~RenderPass();
+		RenderPass() {
 
-		virtual void draw(std::unordered_map<SP_Mesh, std::vector<PerInstanceData>>& instances) = 0;
+		}
+
+		~RenderPass() {
+
+		}
+
+		virtual void draw(T& instances) = 0;
 	};
 }

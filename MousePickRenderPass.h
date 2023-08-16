@@ -9,7 +9,7 @@
 
 namespace dxgl {
 
-	class MousePickRenderPass : public RenderPass {
+	class MousePickRenderPass : public RenderPass<std::unordered_map<SP_Mesh, std::vector<PerInstanceData>>> {
 	public:
 		MousePickRenderPass();
 		~MousePickRenderPass();
