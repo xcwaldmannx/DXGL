@@ -51,6 +51,7 @@ private:
 	governor::EntityId m_player = -1;
 	governor::EntityId m_gun = -1;
 	governor::EntityId m_guitar = -1;
+	governor::EntityId m_floor = -1;
 
 	SP_DXGLRenderTargetView m_backBufferRTV = nullptr;
 	SP_DXGLDepthStencilView m_backBufferDSV = nullptr;

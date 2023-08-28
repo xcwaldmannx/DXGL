@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 #include <algorithm>
 #include <cmath>
 #include <vector>
@@ -12,6 +14,86 @@ public:
 
 	// Traingle shit start
 	
+	static bool lineIntersectsTriangle(const Vec3f& P1, const Vec3f& P2, const Vec3f& P3, const Vec3f& R1, const Vec3f& R2, Vec3f& output) {
+		Vec3f Normal{}, IntersectPos{};
+
+		// Find Triangle Normal
+		Normal = Vec3f::cross(P2 - P1, P3 - P1).normalize();
+
+		// Find distance from LP1 and LP2 to the plane defined by the triangle
+		float Dist1 = Vec3f::dot(R1 - P1, Normal);
+		float Dist2 = Vec3f::dot(R2 - P1, Normal);
+
+		if ((Dist1 * Dist2) >= 0.0f) {
+			//std::cout << "no cross\n";
+			return false;
+		} // line doesn't cross the triangle.
+
+		if (Dist1 == Dist2) {
+			//std::cout << "parallel\n";
+			return false;
+		} // line and plane are parallel
+
+		// Find point on the line that intersects with the plane
+		IntersectPos = R1 + (R2 - R1) * (-Dist1 / (Dist2 - Dist1));
+
+		// Find if the interesection point lies inside the triangle by testing it against all edges
+		Vec3f vTest;
+
+		vTest = Vec3f::cross(Normal, P2 - P1);
+		if (Vec3f::dot(vTest, IntersectPos - P1) < 0.0f) {
+			return false;
+		}
+
+		vTest = Vec3f::cross(Normal, P3 - P2);
+		if (Vec3f::dot(vTest, IntersectPos - P2) < 0.0f) {
+			return false;
+		}
+
+		vTest = Vec3f::cross(Normal, P1 - P3);
+		if (Vec3f::dot(vTest, IntersectPos - P1) < 0.0f) {
+			return false;
+		}
+
+		//std::cout << "Intersects at (" << IntersectPos.x << ", " << IntersectPos.y << ")\n";
+
+		output = IntersectPos;
+
+		return true;
+	}
+
+	static bool rayIntersectsTriangle(const Vec3f& origin, const Vec3f& dir,
+		const Vec3f& v0, const Vec3f& v1, const Vec3f& v2, Vec3f& output) {
+		const float epsilon = 0.00000001f;
+
+		Vec3f edge1 = v1 - v0;
+		Vec3f edge2 = v2 - v0;
+
+		Vec3f pvec = Vec3f::cross(dir, edge2);
+
+		float det = Vec3f::dot(edge1, pvec);
+
+		bool testCull = true;
+		if (testCull) {
+			if (det < epsilon) return false;
+
+			Vec3f tvec = origin - v0;
+
+			output.y = Vec3f::dot(tvec, pvec);
+			if (output.y < 0 || output.y > det) return false;
+
+			Vec3f qvec = Vec3f::cross(tvec, edge1);
+
+			output.z = Vec3f::dot(dir, qvec);
+			if (output.z < 0 || output.y + output.z > det) return false;
+
+			output.x = Vec3f::dot(edge2, qvec);
+			float invDet = 1.0f / det;
+			output *= invDet;
+		}
+		return true;
+	}
+
 	static bool getTriangleIntersection(const Vec3f& p1, const Vec3f& p2, const Vec3f& p3,
 		const Vec3f& q1, const Vec3f& q2, const Vec3f& q3,
 		Vec3f& intersectionPoint) {

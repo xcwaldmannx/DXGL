@@ -29,6 +29,9 @@ namespace dxgl {
 	class EntityManager;
 	typedef std::shared_ptr<EntityManager> SP_EntityManager;
 
+	class PhysicsManager;
+	typedef std::shared_ptr<PhysicsManager> SP_PhysicsManager;
+
 	// STAGES
 	class DXGLShader;
 	typedef std::shared_ptr<DXGLShader> SP_DXGLShader;

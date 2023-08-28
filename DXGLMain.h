@@ -8,6 +8,7 @@
 #include "DXGLSwapChain.h"
 #include "DXGLRenderer.h"
 #include "EntityManager.h"
+#include "PhysicsManager.h"
 #include "MousePickManager.h"
 #include "DXGLResourceManager.h"
 
@@ -27,6 +28,7 @@ namespace dxgl {
 		static SP_DXGLRenderer           renderer();
 		static SP_DXGLResourceManager    resource();
 		static SP_EntityManager          entities();
+		static SP_PhysicsManager         physics();
 		static SP_MousePickManager       mousePick();
 		static SP_DXGLInputManager       input();
 
@@ -52,6 +54,7 @@ namespace dxgl {
 		static SP_DXGLRenderer           m_renderer;
 		static SP_DXGLResourceManager    m_resource;
 		static SP_EntityManager          m_entities;
+		static SP_PhysicsManager          m_physics;
 		static SP_MousePickManager       m_mousePick;
 		static SP_DXGLInputManager       m_userInput;
 

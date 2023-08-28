@@ -135,6 +135,9 @@ namespace dxgl {
 
 		const AABB getAABB();
 
+		std::vector<float>& getVertexPositions();
+		std::vector<unsigned int>& getVertexIndices();
+
 	private:
 		void loadMaterialTextures(const aiScene* scene);
 

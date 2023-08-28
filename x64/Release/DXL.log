@@ -1,30 +1,244 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(520,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
 C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(534,5): warning MSB8028: The intermediate directory (x64\Release\) contains files shared from another project (DXL.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  CollisionRenderPass.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\CollisionRenderPass.cpp(186,91): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\CollisionRenderPass.cpp(189,54): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
   DXGLApp.cpp
-C:\Users\xcwal\source\repos\DXL\DXL\Math.h(116,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\Math.h(139,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\Math.h(140,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\Math.h(141,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(438,16): warning C4244: '=': conversion from 'long double' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(466,39): warning C4244: 'argument': conversion from 'UINT' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(466,32): warning C4244: 'argument': conversion from 'UINT' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(539,30): warning C4838: conversion from 'float' to 'LONG' requires a narrowing conversion
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(539,30): warning C4244: 'initializing': conversion from 'float' to 'LONG', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(539,39): warning C4838: conversion from 'float' to 'LONG' requires a narrowing conversion
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(539,39): warning C4244: 'initializing': conversion from 'float' to 'LONG', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(666,40): warning C4244: 'argument': conversion from 'long double' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(667,48): warning C4244: 'argument': conversion from 'long double' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(696,58): warning C4244: 'argument': conversion from 'long double' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(702,56): warning C4244: 'argument': conversion from 'long double' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(485,16): warning C4244: '=': conversion from 'long double' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(513,39): warning C4244: 'argument': conversion from 'UINT' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(513,32): warning C4244: 'argument': conversion from 'UINT' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(589,30): warning C4838: conversion from 'float' to 'LONG' requires a narrowing conversion
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(589,30): warning C4244: 'initializing': conversion from 'float' to 'LONG', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(589,39): warning C4838: conversion from 'float' to 'LONG' requires a narrowing conversion
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLApp.cpp(589,39): warning C4244: 'initializing': conversion from 'float' to 'LONG', possible loss of data
+  DXGLInputManager.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  DXGLMain.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLMain.cpp(97,94): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+  DXGLMesh.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLMesh.cpp(45,58): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLMesh.cpp(107,90): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  DXGLRenderer.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  DXGLShader.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  DXGLShadow.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLShadow.cpp(140,127): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLShadow.cpp(149,119): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLShadow.cpp(166,22): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLShadow.cpp(167,50): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLShadow.cpp(168,48): warning C4244: '=': conversion from 'const _Ty' to 'float', possible loss of data
+          with
+          [
+              _Ty=int
+          ]
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLShadow.cpp(182,36): warning C4244: '=': conversion from 'float' to 'UINT', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLShadow.cpp(183,37): warning C4244: '=': conversion from 'float' to 'UINT', possible loss of data
+  DXGLSwapChain.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  DXGLTerrainManager.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLTerrainManager.cpp(45,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLTerrainManager.cpp(45,36): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLTerrainManager.cpp(46,14): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLTerrainManager.cpp(46,37): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLTerrainManager.cpp(49,34): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLTerrainManager.cpp(49,28): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLTerrainManager.cpp(51,35): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLTerrainManager.cpp(51,32): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLTerrainManager.cpp(78,63): warning C4244: 'argument': conversion from 'float' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=unsigned int
+          ]
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLTerrainManager.cpp(79,63): warning C4244: 'argument': conversion from 'float' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=unsigned int
+          ]
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLTerrainManager.cpp(80,63): warning C4244: 'argument': conversion from 'float' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=unsigned int
+          ]
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLTerrainManager.cpp(151,81): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\DXGLTerrainManager.cpp(209,98): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+  EarlyZRenderPass.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\EarlyZRenderPass.cpp(194,152): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\EarlyZRenderPass.cpp(207,153): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\EarlyZRenderPass.cpp(210,58): warning C4267: '+=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\EarlyZRenderPass.cpp(211,38): warning C4267: '+=': conversion from 'size_t' to 'int', possible loss of data
+  HSConstantBuffer.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  IndexBuffer.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  InputLayout.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\InputLayout.cpp(58,141): warning C4838: conversion from 'int' to 'UINT' requires a narrowing conversion
+  InstanceBuffer.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  LightingRenderPass.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\LightingRenderPass.cpp(249,152): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\LightingRenderPass.cpp(281,153): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\LightingRenderPass.cpp(283,38): warning C4267: '+=': conversion from 'size_t' to 'int', possible loss of data
+  Material.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Material.cpp(61,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\xcwal\source\repos\DXL\DXL\Material.cpp(149,22): warning C4018: '<': signed/unsigned mismatch
+  Mesh.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Mesh.cpp(49,129): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Mesh.cpp(128,117): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Mesh.cpp(132,82): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Mesh.cpp(179,52): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Mesh.cpp(180,45): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Mesh.cpp(238,37): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Mesh.cpp(397,50): warning C4244: 'argument': conversion from 'long double' to 'TReal', possible loss of data
+          with
+          [
+              TReal=ai_real
+          ]
+  MousePickRenderPass.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\MousePickRenderPass.cpp(230,152): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\MousePickRenderPass.cpp(243,153): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\MousePickRenderPass.cpp(245,38): warning C4267: '+=': conversion from 'size_t' to 'int', possible loss of data
+  PSConstantBuffer.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  Compiling...
+  PhysicsManager.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\PhysicsManager.cpp(77,50): warning C4267: '=': conversion from 'size_t' to 'physx::PxU32', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\PhysicsManager.cpp(94,48): warning C4267: '=': conversion from 'size_t' to 'physx::PxU32', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\PhysicsManager.cpp(98,50): warning C4267: '=': conversion from 'size_t' to 'physx::PxU32', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\PhysicsManager.cpp(177,21): warning C4244: 'argument': conversion from 'long double' to 'physx::PxReal', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\PhysicsManager.cpp(235,57): warning C4244: '+=': conversion from 'long double' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\PhysicsManager.cpp(236,56): warning C4244: 'argument': conversion from 'long double' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\PhysicsManager.cpp(383,78): warning C4244: 'argument': conversion from 'long double' to 'float', possible loss of data
+  PostProcessor.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\PostProcessor.cpp(16,122): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\PostProcessor.cpp(22,91): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\PostProcessor.cpp(77,17): warning C4244: '=': conversion from 'long double' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\PostProcessor.cpp(86,17): warning C4244: '=': conversion from 'long double' to 'float', possible loss of data
+  RenderPass.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   RenderQueue.cpp
-C:\Users\xcwal\source\repos\DXL\DXL\Math.h(116,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\Math.h(139,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\Math.h(140,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\Math.h(141,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  Skybox.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  SkyboxRenderPass.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  Texture2D.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  TextureCube.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\TextureCube.cpp(55,21): warning C4018: '<': signed/unsigned mismatch
+  VSConstantBuffer.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  VertexBuffer.cpp
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   Generating code
-  2 of 9189 functions (<0.1%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    22 functions had inline decision re-evaluated but remain unchanged
+  347 of 9483 functions ( 3.7%) were compiled, the rest were copied from previous compilation.
+    11 functions were new in current compilation
+    85 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   DXL.vcxproj -> C:\Users\xcwal\source\repos\DXL\x64\Release\DXGL.exe
   0 File(s) copied

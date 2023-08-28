@@ -121,8 +121,18 @@ public:
 		z *= vec.z;
 	}
 
-	Vec3f operator/ (float num) {
+	Vec3f operator/ (float num) const {
 		return Vec3f(x / num, y / num, z / num);
+	}
+
+	Vec3f operator/ (Vec3f vec) const {
+		return Vec3f(x / vec.x, y / vec.y, z / vec.z);
+	}
+
+	void operator/= (Vec3f vec) {
+		x /= vec.x;
+		y /= vec.y;
+		z /= vec.z;
 	}
 
 	bool operator== (Vec3f vec) {

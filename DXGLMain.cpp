@@ -40,6 +40,11 @@ SP_EntityManager DXGLMain::entities() {
 	return DXGLMain::m_entities;
 }
 
+SP_PhysicsManager DXGLMain::m_physics = std::make_shared<PhysicsManager>();
+SP_PhysicsManager DXGLMain::physics() {
+	return DXGLMain::m_physics;
+}
+
 SP_MousePickManager DXGLMain::m_mousePick = std::make_shared<MousePickManager>();
 SP_MousePickManager DXGLMain::mousePick() {
 	return DXGLMain::m_mousePick;

@@ -1,6 +1,7 @@
 #include "Mesh.h"
 
 using namespace dxgl;
+
 Mesh::Mesh(const MeshDesc& desc, const std::string& filename) : m_desc(desc) {
 
 	Assimp::DefaultLogger::create("", Assimp::Logger::VERBOSE);
@@ -612,4 +613,12 @@ unsigned int Mesh::getTextureIndex() {
 
 const std::vector<Face>& Mesh::getFaces() {
 	return m_faces;
+}
+
+std::vector<float>& Mesh::getVertexPositions() {
+	return m_positions;
+}
+
+std::vector<unsigned int>& Mesh::getVertexIndices() {
+	return m_indices;
 }

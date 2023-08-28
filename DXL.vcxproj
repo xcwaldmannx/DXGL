@@ -72,22 +72,22 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);Libs/tinyobjloader/include;Libs/assimp/include;Libs/assimp/contrib/zlib</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);Libs/tinyobjloader/include;Libs/assimp/include;Libs/assimp/contrib/zlib;Libs/physx/include</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)x64\Debug</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);Libs/tinyobjloader/include;Libs/assimp/include</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);Libs/tinyobjloader/include;Libs/assimp/include;Libs/physx/include</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)x64\Release</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);Libs/tinyobjloader/include;Libs/assimp/include;Libs/assimp/contrib/zlib</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);Libs/tinyobjloader/include;Libs/assimp/include;Libs/assimp/contrib/zlib;Libs/physx/include</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)x64\Debug</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);Libs/tinyobjloader/include;Libs/assimp/include</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);Libs/tinyobjloader/include;Libs/assimp/include;Libs/physx/include</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)x64\Release</OutDir>
   </PropertyGroup>
@@ -105,8 +105,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Debug/assimp-vc143-mtd.lib;Debug/zlibstaticd.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>Libs/assimp/lib;Libs/assimp/contrib/zlib;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Debug/assimp-vc143-mtd.lib;Debug/zlibstaticd.lib;PhysX_static_64.lib;PhysXCommon_static_64.lib;PhysXFoundation_static_64.lib;PhysXExtensions_static_64.lib;PhysXCooking_static_64.lib;PhysXPvdSDK_static_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>Libs/assimp/lib;Libs/assimp/contrib/zlib;Libs/physx/lib/Debug</AdditionalLibraryDirectories>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -127,15 +127,15 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Release/assimp-vc143-mt.lib;Release/zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>Libs/assimp/lib;Libs/assimp/contrib/zlib;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Release/assimp-vc143-mt.lib;Release/zlibstatic.lib;PhysX_static_64.lib;PhysXCommon_static_64.lib;PhysXFoundation_static_64.lib;PhysXExtensions_static_64.lib;PhysXCooking_static_64.lib;PhysXPvdSDK_static_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>Libs/assimp/lib;Libs/assimp/contrib/zlib;Libs/physx/lib/Release</AdditionalLibraryDirectories>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -159,8 +159,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Debug/assimp-vc143-mtd.lib;Debug/zlibstaticd.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>Libs/assimp/lib;Libs/assimp/contrib/zlib;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Debug/assimp-vc143-mtd.lib;Debug/zlibstaticd.lib;PhysX_static_64.lib;PhysXCommon_static_64.lib;PhysXFoundation_static_64.lib;PhysXExtensions_static_64.lib;PhysXCooking_static_64.lib;PhysXPvdSDK_static_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>Libs/assimp/lib;Libs/assimp/contrib/zlib;Libs/physx/lib/Debug</AdditionalLibraryDirectories>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -181,15 +181,15 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Release/assimp-vc143-mt.lib;Release/zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>Libs/assimp/lib;Libs/assimp/contrib/zlib;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Release/assimp-vc143-mt.lib;Release/zlibstatic.lib;PhysX_static_64.lib;PhysXCommon_static_64.lib;PhysXFoundation_static_64.lib;PhysXExtensions_static_64.lib;PhysXCooking_static_64.lib;PhysXPvdSDK_static_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>Libs/assimp/lib;Libs/assimp/contrib/zlib;Libs/physx/lib/Release</AdditionalLibraryDirectories>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -214,6 +214,7 @@
     <ClCompile Include="HSConstantBuffer.cpp" />
     <ClCompile Include="MousePickManager.cpp" />
     <ClCompile Include="MousePickRenderPass.cpp" />
+    <ClCompile Include="PhysicsManager.cpp" />
     <ClCompile Include="PSConstantBuffer.cpp" />
     <ClCompile Include="SkyboxRenderPass.cpp" />
     <ClCompile Include="VSConstantBuffer.cpp" />
@@ -279,6 +280,7 @@
     <ClInclude Include="MousePickRenderPass.h" />
     <ClInclude Include="OOBB.h" />
     <ClInclude Include="OctTree.h" />
+    <ClInclude Include="PhysicsManager.h" />
     <ClInclude Include="Point3f.h" />
     <ClInclude Include="PSConstantBuffer.h" />
     <ClInclude Include="SkyboxRenderPass.h" />

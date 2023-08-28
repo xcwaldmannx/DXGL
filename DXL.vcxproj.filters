@@ -250,6 +250,9 @@
     <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\EntityManager">
       <UniqueIdentifier>{18648e7a-1d5b-41fc-a9f9-2585aaf9ece4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\PhysicsManager">
+      <UniqueIdentifier>{72e0e7d1-dc48-462a-b2a0-e6a39a51f4fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ComputeShader.cpp">
@@ -428,6 +431,9 @@
     </ClCompile>
     <ClCompile Include="CollisionRenderPass.cpp">
       <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLRenderPass\RenderPasses</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsManager.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\PhysicsManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -658,6 +664,9 @@
     </ClInclude>
     <ClInclude Include="CollisionRenderPass.h">
       <Filter>DXGL\DXGLSource\DXGLGraphics\DXGLRenderer\DXGLRenderPass\RenderPasses</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsManager.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\PhysicsManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
