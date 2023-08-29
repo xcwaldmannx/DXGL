@@ -66,8 +66,6 @@ namespace dxgl {
 
 		std::vector<unsigned int> m_indices{};
 
-		SP_Camera m_camera = nullptr;
-
 		QuadTreeRect m_area{};
 		QuadTreeRect m_searchArea{};
 		QuadTree<TerrainChunk> m_chunkTree{m_area, 8};

@@ -127,9 +127,6 @@ void DXGLApp::create() {
 		resource()->storeMesh(desc, "Assets/Meshes/cubeFlipped.fbx", "cubeFlipped");
 	}
 
-	m_camera = renderer()->camera()->create("primary");
-	m_camera->world().setTranslation(Vec3f{ 0.0f, 0.0f, 0.0f });
-
 	m_vscbEntityBuffer = resource()->createVSConstantBuffer(sizeof(EntityBuffer));
 	m_pscbEntityBuffer = resource()->createPSConstantBuffer(sizeof(EntityBuffer));
 
@@ -143,10 +140,8 @@ void DXGLApp::create() {
 	resource()->storeSamplerState(D3D11_FILTER_ANISOTROPIC, D3D11_TEXTURE_ADDRESS_BORDER, D3D11_COMPARISON_ALWAYS, 1, "shadowSampler");
 	renderer()->setSamplerState(1, 1, resource()->get<SP_DXGLSamplerState>("shadowSampler")->get());
 
-	m_camera->update(0);
-
 	// setup shadow updates
-	shadowTimer.every(25, [&]() {
+	/*shadowTimer.every(25, [&]() {
 		float camX = m_camera->getPosition().x;
 		float camY = m_camera->getPosition().y;
 		float camZ = m_camera->getPosition().z;
@@ -157,7 +152,7 @@ void DXGLApp::create() {
 
 		renderer()->shadow()->update(Vec3f{ x, y, z }, Vec3f{ camX, 0, camZ });
 		renderer()->shadow()->draw();
-		});
+		});*/
 	// shadowTimer.start();
 
 	// rasterizer states
@@ -222,6 +217,63 @@ void DXGLApp::create() {
 	entities()->registerComponent<PickableComponent>();
 	entities()->registerComponent<DestroyableComponent>();
 	entities()->registerComponent<RigidBodyComponent>();
+	entities()->registerComponent<ControllableComponent>();
+	entities()->registerComponent<CameraComponent>();
+
+	// standard meshes
+	{
+		MeshDesc desc{};
+		desc.vertexAttributes = VERTEX_ALL;
+		desc.miscAttributes = MISC_ALL;
+		desc.amountMetallic = 1;
+		desc.amountRoughness = 1;
+		resource()->storeMesh(desc, "Assets/Meshes/box.fbx", "box");
+		resource()->storeMesh(desc, "Assets/Meshes/sphere.fbx", "sphere");
+		resource()->storeMesh(desc, "Assets/Meshes/torus.fbx", "torus");
+	}
+
+	{ // player
+		TransformComponent transform{};
+		transform.scale = { 1, 1, 1 };
+		transform.rotation = { 0, 0, 0 };
+		transform.translation = { 0, 0, 0 };
+
+		MeshComponent mesh{};
+		mesh.mesh = resource()->get<SP_Mesh>("box");
+		mesh.useTessellation = false;
+		mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
+
+		m_player = entities()->createEntity(transform, mesh);
+
+		CameraComponent camera{};
+		camera.translation = transform.translation;
+		camera.rotation = { 0, 3.14f, 0 };
+		camera.trackMouse = true;
+		entities()->addEntityComponent<CameraComponent>(camera, m_player);
+
+		ControllableComponent control{};
+		control.speed = 10.0f;
+		control.addAction('W', [&control, &transform, &camera] {
+			transform.translation += camera.forward() * control.speed;
+			camera.translation = transform.translation;
+		});
+		control.addAction('S', [&control, &transform, &camera] {
+			transform.translation += camera.forward() * -control.speed;
+			camera.translation = transform.translation;
+		});
+		control.addAction('A', [&control, &transform, &camera] {
+			transform.translation += camera.right() * -control.speed;
+			camera.translation = transform.translation;
+		});
+		control.addAction('D', [&control, &transform, &camera] {
+			transform.translation += camera.forward() * control.speed;
+			camera.translation = transform.translation;
+		});
+		entities()->addEntityComponent<ControllableComponent>(control, m_player);
+
+	}
+
+	camera()->setActiveCamera(m_player);
 
 	// landscape
 	{
@@ -241,7 +293,7 @@ void DXGLApp::create() {
 		TransformComponent transform{};
 		transform.scale = { 1, 1, 1 };
 		transform.rotation = { 0, 0, 0 };
-		transform.translation = { 0, 0, 0 };
+		transform.translation = { 10, 0, -5 };
 
 		MeshComponent mesh{};
 		mesh.mesh = resource()->get<SP_Mesh>("guitar");
@@ -261,6 +313,12 @@ void DXGLApp::create() {
 		rigidbody.restitution = 0.1f;
 		rigidbody.isStatic = false;
 		entities()->addEntityComponent<RigidBodyComponent>(rigidbody, m_guitar);
+
+		CameraComponent camera{};
+		camera.translation = transform.translation;
+		camera.rotation = { 0, 0, 0 };
+		camera.trackMouse = true;
+		entities()->addEntityComponent<CameraComponent>(camera, m_guitar);
 	}
 
 	// gun
@@ -288,12 +346,9 @@ void DXGLApp::create() {
 		MeshDesc desc{};
 		desc.vertexAttributes = VERTEX_ALL;
 		desc.miscAttributes = MISC_ALL;
-		desc.amountMetallic = 0;
-		desc.amountRoughness = 0;
+		desc.amountMetallic = 1;
+		desc.amountRoughness = 1;
 		resource()->storeMesh(desc, "Assets/Meshes/rock1.fbx", "rock1");
-		resource()->storeMesh(desc, "Assets/Meshes/box.fbx", "box");
-		resource()->storeMesh(desc, "Assets/Meshes/sphere.fbx", "sphere");
-		resource()->storeMesh(desc, "Assets/Meshes/torus.fbx", "torus");
 	}
 
 	for (int i = -10; i < 10; i++) {
@@ -390,6 +445,18 @@ void DXGLApp::update(long double delta) {
 	m_timeDelta = delta;
 	m_timePassed += m_timeDelta;
 
+	// active camera
+
+	if (input()->getKeyTapState('1')) {
+		camera()->setActiveCamera(m_player);
+	}
+
+	if (input()->getKeyTapState('2')) {
+		camera()->setActiveCamera(m_guitar);
+	}
+
+	auto& cam = camera()->getActiveCamera();
+
 	if (input()->getKeyPressState(VK_ESCAPE)) {
 		quit();
 	}
@@ -408,7 +475,6 @@ void DXGLApp::update(long double delta) {
 	if (m_playState) {
 		POINT center = getWindowCenter();
 		dxgl::DXGLInputSystem::get()->setCursorPosition(Point2f{ (float) center.x, (float) center.y });
-		m_camera->update(delta);
 	}
 
 	RECT dim = getScreenSize();
@@ -431,7 +497,7 @@ void DXGLApp::update(long double delta) {
 		//float ry = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 6);
 		//float rz = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 6);
 		//transform.rotation = { rx, ry, rz };
-		transform.translation = m_camera->getPosition() + m_camera->getDirection() * 2.0f;
+		transform.translation = cam.translation + cam.forward() * 2.0f;
 
 		MeshComponent mesh{};
 		mesh.mesh = resource()->get<SP_Mesh>("guitar");
@@ -442,7 +508,7 @@ void DXGLApp::update(long double delta) {
 		entities()->addEntityComponent<DestroyableComponent>(destroyable, id);
 
 		RigidBodyComponent rigidbody{};
-		rigidbody.linearVelocity = m_camera->getDirection() * 25.0f;
+		rigidbody.linearVelocity = cam.forward() * 25.0f;
 		rigidbody.angularVelocity = Vec3f{ 1, 1, 1 };
 		rigidbody.mass = 25.0f;
 		rigidbody.staticFriction = 0.75f;
@@ -461,12 +527,12 @@ void DXGLApp::update(long double delta) {
 		}
 
 		auto& transform = entities()->getEntityComponent<TransformComponent>(m_gun);
-		transform.rotation = m_camera->world().getRotation();
-		Vec3f offsetX = m_camera->world().getXDirection() * aim.x;
-		Vec3f offsetY = m_camera->world().getYDirection() * aim.y;
-		Vec3f offsetZ = m_camera->world().getZDirection() * aim.z;
+		transform.rotation = cam.world().getRotation();
+		Vec3f offsetX = cam.world().getXDirection() * aim.x;
+		Vec3f offsetY = cam.world().getYDirection() * aim.y;
+		Vec3f offsetZ = cam.world().getZDirection() * aim.z;
 		Vec3f offset = offsetX + offsetY + offsetZ;
-		transform.translation = m_camera->world().getTranslation() + offset;
+		transform.translation = cam.world().getTranslation() + offset;
 		entities()->relocateEntity(m_gun);
 	}
 	// point gun end

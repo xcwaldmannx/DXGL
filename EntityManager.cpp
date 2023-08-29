@@ -19,11 +19,11 @@ std::list<OctTreeItem<governor::EntityId>> EntityManager::getEntities() {
 }
 
 OctTree<governor::EntityId>::list EntityManager::searchEntities(float searchSize) {
-	SP_Camera cam = Engine::renderer()->camera()->get("primary");
+	auto& cam = Engine::camera()->getActiveCamera();
 
 	OctTreeRect searchArea{};
 	Vec3f size{ searchSize, searchSize, searchSize };
-	searchArea.pos = cam->getPosition() - size;
+	searchArea.pos = cam.translation - size;
 	searchArea.size = size * 2;
 	return m_entities.search(searchArea);
 }

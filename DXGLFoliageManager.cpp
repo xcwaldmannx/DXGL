@@ -35,10 +35,9 @@ DXGLFoliageManager::~DXGLFoliageManager() {
 }
 
 void DXGLFoliageManager::update(long double delta) {
-	if (!m_camera) {
-		m_camera = Engine::renderer()->camera()->get("primary");
-	}
-	Vec3f camPos = m_camera->getPosition();
+	auto& cam = Engine::camera()->getActiveCamera();
+
+	Vec3f camPos = cam.translation;
 
 	// check futures
 	for (auto it = m_futures.begin(); it != m_futures.end();) {
@@ -63,7 +62,7 @@ void DXGLFoliageManager::update(long double delta) {
 		FoliageChunk& chunk = it->second;
 
 		// cull check
-		if (m_camera->cull(chunk.minVertex, Vec3f{ 1, 1, 1 }, Vec3f{ 0, 0, 0 }, chunk.maxVertex - chunk.minVertex)) {
+		if (Engine::camera()->cullActiveCamera(chunk.minVertex, Vec3f{ 1, 1, 1 }, Vec3f{ 0, 0, 0 }, chunk.maxVertex - chunk.minVertex)) {
 			continue;
 		}
 
@@ -105,9 +104,9 @@ void DXGLFoliageManager::update(long double delta) {
 
 	FoliageBuffer buffer{};
 	buffer.model.setIdentity();
-	buffer.view = m_camera->view();
-	buffer.proj = m_camera->proj();
-	buffer.camPos = m_camera->getPosition();
+	buffer.view = cam.view();
+	buffer.proj = cam.proj();
+	buffer.camPos = cam.translation;
 	buffer.time = m_timePassed;
 	m_cb->update(&buffer);
 }

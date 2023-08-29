@@ -59,9 +59,9 @@ void  DXGLShadow::update(Vec3f position, Vec3f target) {
 	//governor::DXGLGroup groupInRange = Engine::renderer()->governor()->group<TransformComponent, MeshComponent>(dxgl::GroupSort::GROUP_ANY);
 	for (governor::EntityId id : *m_groupEntity) {
 		auto& transform = Engine::entities()->getEntityComponent<TransformComponent>(id);
-		SP_Camera cam = Engine::renderer()->camera()->get("primary");
+		auto& cam = Engine::camera()->getActiveCamera();
 
-		if (Vec3f::dist(cam->getPosition(), transform.translation) < 500.0f) {
+		if (Vec3f::dist(cam.translation, transform.translation) < 500.0f) {
 			m_visibleEntities.push_back(id);
 		}
 	}

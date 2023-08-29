@@ -60,9 +60,62 @@ struct RigidBodyComponent {
 };
 
 struct ControllableComponent {
+public:
+	float speed = 0;
 
+	void addAction(char key, std::function<void()> function) {
+		m_actions[key] = function;
+	}
+
+private:
+	void executeActions(char key) {
+		if (m_actions.find(key) != m_actions.end()) {
+			m_actions[key]();
+		}
+	}
+
+	std::unordered_map<char, std::function<void()>> m_actions{};
 };
 
 struct CameraComponent {
+public:
+	Vec3f forward() {
+		return worldMatrix.getZDirection();
+	}
 
+	Vec3f right() {
+		return worldMatrix.getXDirection();
+	}
+
+	Vec3f up() {
+		return worldMatrix.getYDirection();
+	}
+
+	Mat4f& world() {
+		return worldMatrix;
+	}
+
+	Mat4f& view() {
+		return viewMatrix;
+	}
+
+	Mat4f& proj() {
+		return projMatrix;
+	}
+
+	Vec3f translation{};
+	Vec3f rotation{};
+	bool trackMouse = true;
+
+private:
+	bool isActive = false;
+
+	Mat4f worldMatrix{};
+	Mat4f viewMatrix{};
+	Mat4f projMatrix{};
+
+	float mouseRotX = 0;
+	float mouseRotY = 0;
+
+	friend class CameraManager;
 };

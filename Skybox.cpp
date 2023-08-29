@@ -39,7 +39,7 @@ void Skybox::update(long double delta) {
 }
 
 void Skybox::draw() {
-	dxgl::SP_Camera cam = dxgl::Engine::renderer()->camera()->get("primary");
+	auto& cam = dxgl::Engine::camera()->getActiveCamera();
 
 	dxgl::Engine::renderer()->merger()->setDepthStencil("skybox");
 	dxgl::Engine::renderer()->shader()->VS_setShader(m_vs);
@@ -47,9 +47,9 @@ void Skybox::draw() {
 	dxgl::Engine::renderer()->shader()->DS_setShader(nullptr);
 	dxgl::Engine::renderer()->shader()->PS_setShader(m_ps);
 	dxgl::TransformBuffer sbuff{};
-	sbuff.world = cam->world();
-	sbuff.view = cam->view();
-	sbuff.proj = cam->proj();
+	sbuff.world = cam.world();
+	sbuff.view = cam.view();
+	sbuff.proj = cam.proj();
 	m_vscb->update(&sbuff);
 	m_vscb->bind(0);
 

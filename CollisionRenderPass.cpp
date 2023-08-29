@@ -149,10 +149,10 @@ void CollisionRenderPass::draw(std::vector<Vec3f>& points) {
 	Engine::graphics()->context()->PSSetShader(m_pixelShader, nullptr, 0);
 
 	// set up and bind view proj transform
-	SP_Camera cam = Engine::renderer()->camera()->get("primary");
+	auto& cam = Engine::camera()->getActiveCamera();
 	Transform t{};
-	t.view = cam->view();
-	t.proj = cam->proj();
+	t.view = cam.view();
+	t.proj = cam.proj();
 	m_vcbTransform->update(&t);
 	m_vcbTransform->bind(0);
 

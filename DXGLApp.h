@@ -63,7 +63,5 @@ private:
 	SP_VSConstantBuffer m_vscbSkyboxBuffer = nullptr;
 	SP_PSConstantBuffer m_pscbSkyboxBuffer = nullptr;
 
-	SP_Camera m_camera = nullptr;
-
 	DXGLTimer shadowTimer;
 };

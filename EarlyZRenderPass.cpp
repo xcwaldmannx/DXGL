@@ -173,10 +173,10 @@ void EarlyZRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<PerInstanceD
 	Engine::graphics()->context()->VSSetShader(m_vertexShader, nullptr, 0);
 
 	// set up and bind view proj transform
-	SP_Camera cam = Engine::renderer()->camera()->get("primary");
+	auto& cam = Engine::camera()->getActiveCamera();
 	Transform t{};
-	t.view = cam->view();
-	t.proj = cam->proj();
+	t.view = cam.view();
+	t.proj = cam.proj();
 	m_vcb->update(&t);
 	m_vcb->bind(0);
 

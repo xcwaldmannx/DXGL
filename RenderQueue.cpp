@@ -11,14 +11,14 @@ RenderQueue::~RenderQueue() {
 }
 
 void RenderQueue::submit(OctTree<governor::EntityId>::list entities) {
-	SP_Camera cam = Engine::renderer()->camera()->get("primary");
+	auto& camera = Engine::camera()->getActiveCamera();
 
 	for (auto entity : entities) {
 		governor::EntityId id = entity->item;
 		auto& transform = Engine::entities()->getEntityComponent<TransformComponent>(id);
 		auto& mesh = Engine::entities()->getEntityComponent<MeshComponent>(id);
 
-		if (!cam->cull(transform.translation, transform.scale, mesh.mesh->getAABB().min, mesh.mesh->getAABB().max)) {
+		if (!Engine::camera()->cullActiveCamera(id)) {
 			m_meshToInstances[mesh.mesh].emplace_back(
 				PerInstanceData {
 					.id = id,

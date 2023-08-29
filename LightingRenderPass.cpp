@@ -228,10 +228,10 @@ void LightingRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<PerInstanc
 	Engine::graphics()->context()->PSSetShader(m_pixelShader->get(), nullptr, 0);
 
 	// set up and bind view proj transform
-	SP_Camera cam = Engine::renderer()->camera()->get("primary");
+	auto& cam = Engine::camera()->getActiveCamera();
 	Transform t{};
-	t.view = cam->view();
-	t.proj = cam->proj();
+	t.view = cam.view();
+	t.proj = cam.proj();
 	m_vcbTransform->update(&t);
 	m_vcbTransform->bind(0);
 
@@ -273,7 +273,7 @@ void LightingRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<PerInstanc
 			matId.textureIndex = mesh->getTextureIndex();
 			matId.amountMetallic = mesh->amountMetallic();
 			matId.amountRoughness = mesh->amountRoughness();
-			matId.camPosition = cam->getPosition();
+			matId.camPosition = cam.translation;
 			m_pcbMaterial->update(&matId);
 			m_pcbMaterial->bind(0);
 

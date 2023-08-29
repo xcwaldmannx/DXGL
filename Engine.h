@@ -9,6 +9,7 @@
 #include "Renderer.h"
 #include "EntityManager.h"
 #include "PhysicsManager.h"
+#include "CameraManager.h"
 #include "MousePickManager.h"
 #include "DXGLResourceManager.h"
 
@@ -29,6 +30,7 @@ namespace dxgl {
 		static SP_DXGLResourceManager resource();
 		static SP_EntityManager       entities();
 		static SP_PhysicsManager      physics();
+		static SP_CameraManager       camera();
 		static SP_MousePickManager    mousePick();
 		static SP_DXGLInputManager    input();
 
@@ -55,6 +57,7 @@ namespace dxgl {
 		static SP_DXGLResourceManager m_resource;
 		static SP_EntityManager       m_entities;
 		static SP_PhysicsManager      m_physics;
+		static SP_CameraManager       m_camera;
 		static SP_MousePickManager    m_mousePick;
 		static SP_DXGLInputManager    m_userInput;
 

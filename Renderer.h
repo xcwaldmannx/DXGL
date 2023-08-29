@@ -11,8 +11,6 @@
 #include "DXGLRaster.h"
 #include "DXGLOutputMerger.h"
 
-#include "CameraManager.h"
-
 #include "DXGLShadow.h"
 #include "DXGLLight.h"
 #include "DXGLFoliageManager.h"
@@ -48,8 +46,6 @@ namespace dxgl {
 		SP_DXGLRaster raster();
 		SP_DXGLOutputMerger merger();
 
-		SP_CameraManager camera();
-
 		SP_DXGLShadow shadow();
 		SP_DXGLLight light();
 		SP_DXGLFoliageManager foliage();
@@ -79,8 +75,6 @@ namespace dxgl {
 		SP_DXGLShader m_shader = nullptr;
 		SP_DXGLRaster m_raster = nullptr;
 		SP_DXGLOutputMerger m_merger = nullptr;
-
-		SP_CameraManager m_cameraManager = nullptr;
 
 		SP_DXGLShadow m_shadow = nullptr;
 

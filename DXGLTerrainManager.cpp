@@ -133,15 +133,13 @@ void DXGLTerrainManager::load(const MeshDesc& desc, const std::string& filename)
 }
 
 void DXGLTerrainManager::update(long double delta) {
-	if (!m_camera) {
-		m_camera = Engine::renderer()->camera()->get("primary");
-	}
-
 	m_indices.clear();
+
+	auto& cam = Engine::camera()->getActiveCamera();
 
 	auto chunk = m_chunkTree.begin();
 	while (chunk != m_chunkTree.end()) {
-		if (!m_camera->cull(chunk->minVertex, Vec3f{ 1, 1, 1 }, Vec3f{ 0, 0, 0 }, chunk->maxVertex - chunk->minVertex)) {
+		if (!Engine::camera()->cullActiveCamera(chunk->minVertex, Vec3f{ 1, 1, 1 }, Vec3f{ 0, 0, 0 }, chunk->maxVertex - chunk->minVertex)) {
 			m_indices.insert(m_indices.end(), chunk->faceIndices.begin(), chunk->faceIndices.end());
 		}
 		chunk++;
@@ -152,7 +150,7 @@ void DXGLTerrainManager::update(long double delta) {
 	}
 
 	float searchSize = 128.0f;
-	m_searchArea = { Vec2f(m_camera->getPosition().x - (searchSize / 2.0f), m_camera->getPosition().z - (searchSize / 2.0f)),
+	m_searchArea = { Vec2f(cam.translation.x - (searchSize / 2.0f), cam.translation.z - (searchSize / 2.0f)),
 		Vec2f(searchSize, searchSize) };
 
 	std::list<Vec3f> foliagePositions{};
@@ -187,15 +185,15 @@ void DXGLTerrainManager::draw() {
 	Engine::renderer()->shader()->VS_setShader(m_vs);
 	Engine::renderer()->shader()->PS_setShader(m_ps);
 
-	SP_Camera cam = Engine::renderer()->camera()->get("primary");
+	auto& cam = Engine::camera()->getActiveCamera();
 
 	float scale = 50.0f;
 
 	TerrainBuffer tbuff{};
 	tbuff.world.setIdentity();
 	tbuff.world.setScale(Vec3f{ scale, scale, scale });
-	tbuff.view = cam->view();
-	tbuff.proj = cam->proj();
+	tbuff.view = cam.view();
+	tbuff.proj = cam.proj();
 	tbuff.materialFlags = m_mesh->getTextureIndex();
 	m_vscb->update(&tbuff);
 	m_pscb->update(&tbuff);

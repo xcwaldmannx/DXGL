@@ -45,6 +45,11 @@ SP_PhysicsManager Engine::physics() {
 	return Engine::m_physics;
 }
 
+SP_CameraManager Engine::m_camera = std::make_shared<CameraManager>();
+SP_CameraManager Engine::camera() {
+	return Engine::m_camera;
+}
+
 SP_MousePickManager Engine::m_mousePick = std::make_shared<MousePickManager>();
 SP_MousePickManager Engine::mousePick() {
 	return Engine::m_mousePick;
@@ -81,6 +86,9 @@ void Engine::onUpdate() {
 
 	// update input events
 	DXGLInputSystem::get()->update();
+
+	// update managers
+	camera()->update(m_deltaTime);
 
 	// update call
 	update(m_deltaTime);

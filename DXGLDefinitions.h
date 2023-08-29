@@ -48,8 +48,6 @@ namespace dxgl {
 	// Managers
 	class CameraManager;
 	typedef std::shared_ptr<CameraManager> SP_CameraManager;
-	class Camera;
-	typedef std::shared_ptr<Camera> SP_Camera;
 
 	class DXGLShadow;
 	typedef std::shared_ptr<DXGLShadow> SP_DXGLShadow;

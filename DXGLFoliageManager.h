@@ -64,8 +64,6 @@ namespace dxgl {
 		std::vector<FoliageInstance> m_foliage{};
 		std::vector<FoliageInstance> m_culledFoliage{};
 
-		SP_Camera m_camera = nullptr;
-
 		std::unordered_map<uint32_t, FoliageChunk> m_chunks{};
 		std::unordered_map<uint32_t, std::future<std::vector<FoliageChunk>>> m_futures{};
 

@@ -9,7 +9,6 @@ Renderer::Renderer() {
 	m_raster = std::make_shared<DXGLRaster>(Engine::graphics());
 	m_merger = std::make_shared<DXGLOutputMerger>(Engine::graphics());
 
-	m_cameraManager = std::make_shared<CameraManager>();
 	m_shadow = std::make_shared<DXGLShadow>();
 	m_light = std::make_shared<DXGLLight>();
 	m_foliageManager = std::make_shared<DXGLFoliageManager>();
@@ -81,10 +80,6 @@ SP_DXGLRaster Renderer::raster() {
 
 SP_DXGLOutputMerger Renderer::merger() {
 	return m_merger;
-}
-
-SP_CameraManager Renderer::camera() {
-	return m_cameraManager;
 }
 
 SP_DXGLShadow Renderer::shadow() {
