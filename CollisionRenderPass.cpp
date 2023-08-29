@@ -11,7 +11,7 @@ CollisionRenderPass::CollisionRenderPass() {
 	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
 	depthStencilDesc.StencilEnable = false;
 
-	HRESULT result = DXGLMain::graphics()->device()->CreateDepthStencilState(&depthStencilDesc, &m_dsState);
+	HRESULT result = Engine::graphics()->device()->CreateDepthStencilState(&depthStencilDesc, &m_dsState);
 
 	if (FAILED(result)) {
 		throw std::runtime_error("Skybox Depth Stencil State could not be created.");
@@ -30,7 +30,7 @@ CollisionRenderPass::CollisionRenderPass() {
 	rasterizerDesc.DepthBiasClamp = 0.0f;
 	rasterizerDesc.SlopeScaledDepthBias = 0.0f;
 
-	result = DXGLMain::graphics()->device()->CreateRasterizerState(&rasterizerDesc, &m_rasterState);
+	result = Engine::graphics()->device()->CreateRasterizerState(&rasterizerDesc, &m_rasterState);
 
 	if (FAILED(result)) {
 		throw std::runtime_error("Lighting Rasterizer State could not be created.");
@@ -93,23 +93,23 @@ CollisionRenderPass::CollisionRenderPass() {
 	dxgl::InputLayoutDesc descMousePick{};
 	descMousePick.add("POSITION", 0, dxgl::FLOAT3, false);
 	descMousePick.add("COLOR",    0, dxgl::FLOAT3, false);
-	m_layout = dxgl::DXGLMain::resource()->createInputLayout(descMousePick, vsBlob);
+	m_layout = dxgl::Engine::resource()->createInputLayout(descMousePick, vsBlob);
 
 	// create shaders
-	result = DXGLMain::graphics()->device()->CreateVertexShader(vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), nullptr, &m_vertexShader);
+	result = Engine::graphics()->device()->CreateVertexShader(vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), nullptr, &m_vertexShader);
 	if (FAILED(result)) {
 		throw std::runtime_error("Collision Vertex Shader could not be created.");
 	}
 	vsBlob->Release();
 
-	result = DXGLMain::graphics()->device()->CreatePixelShader(psBlob->GetBufferPointer(), psBlob->GetBufferSize(), nullptr, &m_pixelShader);
+	result = Engine::graphics()->device()->CreatePixelShader(psBlob->GetBufferPointer(), psBlob->GetBufferSize(), nullptr, &m_pixelShader);
 	if (FAILED(result)) {
 		throw std::runtime_error("Collision Pixel Shader could not be created.");
 	}
 	psBlob->Release();
 
 	// transform buffer
-	m_vcbTransform = DXGLMain::resource()->createVSConstantBuffer(sizeof(Transform));
+	m_vcbTransform = Engine::resource()->createVSConstantBuffer(sizeof(Transform));
 }
 
 CollisionRenderPass::~CollisionRenderPass() {
@@ -119,15 +119,15 @@ CollisionRenderPass::~CollisionRenderPass() {
 void CollisionRenderPass::draw(std::vector<Vec3f>& points) {
 
 	// Bind the depth-stencil view and render target view
-	SP_DXGLRenderTargetView rtv = DXGLMain::renderer()->getRTV(RESOURCE_VIEW_SLOT_BACK_BUFFER);
+	SP_DXGLRenderTargetView rtv = Engine::renderer()->getRTV(RESOURCE_VIEW_SLOT_BACK_BUFFER);
 	ID3D11RenderTargetView* rtvv = rtv->get();
-	SP_DXGLDepthStencilView dsv = DXGLMain::renderer()->getDSV(RESOURCE_VIEW_SLOT_BACK_BUFFER);
-	DXGLMain::graphics()->context()->OMSetRenderTargets(1, &rtvv, dsv->get());
+	SP_DXGLDepthStencilView dsv = Engine::renderer()->getDSV(RESOURCE_VIEW_SLOT_BACK_BUFFER);
+	Engine::graphics()->context()->OMSetRenderTargets(1, &rtvv, dsv->get());
 
 	// Step 3: Clear the render target buffer at the beginning of the render pass
 	float clearColor[4] = { 1.0f, 1.0f, 1.0f, 1.0f }; // Set your clear color
-	//DXGLMain::graphics()->context()->ClearRenderTargetView(rtvv, clearColor);
-	//DXGLMain::graphics()->context()->ClearDepthStencilView(dsv->get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+	//Engine::graphics()->context()->ClearRenderTargetView(rtvv, clearColor);
+	//Engine::graphics()->context()->ClearDepthStencilView(dsv->get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 
 	// Step 4: Render the opaque objects with depth testing and depth writing enabled
 	// Bind shaders, vertex buffers, index buffers, etc.
@@ -135,8 +135,8 @@ void CollisionRenderPass::draw(std::vector<Vec3f>& points) {
 	// Draw the opaque objects
 
 	// Set the depth/stencil state
-	DXGLMain::graphics()->context()->OMSetDepthStencilState(m_dsState, 0);
-	DXGLMain::graphics()->context()->RSSetState(m_rasterState);
+	Engine::graphics()->context()->OMSetDepthStencilState(m_dsState, 0);
+	Engine::graphics()->context()->RSSetState(m_rasterState);
 
 	// Step 5 (optional): Render the transparent objects without writing to the depth buffer
 	// Bind shaders, vertex buffers, index buffers, etc.
@@ -145,11 +145,11 @@ void CollisionRenderPass::draw(std::vector<Vec3f>& points) {
 
 	// bind input layout and shaders
 	m_layout->bind();
-	DXGLMain::graphics()->context()->VSSetShader(m_vertexShader, nullptr, 0);
-	DXGLMain::graphics()->context()->PSSetShader(m_pixelShader, nullptr, 0);
+	Engine::graphics()->context()->VSSetShader(m_vertexShader, nullptr, 0);
+	Engine::graphics()->context()->PSSetShader(m_pixelShader, nullptr, 0);
 
 	// set up and bind view proj transform
-	SP_DXGLCamera cam = DXGLMain::renderer()->camera()->get("primary");
+	SP_Camera cam = Engine::renderer()->camera()->get("primary");
 	Transform t{};
 	t.view = cam->view();
 	t.proj = cam->proj();
@@ -183,9 +183,9 @@ void CollisionRenderPass::draw(std::vector<Vec3f>& points) {
 	}
 
 	if (vbData.size() > 0) {
-		SP_VertexBuffer vb = DXGLMain::resource()->createVertexBuffer(&vbData[0], vbData.size() / 2.0f, sizeof(Vec3f) * 2);
+		SP_VertexBuffer vb = Engine::resource()->createVertexBuffer(&vbData[0], vbData.size() / 2.0f, sizeof(Vec3f) * 2);
 		vb->bind(0);
 
-		DXGLMain::renderer()->drawLineList(points.size(), 0);
+		Engine::renderer()->drawLineList(points.size(), 0);
 	}
 }

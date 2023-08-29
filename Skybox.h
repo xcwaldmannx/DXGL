@@ -1,7 +1,7 @@
 #pragma once
 
 //#include "DXGLDefinitions.h"
-#include "DXGLMain.h"
+#include "Engine.h"
 
 class Skybox {
 public:

@@ -8,17 +8,17 @@ namespace dxgl {
 	// DXGL //
 	//////////
 
-	class DXGLMain;
-	typedef std::shared_ptr<DXGLMain> SP_DXGLMain;
+	class Engine;
+	typedef std::shared_ptr<Engine> SP_Engine;
 
 	class DXGLGraphics;
 	typedef std::shared_ptr<DXGLGraphics> SP_DXGLGraphics;
 
-	class DXGLSwapChain;
-	typedef std::shared_ptr<DXGLSwapChain> SP_DXGLSwapChain;
+	class SwapChain;
+	typedef std::shared_ptr<SwapChain> SP_SwapChain;
 
-	class DXGLRenderer;
-	typedef std::shared_ptr<DXGLRenderer> SP_DXGLRenderer;
+	class Renderer;
+	typedef std::shared_ptr<Renderer> SP_Renderer;
 
 	class DXGLResourceManager;
 	typedef std::shared_ptr<DXGLResourceManager> SP_DXGLResourceManager;
@@ -46,10 +46,10 @@ namespace dxgl {
 	typedef std::shared_ptr<DXGLInputManager> SP_DXGLInputManager;
 
 	// Managers
-	class DXGLCameraManager;
-	typedef std::shared_ptr<DXGLCameraManager> SP_DXGLCameraManager;
-	class DXGLCamera;
-	typedef std::shared_ptr<DXGLCamera> SP_DXGLCamera;
+	class CameraManager;
+	typedef std::shared_ptr<CameraManager> SP_CameraManager;
+	class Camera;
+	typedef std::shared_ptr<Camera> SP_Camera;
 
 	class DXGLShadow;
 	typedef std::shared_ptr<DXGLShadow> SP_DXGLShadow;

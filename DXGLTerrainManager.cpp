@@ -8,20 +8,20 @@ DXGLTerrainManager::DXGLTerrainManager() {
 	descLayout.add("TEXCOORD", 0, FLOAT2, false);
 	descLayout.add("NORMAL",   0, FLOAT3, false);
 	descLayout.add("TANGENT",  0, FLOAT3, false);
-	m_layout = DXGLMain::resource()->createInputLayout(descLayout, "Assets/Shaders/VS_TerrainShader.cso");
+	m_layout = Engine::resource()->createInputLayout(descLayout, "Assets/Shaders/VS_TerrainShader.cso");
 
-	m_vs = DXGLMain::resource()->createShader<DXGLVertexShader>("Assets/Shaders/VS_TerrainShader.cso");
-	m_ps = DXGLMain::resource()->createShader<DXGLPixelShader>("Assets/Shaders/PS_TerrainShader.cso");
+	m_vs = Engine::resource()->createShader<DXGLVertexShader>("Assets/Shaders/VS_TerrainShader.cso");
+	m_ps = Engine::resource()->createShader<DXGLPixelShader>("Assets/Shaders/PS_TerrainShader.cso");
 
-	m_vscb = DXGLMain::resource()->createVSConstantBuffer(sizeof(TerrainBuffer));
-	m_pscb = DXGLMain::resource()->createPSConstantBuffer(sizeof(TerrainBuffer));
+	m_vscb = Engine::resource()->createVSConstantBuffer(sizeof(TerrainBuffer));
+	m_pscb = Engine::resource()->createPSConstantBuffer(sizeof(TerrainBuffer));
 }
 
 DXGLTerrainManager::~DXGLTerrainManager() {
 }
 
 void DXGLTerrainManager::load(const MeshDesc& desc, const std::string& filename) {
-	m_mesh = DXGLMain::resource()->createMesh(desc, filename);
+	m_mesh = Engine::resource()->createMesh(desc, filename);
 
 	AABB aabb = m_mesh->getAABB();
 
@@ -134,7 +134,7 @@ void DXGLTerrainManager::load(const MeshDesc& desc, const std::string& filename)
 
 void DXGLTerrainManager::update(long double delta) {
 	if (!m_camera) {
-		m_camera = DXGLMain::renderer()->camera()->get("primary");
+		m_camera = Engine::renderer()->camera()->get("primary");
 	}
 
 	m_indices.clear();
@@ -148,7 +148,7 @@ void DXGLTerrainManager::update(long double delta) {
 	}
 
 	if (m_indices.size() > 0) {
-		m_ib = DXGLMain::resource()->createIndexBuffer(&m_indices[0], m_indices.size());
+		m_ib = Engine::resource()->createIndexBuffer(&m_indices[0], m_indices.size());
 	}
 
 	float searchSize = 128.0f;
@@ -171,8 +171,8 @@ void DXGLTerrainManager::update(long double delta) {
 			}
 		}
 
-		DXGLMain::renderer()->foliage()->unloadTerrain(diffUnload);
-		DXGLMain::renderer()->foliage()->loadTerrain(diffLoad);
+		Engine::renderer()->foliage()->unloadTerrain(diffUnload);
+		Engine::renderer()->foliage()->loadTerrain(diffLoad);
 
 		m_lastSearch = searched;
 	}
@@ -184,10 +184,10 @@ void DXGLTerrainManager::draw() {
 	if (m_ib)
 	m_ib->bind();
 
-	DXGLMain::renderer()->shader()->VS_setShader(m_vs);
-	DXGLMain::renderer()->shader()->PS_setShader(m_ps);
+	Engine::renderer()->shader()->VS_setShader(m_vs);
+	Engine::renderer()->shader()->PS_setShader(m_ps);
 
-	SP_DXGLCamera cam = DXGLMain::renderer()->camera()->get("primary");
+	SP_Camera cam = Engine::renderer()->camera()->get("primary");
 
 	float scale = 50.0f;
 
@@ -204,9 +204,9 @@ void DXGLTerrainManager::draw() {
 	m_pscb->bind(4);
 
 	for (auto& mesh : m_mesh->getMeshes()) {
-		SP_Material material = DXGLMain::resource()->get<SP_Material>(mesh.materialName);
-		DXGLMain::renderer()->shader()->PS_setMaterial(0, 1, material);
-		DXGLMain::renderer()->drawIndexedTriangleList(m_indices.size(), mesh.baseIndex, mesh.baseVertex);
+		SP_Material material = Engine::resource()->get<SP_Material>(mesh.materialName);
+		Engine::renderer()->shader()->PS_setMaterial(0, 1, material);
+		Engine::renderer()->drawIndexedTriangleList(m_indices.size(), mesh.baseIndex, mesh.baseVertex);
 	}
 }
 

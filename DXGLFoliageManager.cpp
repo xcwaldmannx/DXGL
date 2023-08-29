@@ -17,16 +17,16 @@ DXGLFoliageManager::DXGLFoliageManager() {
 	desc.add("INSTANCE_COLOR_THREE", 1, FLOAT3, true);
 
 	desc.add("INSTANCE_TIME_OFFSET", 1, FLOAT1, true);
-	m_layout = DXGLMain::resource()->createInputLayout(desc, "Assets/Shaders/VS_FoliageShader.cso");
-	m_vs = DXGLMain::resource()->createShader<DXGLVertexShader>("Assets/Shaders/VS_FoliageShader.cso");
-	m_ps = DXGLMain::resource()->createShader<DXGLPixelShader>("Assets/Shaders/PS_FoliageShader.cso");
+	m_layout = Engine::resource()->createInputLayout(desc, "Assets/Shaders/VS_FoliageShader.cso");
+	m_vs = Engine::resource()->createShader<DXGLVertexShader>("Assets/Shaders/VS_FoliageShader.cso");
+	m_ps = Engine::resource()->createShader<DXGLPixelShader>("Assets/Shaders/PS_FoliageShader.cso");
 
-	m_cb = DXGLMain::resource()->createVSConstantBuffer(sizeof(FoliageBuffer));
+	m_cb = Engine::resource()->createVSConstantBuffer(sizeof(FoliageBuffer));
 
 	MeshDesc meshDesc{};
 	meshDesc.vertexAttributes = VERTEX_POSITION | VERTEX_TEXCOORD | VERTEX_NORMAL;
 	meshDesc.miscAttributes = MISC_INDEX;
-	m_mesh = DXGLMain::resource()->createMesh(meshDesc, "Assets/Meshes/landscapes/grass.fbx");
+	m_mesh = Engine::resource()->createMesh(meshDesc, "Assets/Meshes/landscapes/grass.fbx");
 
 	m_foliage.reserve(2000000);
 }
@@ -36,7 +36,7 @@ DXGLFoliageManager::~DXGLFoliageManager() {
 
 void DXGLFoliageManager::update(long double delta) {
 	if (!m_camera) {
-		m_camera = DXGLMain::renderer()->camera()->get("primary");
+		m_camera = Engine::renderer()->camera()->get("primary");
 	}
 	Vec3f camPos = m_camera->getPosition();
 
@@ -98,7 +98,7 @@ void DXGLFoliageManager::update(long double delta) {
 	}
 
 	if (!m_foliage.empty()) {
-		m_vbInstance = DXGLMain::resource()->createVertexBuffer(&m_foliage[0], m_foliage.size(), sizeof(FoliageInstance));
+		m_vbInstance = Engine::resource()->createVertexBuffer(&m_foliage[0], m_foliage.size(), sizeof(FoliageInstance));
 	}
 
 	m_timePassed += delta;
@@ -121,13 +121,13 @@ void DXGLFoliageManager::draw() {
 		m_vbInstance->bind(1);
 	}
 
-	DXGLMain::renderer()->shader()->VS_setShader(m_vs);
-	DXGLMain::renderer()->shader()->PS_setShader(m_ps);
+	Engine::renderer()->shader()->VS_setShader(m_vs);
+	Engine::renderer()->shader()->PS_setShader(m_ps);
 
 	m_cb->bind(0);
 
 	for (auto& mesh : m_mesh->getMeshes()) {
-		DXGLMain::renderer()->drawIndexedTriangleListInstanced(mesh.indexCount, m_foliage.size(), mesh.baseIndex, mesh.baseVertex, 0);
+		Engine::renderer()->drawIndexedTriangleListInstanced(mesh.indexCount, m_foliage.size(), mesh.baseIndex, mesh.baseVertex, 0);
 	}
 }
 

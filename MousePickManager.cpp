@@ -13,10 +13,10 @@ MousePickManager::~MousePickManager() {
 uint32_t MousePickManager::getColorId(Point2f position) {
 
 	if (!m_entities) {
-		DXGLMain::entities()->group<PickableComponent>(governor::GROUP_ANY, m_entities);
+		Engine::entities()->group<PickableComponent>(governor::GROUP_ANY, m_entities);
 	}
 
-	SP_DXGLShaderResourceView tex = DXGLMain::renderer()->getRenderToTexture(RESOURCE_VIEW_SLOT_1);
+	SP_DXGLShaderResourceView tex = Engine::renderer()->getRenderToTexture(RESOURCE_VIEW_SLOT_1);
 
 	UINT width = 0;
 	UINT height = 0;
@@ -55,19 +55,19 @@ uint32_t MousePickManager::getColorId(Point2f position) {
 	stagingDesc.Usage = D3D11_USAGE_STAGING;
 	stagingDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
 
-	hr = DXGLMain::graphics()->device()->CreateTexture2D(&stagingDesc, nullptr, &pStagingTexture);
+	hr = Engine::graphics()->device()->CreateTexture2D(&stagingDesc, nullptr, &pStagingTexture);
 
 	if (FAILED(hr)) {
 		throw std::runtime_error("Could not create texture.");
 	}
 
 	// Copy the data from the original resource to the staging texture
-	DXGLMain::graphics()->context()->CopySubresourceRegion(pStagingTexture, 0, 0, 0, 0, pOriginalResource, 0, nullptr);
+	Engine::graphics()->context()->CopySubresourceRegion(pStagingTexture, 0, 0, 0, 0, pOriginalResource, 0, nullptr);
 
 
 	// Map the staging texture to read the pixel data
 	D3D11_MAPPED_SUBRESOURCE mappedResource{};
-	hr = DXGLMain::graphics()->context()->Map(pStagingTexture, 0, D3D11_MAP_READ, 0, &mappedResource);
+	hr = Engine::graphics()->context()->Map(pStagingTexture, 0, D3D11_MAP_READ, 0, &mappedResource);
 
 	if (FAILED(hr)) {
 		throw std::runtime_error("Could not map resource.");
@@ -91,7 +91,7 @@ uint32_t MousePickManager::getColorId(Point2f position) {
 	uint32_t colorId = (red << 16) | (green << 8) | blue;
 
 	// unmap when done with resource
-	DXGLMain::graphics()->context()->Unmap(pStagingTexture, 0);
+	Engine::graphics()->context()->Unmap(pStagingTexture, 0);
 
 	// Release resources
 	pOriginalResource->Release();
@@ -99,7 +99,7 @@ uint32_t MousePickManager::getColorId(Point2f position) {
 
 	// set selected entity
 	for (auto& id : *m_entities) {
-		auto& component = DXGLMain::entities()->getEntityComponent<PickableComponent>(id);
+		auto& component = Engine::entities()->getEntityComponent<PickableComponent>(id);
 		component.isSelected = false;
 		if (id == colorId) {
 			component.isSelected = true;

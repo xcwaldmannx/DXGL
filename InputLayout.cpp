@@ -16,7 +16,7 @@ InputLayout::InputLayout(const InputLayoutDesc& desc, const std::string& filenam
     ifs.read(reinterpret_cast<char*>(&byteCode[0]), length);
     ifs.close();
 
-    HRESULT result = DXGLMain::graphics()->device()->CreateInputLayout(&layout[0], (UINT)layout.size(), byteCode.data(), length, &m_layout);
+    HRESULT result = Engine::graphics()->device()->CreateInputLayout(&layout[0], (UINT)layout.size(), byteCode.data(), length, &m_layout);
 
     if (FAILED(result)) {
         throw std::exception("InputLayout could not be created.");
@@ -26,7 +26,7 @@ InputLayout::InputLayout(const InputLayoutDesc& desc, const std::string& filenam
 InputLayout::InputLayout(const InputLayoutDesc& desc, ID3DBlob* shaderBytecode) {
     std::vector<D3D11_INPUT_ELEMENT_DESC> layout = createLayout(desc);
 
-    HRESULT result = DXGLMain::graphics()->device()->CreateInputLayout(&layout[0], (UINT)layout.size(),
+    HRESULT result = Engine::graphics()->device()->CreateInputLayout(&layout[0], (UINT)layout.size(),
         shaderBytecode->GetBufferPointer(), shaderBytecode->GetBufferSize(), &m_layout);
 
     if (FAILED(result)) {
@@ -39,7 +39,7 @@ InputLayout::~InputLayout() {
 }
 
 void InputLayout::bind(int slot) {
-    DXGLMain::graphics()->context()->IASetInputLayout(m_layout);
+    Engine::graphics()->context()->IASetInputLayout(m_layout);
 }
 
 ID3D11InputLayout* InputLayout::get() {

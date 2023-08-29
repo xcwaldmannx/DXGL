@@ -19,7 +19,7 @@ InstanceBuffer::InstanceBuffer(void* instances, int instanceCount, int instanceS
 	D3D11_SUBRESOURCE_DATA subresourceData{};
 	subresourceData.pSysMem = instances;
 
-	HRESULT result = DXGLMain::graphics()->device()->CreateBuffer(&bufferDesc, &subresourceData, &m_ibuffer);
+	HRESULT result = Engine::graphics()->device()->CreateBuffer(&bufferDesc, &subresourceData, &m_ibuffer);
 
 	if (FAILED(result)) {
 		throw std::exception("InstanceBuffer could not be created.");
@@ -33,11 +33,11 @@ InstanceBuffer::~InstanceBuffer() {
 void InstanceBuffer::bind(int slot) {
 	UINT stride = m_size;
 	UINT offset = 0;
-	DXGLMain::graphics()->context()->IASetVertexBuffers(slot, 1, &m_ibuffer, &stride, &offset);
+	Engine::graphics()->context()->IASetVertexBuffers(slot, 1, &m_ibuffer, &stride, &offset);
 }
 
 void InstanceBuffer::update(void* buffer) {
-	DXGLMain::graphics()->context()->UpdateSubresource(m_ibuffer, 0, 0, buffer, 0, 0);
+	Engine::graphics()->context()->UpdateSubresource(m_ibuffer, 0, 0, buffer, 0, 0);
 }
 
 ID3D11Buffer* InstanceBuffer::get() {

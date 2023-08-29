@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "DXGLMain.h"
+#include "Engine.h"
 #include "Bindable.h"
 
 namespace dxgl {

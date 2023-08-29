@@ -10,7 +10,7 @@ PSConstantBuffer::PSConstantBuffer(UINT bytes) {
 	bufferDesc.CPUAccessFlags = 0;
 	bufferDesc.MiscFlags = 0;
 
-	HRESULT result = DXGLMain::graphics()->device()->CreateBuffer(&bufferDesc, nullptr, &m_cbuffer);
+	HRESULT result = Engine::graphics()->device()->CreateBuffer(&bufferDesc, nullptr, &m_cbuffer);
 
 	if (FAILED(result)) {
 		throw std::exception("PSConstantBuffer could not be created.");
@@ -22,11 +22,11 @@ PSConstantBuffer::~PSConstantBuffer() {
 }
 
 void PSConstantBuffer::bind(int slot) {
-	DXGLMain::graphics()->context()->PSSetConstantBuffers(slot, 1, &m_cbuffer);
+	Engine::graphics()->context()->PSSetConstantBuffers(slot, 1, &m_cbuffer);
 }
 
 void PSConstantBuffer::update(void* buffer) {
-	DXGLMain::graphics()->context()->UpdateSubresource(m_cbuffer, 0, 0, buffer, 0, 0);
+	Engine::graphics()->context()->UpdateSubresource(m_cbuffer, 0, 0, buffer, 0, 0);
 }
 
 ID3D11Buffer* PSConstantBuffer::get() {

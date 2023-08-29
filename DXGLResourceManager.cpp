@@ -273,7 +273,7 @@ std::shared_ptr<T> DXGLResourceManager::createShader(const std::string& filename
 
 	std::shared_ptr<T> shader = nullptr;
 	try {
-		shader = std::make_shared<T>(byteCode.data(), length, DXGLMain::graphics());
+		shader = std::make_shared<T>(byteCode.data(), length, Engine::graphics());
 	} catch (...) {
 		throw std::runtime_error("DXGLShader could not be created.");
 	}
@@ -294,7 +294,7 @@ void DXGLResourceManager::storeShader(const std::string& filename, const std::st
 
 	std::shared_ptr<T> shader = nullptr;
 	try {
-		shader = std::make_shared<T>(byteCode.data(), length, DXGLMain::graphics());
+		shader = std::make_shared<T>(byteCode.data(), length, Engine::graphics());
 		m_resources[typeid(T)][alias] = shader;
 	} catch (...) {
 		throw std::runtime_error("DXGLShader could not be stored.");
@@ -315,7 +315,7 @@ SP_DXGLSamplerState DXGLResourceManager::createSamplerState(D3D11_FILTER filter,
 	D3D11_COMPARISON_FUNC comparison, FLOAT borderColor) {
 	SP_DXGLSamplerState sampler = nullptr;
 	try {
-		sampler = std::make_shared<DXGLSamplerState>(filter, addressUVW, comparison, borderColor, DXGLMain::graphics());
+		sampler = std::make_shared<DXGLSamplerState>(filter, addressUVW, comparison, borderColor, Engine::graphics());
 	} catch(...) {
 		throw std::runtime_error("DXGLSamplerState could not be created.");
 	}
@@ -327,7 +327,7 @@ void DXGLResourceManager::storeSamplerState(D3D11_FILTER filter, D3D11_TEXTURE_A
 	D3D11_COMPARISON_FUNC comparison, FLOAT borderColor, const std::string& alias) {
 	SP_DXGLSamplerState sampler = nullptr;
 	try {
-		sampler = std::make_shared<DXGLSamplerState>(filter, addressUVW, comparison, borderColor, DXGLMain::graphics());
+		sampler = std::make_shared<DXGLSamplerState>(filter, addressUVW, comparison, borderColor, Engine::graphics());
 		m_resources[typeid(SP_DXGLSamplerState)][alias] = sampler;
 	} catch (...) {
 		throw std::runtime_error("DXGLSamplerState could not be stored.");

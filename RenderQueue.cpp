@@ -11,12 +11,12 @@ RenderQueue::~RenderQueue() {
 }
 
 void RenderQueue::submit(OctTree<governor::EntityId>::list entities) {
-	SP_DXGLCamera cam = DXGLMain::renderer()->camera()->get("primary");
+	SP_Camera cam = Engine::renderer()->camera()->get("primary");
 
 	for (auto entity : entities) {
 		governor::EntityId id = entity->item;
-		auto& transform = DXGLMain::entities()->getEntityComponent<TransformComponent>(id);
-		auto& mesh = DXGLMain::entities()->getEntityComponent<MeshComponent>(id);
+		auto& transform = Engine::entities()->getEntityComponent<TransformComponent>(id);
+		auto& mesh = Engine::entities()->getEntityComponent<MeshComponent>(id);
 
 		if (!cam->cull(transform.translation, transform.scale, mesh.mesh->getAABB().min, mesh.mesh->getAABB().max)) {
 			m_meshToInstances[mesh.mesh].emplace_back(

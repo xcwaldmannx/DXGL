@@ -15,7 +15,7 @@ LightingRenderPass::LightingRenderPass() {
 	// ... Configure stencil settings here if enabled ...
 
 	// Create the depth-stencil state object
-	HRESULT result = DXGLMain::graphics()->device()->CreateDepthStencilState(&depthStencilDesc, &m_dsState);
+	HRESULT result = Engine::graphics()->device()->CreateDepthStencilState(&depthStencilDesc, &m_dsState);
 
 	if (FAILED(result)) {
 		throw std::runtime_error("Lighting Depth Stencil State could not be created.");
@@ -34,7 +34,7 @@ LightingRenderPass::LightingRenderPass() {
 	rasterizerDesc.DepthBiasClamp = 0.0f;
 	rasterizerDesc.SlopeScaledDepthBias = 0.0f;
 
-	result = DXGLMain::graphics()->device()->CreateRasterizerState(&rasterizerDesc, &m_rasterState);
+	result = Engine::graphics()->device()->CreateRasterizerState(&rasterizerDesc, &m_rasterState);
 
 	if (FAILED(result)) {
 		throw std::runtime_error("Lighting Rasterizer State could not be created.");
@@ -151,8 +151,8 @@ LightingRenderPass::LightingRenderPass() {
 	}
 	*/
 
-	m_vertexShader = DXGLMain::resource()->createShader<DXGLVertexShader>("Assets/Shaders/VSMaterialShader.cso");
-	m_pixelShader = DXGLMain::resource()->createShader<DXGLPixelShader>("Assets/Shaders/PSMaterialShader.cso");
+	m_vertexShader = Engine::resource()->createShader<DXGLVertexShader>("Assets/Shaders/VSMaterialShader.cso");
+	m_pixelShader = Engine::resource()->createShader<DXGLPixelShader>("Assets/Shaders/PSMaterialShader.cso");
 
 	// create input layout
 	InputLayoutDesc ilDesc{};
@@ -165,18 +165,18 @@ LightingRenderPass::LightingRenderPass() {
 	ilDesc.add("INSTANCE_R",  1, FLOAT3, true);
 	ilDesc.add("INSTANCE_T",  1, FLOAT3, true);
 
-	m_layout = DXGLMain::resource()->createInputLayout(ilDesc, "Assets/Shaders/VSMaterialShader.cso");
+	m_layout = Engine::resource()->createInputLayout(ilDesc, "Assets/Shaders/VSMaterialShader.cso");
 
 	/*
 
 	// create shaders
-	result = DXGLMain::graphics()->device()->CreateVertexShader(vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), nullptr, &m_vertexShader);
+	result = Engine::graphics()->device()->CreateVertexShader(vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), nullptr, &m_vertexShader);
 	if (FAILED(result)) {
 		throw std::runtime_error("Early Z Vertex Shader could not be created.");
 	}
 	vsBlob->Release();
 
-	result = DXGLMain::graphics()->device()->CreatePixelShader(psBlob->GetBufferPointer(), psBlob->GetBufferSize(), nullptr, &m_pixelShader);
+	result = Engine::graphics()->device()->CreatePixelShader(psBlob->GetBufferPointer(), psBlob->GetBufferSize(), nullptr, &m_pixelShader);
 	if (FAILED(result)) {
 		throw std::runtime_error("Early Z Pixel Shader could not be created.");
 	}
@@ -185,10 +185,10 @@ LightingRenderPass::LightingRenderPass() {
 	*/
 
 	// create constant buffers
-	m_vcbTransform = DXGLMain::resource()->createVSConstantBuffer(sizeof(Transform));
-	m_pcbMaterial = DXGLMain::resource()->createPSConstantBuffer(sizeof(MaterialId));
+	m_vcbTransform = Engine::resource()->createVSConstantBuffer(sizeof(Transform));
+	m_pcbMaterial = Engine::resource()->createPSConstantBuffer(sizeof(MaterialId));
 
-	m_brdf = DXGLMain::resource()->createTexture2D("Assets/Textures/brdf.png");
+	m_brdf = Engine::resource()->createTexture2D("Assets/Textures/brdf.png");
 }
 
 LightingRenderPass::~LightingRenderPass() {
@@ -198,15 +198,15 @@ LightingRenderPass::~LightingRenderPass() {
 
 void LightingRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<PerInstanceData>>& instances) {
 	// Step 2: Bind the depth-stencil view and render target view to the output merger stage
-	SP_DXGLRenderTargetView rtv = DXGLMain::renderer()->getRTV(RESOURCE_VIEW_SLOT_BACK_BUFFER);
+	SP_DXGLRenderTargetView rtv = Engine::renderer()->getRTV(RESOURCE_VIEW_SLOT_BACK_BUFFER);
 	ID3D11RenderTargetView* rtvv = rtv->get();
-	SP_DXGLDepthStencilView dsv = DXGLMain::renderer()->getDSV(RESOURCE_VIEW_SLOT_BACK_BUFFER);
-	DXGLMain::graphics()->context()->OMSetRenderTargets(1, &rtvv, dsv->get());
+	SP_DXGLDepthStencilView dsv = Engine::renderer()->getDSV(RESOURCE_VIEW_SLOT_BACK_BUFFER);
+	Engine::graphics()->context()->OMSetRenderTargets(1, &rtvv, dsv->get());
 
 	// Step 3: Clear the render target buffer at the beginning of the render pass
 	float clearColor[4] = { 0.0f, 0.0f, 0.0f, 0.0f }; // Set your clear color
-	// DXGLMain::graphics()->context()->ClearRenderTargetView(rtvv, clearColor);
-	// DXGLMain::graphics()->context()->ClearDepthStencilView(dsv->get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+	// Engine::graphics()->context()->ClearRenderTargetView(rtvv, clearColor);
+	// Engine::graphics()->context()->ClearDepthStencilView(dsv->get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 
 	// Step 4: Render the opaque objects with depth testing and depth writing enabled
 	// Bind shaders, vertex buffers, index buffers, etc.
@@ -214,8 +214,8 @@ void LightingRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<PerInstanc
 	// Draw the opaque objects
 
 	// Set the depth/stencil state
-	DXGLMain::graphics()->context()->OMSetDepthStencilState(m_dsState, 0);
-	DXGLMain::graphics()->context()->RSSetState(m_rasterState);
+	Engine::graphics()->context()->OMSetDepthStencilState(m_dsState, 0);
+	Engine::graphics()->context()->RSSetState(m_rasterState);
 
 	// Step 5 (optional): Render the transparent objects without writing to the depth buffer
 	// Bind shaders, vertex buffers, index buffers, etc.
@@ -224,11 +224,11 @@ void LightingRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<PerInstanc
 
 	// bind input layout and shaders
 	m_layout->bind();
-	DXGLMain::graphics()->context()->VSSetShader(m_vertexShader->get(), nullptr, 0);
-	DXGLMain::graphics()->context()->PSSetShader(m_pixelShader->get(), nullptr, 0);
+	Engine::graphics()->context()->VSSetShader(m_vertexShader->get(), nullptr, 0);
+	Engine::graphics()->context()->PSSetShader(m_pixelShader->get(), nullptr, 0);
 
 	// set up and bind view proj transform
-	SP_DXGLCamera cam = DXGLMain::renderer()->camera()->get("primary");
+	SP_Camera cam = Engine::renderer()->camera()->get("primary");
 	Transform t{};
 	t.view = cam->view();
 	t.proj = cam->proj();
@@ -246,15 +246,15 @@ void LightingRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<PerInstanc
 	}
 
 	// create and bind instance buffer
-	SP_InstanceBuffer instanceBuffer = DXGLMain::resource()->createInstanceBuffer(&combinedInstances[0], combinedInstances.size(), sizeof(PerInstanceData));
+	SP_InstanceBuffer instanceBuffer = Engine::resource()->createInstanceBuffer(&combinedInstances[0], combinedInstances.size(), sizeof(PerInstanceData));
 	instanceBuffer->bind(1);
 
 	// bind skybox and brdf
-	DXGLMain::resource()->get<SP_TextureCube>("space")->bind(1);
+	Engine::resource()->get<SP_TextureCube>("space")->bind(1);
 	m_brdf->bind(2);
 
 	// bind lights
-	DXGLMain::renderer()->light()->getBuffer()->bind(1);
+	Engine::renderer()->light()->getBuffer()->bind(1);
 
 	int entityCount = 0;
 	for (const auto& instance : instances) {
@@ -266,7 +266,7 @@ void LightingRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<PerInstanc
 		// get sub meshes
 		for (auto& subMesh : mesh->getMeshes()) {
 			// set and bind material data
-			SP_Material material = DXGLMain::resource()->get<SP_Material>(subMesh.materialName);
+			SP_Material material = Engine::resource()->get<SP_Material>(subMesh.materialName);
 			material->bind(0);
 
 			MaterialId matId{};
@@ -278,17 +278,17 @@ void LightingRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<PerInstanc
 			m_pcbMaterial->bind(0);
 
 			// draw sub meshes
-			DXGLMain::renderer()->drawIndexedTriangleListInstanced(subMesh.indexCount, instances[mesh].size(), subMesh.baseIndex, subMesh.baseVertex, entityCount);
+			Engine::renderer()->drawIndexedTriangleListInstanced(subMesh.indexCount, instances[mesh].size(), subMesh.baseIndex, subMesh.baseVertex, entityCount);
 		}
 		entityCount += instances[mesh].size();
 	}
 
 	// reset/clean up
-	DXGLMain::graphics()->context()->OMSetRenderTargets(0, nullptr, nullptr);
+	Engine::graphics()->context()->OMSetRenderTargets(0, nullptr, nullptr);
 
-	DXGLMain::graphics()->context()->OMSetDepthStencilState(nullptr, 0);
-	DXGLMain::graphics()->context()->RSSetState(nullptr);
+	Engine::graphics()->context()->OMSetDepthStencilState(nullptr, 0);
+	Engine::graphics()->context()->RSSetState(nullptr);
 
-	DXGLMain::graphics()->context()->VSSetShader(nullptr, nullptr, 0);
-	DXGLMain::graphics()->context()->PSSetShader(nullptr, nullptr, 0);
+	Engine::graphics()->context()->VSSetShader(nullptr, nullptr, 0);
+	Engine::graphics()->context()->PSSetShader(nullptr, nullptr, 0);
 }

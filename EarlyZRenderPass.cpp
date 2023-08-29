@@ -25,7 +25,7 @@ EarlyZRenderPass::EarlyZRenderPass() {
 	depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
 	depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 
-	HRESULT result = DXGLMain::graphics()->device()->CreateDepthStencilState(&depthStencilDesc, &m_dsState);
+	HRESULT result = Engine::graphics()->device()->CreateDepthStencilState(&depthStencilDesc, &m_dsState);
 
 	if (FAILED(result)) {
 		throw std::runtime_error("Early-Z Depth Stencil State could not be created.");
@@ -44,7 +44,7 @@ EarlyZRenderPass::EarlyZRenderPass() {
 	rasterizerDesc.DepthBiasClamp = 0.0f;
 	rasterizerDesc.SlopeScaledDepthBias = 0.0f;
 
-	result = DXGLMain::graphics()->device()->CreateRasterizerState(&rasterizerDesc, &m_rasterState);
+	result = Engine::graphics()->device()->CreateRasterizerState(&rasterizerDesc, &m_rasterState);
 
 	if (FAILED(result)) {
 		throw std::runtime_error("Early-Z Rasterizer State could not be created.");
@@ -127,17 +127,17 @@ EarlyZRenderPass::EarlyZRenderPass() {
 	ilDesc.add("INSTANCE_R",  1, FLOAT3, true);
 	ilDesc.add("INSTANCE_T",  1, FLOAT3, true);
 
-	m_layout = DXGLMain::resource()->createInputLayout(ilDesc, vsBlob);
+	m_layout = Engine::resource()->createInputLayout(ilDesc, vsBlob);
 
 	// create shaders
-	result = DXGLMain::graphics()->device()->CreateVertexShader(vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), nullptr, &m_vertexShader);
+	result = Engine::graphics()->device()->CreateVertexShader(vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), nullptr, &m_vertexShader);
 	if (FAILED(result)) {
 		throw std::runtime_error("Early Z Vertex Shader could not be created.");
 	}
 	vsBlob->Release();
 
 	// create constant buffers
-	m_vcb = DXGLMain::resource()->createVSConstantBuffer(sizeof(Transform));
+	m_vcb = Engine::resource()->createVSConstantBuffer(sizeof(Transform));
 }
 
 EarlyZRenderPass::~EarlyZRenderPass() {
@@ -148,11 +148,11 @@ EarlyZRenderPass::~EarlyZRenderPass() {
 
 void EarlyZRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<PerInstanceData>>& instances) {
 	// Step 2: Bind the depth-stencil view to the output merger stage
-	SP_DXGLDepthStencilView dsv = DXGLMain::renderer()->getDSV(RESOURCE_VIEW_SLOT_BACK_BUFFER);
-	DXGLMain::graphics()->context()->OMSetRenderTargets(0, nullptr, dsv->get());
+	SP_DXGLDepthStencilView dsv = Engine::renderer()->getDSV(RESOURCE_VIEW_SLOT_BACK_BUFFER);
+	Engine::graphics()->context()->OMSetRenderTargets(0, nullptr, dsv->get());
 
 	// Step 3: Clear the depth buffer at the beginning of the render pass
-	// DXGLMain::graphics()->context()->ClearDepthStencilView(dsv->get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+	// Engine::graphics()->context()->ClearDepthStencilView(dsv->get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 
 	// Step 4: Render the opaque objects with depth testing and depth writing enabled
 	// Bind shaders, vertex buffers, index buffers, etc.
@@ -160,8 +160,8 @@ void EarlyZRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<PerInstanceD
 	// Draw the opaque objects
 
 	// Set the depth/stencil state
-	DXGLMain::graphics()->context()->OMSetDepthStencilState(m_dsState, 0);
-	DXGLMain::graphics()->context()->RSSetState(m_rasterState);
+	Engine::graphics()->context()->OMSetDepthStencilState(m_dsState, 0);
+	Engine::graphics()->context()->RSSetState(m_rasterState);
 
 	// Step 5 (optional): Render the transparent objects without writing to the depth buffer
 	// Bind shaders, vertex buffers, index buffers, etc.
@@ -170,10 +170,10 @@ void EarlyZRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<PerInstanceD
 
 	// bind input layout and shaders
 	m_layout->bind();
-	DXGLMain::graphics()->context()->VSSetShader(m_vertexShader, nullptr, 0);
+	Engine::graphics()->context()->VSSetShader(m_vertexShader, nullptr, 0);
 
 	// set up and bind view proj transform
-	SP_DXGLCamera cam = DXGLMain::renderer()->camera()->get("primary");
+	SP_Camera cam = Engine::renderer()->camera()->get("primary");
 	Transform t{};
 	t.view = cam->view();
 	t.proj = cam->proj();
@@ -191,7 +191,7 @@ void EarlyZRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<PerInstanceD
 	}
 
 	// create and bind instance buffer
-	SP_InstanceBuffer instanceBuffer = DXGLMain::resource()->createInstanceBuffer(&combinedInstances[0], combinedInstances.size(), sizeof(PerInstanceData));
+	SP_InstanceBuffer instanceBuffer = Engine::resource()->createInstanceBuffer(&combinedInstances[0], combinedInstances.size(), sizeof(PerInstanceData));
 	instanceBuffer->bind(1);
 
 	int triangleCount = 0;
@@ -204,24 +204,24 @@ void EarlyZRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<PerInstanceD
 
 		// draw entities
 		for (auto& subMesh : mesh->getMeshes()) {
-			DXGLMain::renderer()->drawIndexedTriangleListInstanced(subMesh.indexCount, instances[mesh].size(), subMesh.baseIndex, subMesh.baseVertex, entityCount);
+			Engine::renderer()->drawIndexedTriangleListInstanced(subMesh.indexCount, instances[mesh].size(), subMesh.baseIndex, subMesh.baseVertex, entityCount);
 		}
 
 		triangleCount += (mesh->getIndexBuffer()->count() / 3) * instances[mesh].size();
 		entityCount += instances[mesh].size();
 	}
 
-	if (DXGLMain::input()->getKeyTapState('C')) {
+	if (Engine::input()->getKeyTapState('C')) {
 		std::cout << "Entity Count: " << entityCount << "\n";
 		std::cout << "Triangle Count: " << triangleCount << "\n";
 	}
 
 	// reset/clean up
-	DXGLMain::graphics()->context()->OMSetRenderTargets(0, nullptr, nullptr);
+	Engine::graphics()->context()->OMSetRenderTargets(0, nullptr, nullptr);
 
-	DXGLMain::graphics()->context()->OMSetDepthStencilState(nullptr, 0);
-	DXGLMain::graphics()->context()->RSSetState(nullptr);
+	Engine::graphics()->context()->OMSetDepthStencilState(nullptr, 0);
+	Engine::graphics()->context()->RSSetState(nullptr);
 
-	DXGLMain::graphics()->context()->VSSetShader(nullptr, nullptr, 0);
-	DXGLMain::graphics()->context()->PSSetShader(nullptr, nullptr, 0);
+	Engine::graphics()->context()->VSSetShader(nullptr, nullptr, 0);
+	Engine::graphics()->context()->PSSetShader(nullptr, nullptr, 0);
 }

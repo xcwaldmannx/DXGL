@@ -46,7 +46,7 @@ Mesh::Mesh(const MeshDesc& desc, const std::string& filename) : m_desc(desc) {
 		}
 
 		if (m_desc.miscAttributes & MISC_ANIMATION) {
-			m_vbBone = DXGLMain::resource()->createVertexBuffer(&m_bones[0], m_bones.size(), sizeof(unsigned int) * 4 + sizeof(float) * 4);
+			m_vbBone = Engine::resource()->createVertexBuffer(&m_bones[0], m_bones.size(), sizeof(unsigned int) * 4 + sizeof(float) * 4);
 		}
 
 		// create meshes
@@ -125,11 +125,11 @@ Mesh::Mesh(const MeshDesc& desc, const std::string& filename) : m_desc(desc) {
 
 		computeAABB();
 
-		m_vbPosition = DXGLMain::resource()->createVertexBuffer(&m_positions[0], m_positions.size() / 3, sizeof(float) * 3);
-		m_vbMesh = DXGLMain::resource()->createVertexBuffer(&m_vertices[0], vertexCount, vertexSize);
+		m_vbPosition = Engine::resource()->createVertexBuffer(&m_positions[0], m_positions.size() / 3, sizeof(float) * 3);
+		m_vbMesh = Engine::resource()->createVertexBuffer(&m_vertices[0], vertexCount, vertexSize);
 
 		if (m_desc.miscAttributes & MISC_INDEX) {
-			m_ib = DXGLMain::resource()->createIndexBuffer(&m_indices[0], m_indices.size());
+			m_ib = Engine::resource()->createIndexBuffer(&m_indices[0], m_indices.size());
 		}
 
 		// get materials embedded in fbx
@@ -184,7 +184,7 @@ void Mesh::loadMaterialTextures(const aiScene* scene) {
 				}
 
 				if (result == aiReturn_SUCCESS) {
-					if (!DXGLMain::resource()->find<SP_Material>(textureName)) {
+					if (!Engine::resource()->find<SP_Material>(textureName)) {
 						if (auto texture = scene->GetEmbeddedTexture(texturePath.C_Str())) {
 							int width = 0;
 							int height = 0;
@@ -218,8 +218,8 @@ void Mesh::loadMaterialTextures(const aiScene* scene) {
 		}
 
 		m_materialNames[i] = textureName;
-		if (!DXGLMain::resource()->find<SP_Material>(textureName)) {
-			DXGLMain::resource()->storeMaterial(m, textureName);
+		if (!Engine::resource()->find<SP_Material>(textureName)) {
+			Engine::resource()->storeMaterial(m, textureName);
 			std::cout << "Done.\n";
 		} else {
 			std::cout << "Already exists.\n";

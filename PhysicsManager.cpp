@@ -32,10 +32,10 @@ PhysicsManager::PhysicsManager() {
 		client->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, true);
 	}
 
-	DXGLMain::entities()->onAddComponent<RigidBodyComponent>([&](governor::EntityId id) {
-		auto& transform = DXGLMain::entities()->getEntityComponent<TransformComponent>(id);
-		auto& mesh = DXGLMain::entities()->getEntityComponent<MeshComponent>(id);
-		auto& rigidbody = DXGLMain::entities()->getEntityComponent<RigidBodyComponent>(id);
+	Engine::entities()->onAddComponent<RigidBodyComponent>([&](governor::EntityId id) {
+		auto& transform = Engine::entities()->getEntityComponent<TransformComponent>(id);
+		auto& mesh = Engine::entities()->getEntityComponent<MeshComponent>(id);
+		auto& rigidbody = Engine::entities()->getEntityComponent<RigidBodyComponent>(id);
 
 		// transform data
 		PxTransform xTransform(PxVec3(transform.translation.x, transform.translation.y, transform.translation.z));
@@ -118,15 +118,15 @@ PhysicsManager::PhysicsManager() {
 
 	});
 
-	DXGLMain::entities()->onRemoveComponent<RigidBodyComponent>([&](governor::EntityId id) {
+	Engine::entities()->onRemoveComponent<RigidBodyComponent>([&](governor::EntityId id) {
 		PxActor& actor = *m_actors[id];
 		m_scene->removeActor(actor);
 		m_actors[id]->release();
 		m_actors[id] = nullptr;
 	});
 
-	DXGLMain::entities()->onDestroyEntity([&](governor::EntityId id) {
-		if (DXGLMain::entities()->entityHasComponent<RigidBodyComponent>(id)) {
+	Engine::entities()->onDestroyEntity([&](governor::EntityId id) {
+		if (Engine::entities()->entityHasComponent<RigidBodyComponent>(id)) {
 			PxActor& actor = *m_actors[id];
 			m_scene->removeActor(actor);
 			m_actors[id]->release();
@@ -136,9 +136,15 @@ PhysicsManager::PhysicsManager() {
 }
 
 PhysicsManager::~PhysicsManager() {
+	if (m_scene) m_scene->release();
+	if (m_physics) m_physics->release();
+	if (m_dispatcher) m_dispatcher->release();
+	if (m_pvd) m_pvd->release();
+	if (m_foundation) m_foundation->release();
 }
 
 void PhysicsManager::update(std::list<OctTree<governor::EntityId>::ptr>& entities, long double delta) {
+
 	if (delta > 0.0f) {
 		m_scene->simulate(delta);
 		m_scene->fetchResults(true);
@@ -149,7 +155,7 @@ void PhysicsManager::update(std::list<OctTree<governor::EntityId>::ptr>& entitie
 		PxRigidActor* actor = m_actors[id];
 
 		if (actor && actor->is<PxRigidDynamic>()) {
-			auto& transform = DXGLMain::entities()->getEntityComponent<TransformComponent>(id);
+			auto& transform = Engine::entities()->getEntityComponent<TransformComponent>(id);
 
 			PxTransform pxTransform = actor->getGlobalPose();
 			PxVec3& p = pxTransform.p;
@@ -158,7 +164,7 @@ void PhysicsManager::update(std::list<OctTree<governor::EntityId>::ptr>& entitie
 			transform.translation.x = p.x;
 			transform.translation.y = p.y;
 			transform.translation.z = p.z;
-			DXGLMain::entities()->relocateEntity(id);
+			Engine::entities()->relocateEntity(id);
 
 			quatToEuler(q, transform.rotation.x, transform.rotation.y, transform.rotation.z);
 		}

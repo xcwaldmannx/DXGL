@@ -6,7 +6,7 @@
 #include <chrono>
 #include <random>
 
-#include "DXGLMain.h"
+#include "Engine.h"
 
 #include "Math.h"
 #include "Vec3f.h"
@@ -64,7 +64,7 @@ namespace dxgl {
 		std::vector<FoliageInstance> m_foliage{};
 		std::vector<FoliageInstance> m_culledFoliage{};
 
-		SP_DXGLCamera m_camera = nullptr;
+		SP_Camera m_camera = nullptr;
 
 		std::unordered_map<uint32_t, FoliageChunk> m_chunks{};
 		std::unordered_map<uint32_t, std::future<std::vector<FoliageChunk>>> m_futures{};

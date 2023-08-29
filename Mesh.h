@@ -8,7 +8,7 @@
 #include "assimp/scene.h"
 #include "assimp/postprocess.h"
 
-#include "DXGLMain.h"
+#include "Engine.h"
 #include "DXGLImage.h"
 #include "Material.h"
 

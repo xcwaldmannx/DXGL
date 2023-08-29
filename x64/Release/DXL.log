@@ -1,16 +1,14 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(520,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
 C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(534,5): warning MSB8028: The intermediate directory (x64\Release\) contains files shared from another project (DXL.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  PhysicsManager.cpp
+  Skybox.cpp
 C:\Users\xcwal\source\repos\DXL\DXL\Math.h(198,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 C:\Users\xcwal\source\repos\DXL\DXL\Math.h(221,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 C:\Users\xcwal\source\repos\DXL\DXL\Math.h(222,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 C:\Users\xcwal\source\repos\DXL\DXL\Math.h(223,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\PhysicsManager.cpp(119,2): warning C4267: '=': conversion from 'size_t' to 'physx::PxU32', possible loss of data
-C:\Users\xcwal\source\repos\DXL\DXL\PhysicsManager.cpp(143,21): warning C4244: 'argument': conversion from 'long double' to 'physx::PxReal', possible loss of data
   Generating code
-  1 of 9689 functions (<0.1%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    16 functions had inline decision re-evaluated but remain unchanged
+  1351 of 9695 functions (13.9%) were compiled, the rest were copied from previous compilation.
+    411 functions were new in current compilation
+    65 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   DXL.vcxproj -> C:\Users\xcwal\source\repos\DXL\x64\Release\DXGL.exe
   0 File(s) copied

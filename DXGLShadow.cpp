@@ -14,13 +14,13 @@ DXGLShadow::DXGLShadow() {
 	desc.add("INSTANCE_ROTATION", 1, FLOAT3, true);
 	desc.add("INSTANCE_TRANSLATION", 1, FLOAT3, true);
 	desc.add("INSTANCE_FLAGS", 1, SINT1, true);
-	m_layout = DXGLMain::resource()->createInputLayout(desc, "Assets/Shaders/VS_Simple.cso");
-	m_vs = DXGLMain::resource()->createShader<dxgl::DXGLVertexShader>("Assets/Shaders/VS_Simple.cso");
-	m_ps = DXGLMain::resource()->createShader<dxgl::DXGLPixelShader>("Assets/Shaders/PS_Simple.cso");
+	m_layout = Engine::resource()->createInputLayout(desc, "Assets/Shaders/VS_Simple.cso");
+	m_vs = Engine::resource()->createShader<dxgl::DXGLVertexShader>("Assets/Shaders/VS_Simple.cso");
+	m_ps = Engine::resource()->createShader<dxgl::DXGLPixelShader>("Assets/Shaders/PS_Simple.cso");
 
-	m_cbTrans = DXGLMain::resource()->createVSConstantBuffer(sizeof(TransformBuffer));
-	m_vscbShadow = DXGLMain::resource()->createVSConstantBuffer(sizeof(ShadowBuffer));
-	m_pscbShadow = DXGLMain::resource()->createPSConstantBuffer(sizeof(ShadowBuffer));
+	m_cbTrans = Engine::resource()->createVSConstantBuffer(sizeof(TransformBuffer));
+	m_vscbShadow = Engine::resource()->createVSConstantBuffer(sizeof(ShadowBuffer));
+	m_pscbShadow = Engine::resource()->createPSConstantBuffer(sizeof(ShadowBuffer));
 
 	m_srvs = new ID3D11ShaderResourceView*[4];
 
@@ -37,7 +37,7 @@ DXGLShadow::~DXGLShadow() {
 }
 
 void DXGLShadow::create() {
-	DXGLMain::entities()->group<TransformComponent, MeshComponent>(governor::GroupSort::GROUP_ANY, m_groupEntity);
+	Engine::entities()->group<TransformComponent, MeshComponent>(governor::GroupSort::GROUP_ANY, m_groupEntity);
 }
 
 void  DXGLShadow::update(Vec3f position, Vec3f target) {
@@ -56,10 +56,10 @@ void  DXGLShadow::update(Vec3f position, Vec3f target) {
 	m_pscbShadow->update(&sb);
 
 	m_visibleEntities = {};
-	//governor::DXGLGroup groupInRange = DXGLMain::renderer()->governor()->group<TransformComponent, MeshComponent>(dxgl::GroupSort::GROUP_ANY);
+	//governor::DXGLGroup groupInRange = Engine::renderer()->governor()->group<TransformComponent, MeshComponent>(dxgl::GroupSort::GROUP_ANY);
 	for (governor::EntityId id : *m_groupEntity) {
-		auto& transform = DXGLMain::entities()->getEntityComponent<TransformComponent>(id);
-		SP_DXGLCamera cam = DXGLMain::renderer()->camera()->get("primary");
+		auto& transform = Engine::entities()->getEntityComponent<TransformComponent>(id);
+		SP_Camera cam = Engine::renderer()->camera()->get("primary");
 
 		if (Vec3f::dist(cam->getPosition(), transform.translation) < 500.0f) {
 			m_visibleEntities.push_back(id);
@@ -69,7 +69,7 @@ void  DXGLShadow::update(Vec3f position, Vec3f target) {
 	// map entities containing same meshes to that mesh
 	m_meshGroups = {};
 	for (governor::EntityId id : m_visibleEntities) {
-		auto& mesh = DXGLMain::entities()->getEntityComponent<MeshComponent>(id);
+		auto& mesh = Engine::entities()->getEntityComponent<MeshComponent>(id);
 
 		if ((mesh.instanceFlags & INSTANCE_USE_SHADOWING) == 0) {
 			continue;
@@ -95,10 +95,10 @@ void DXGLShadow::draw() {
 		shadowViewport.MinDepth = 0.0f;
 		shadowViewport.MaxDepth = 1.0f;
 
-		DXGLMain::graphics()->context()->RSSetViewports(1, &shadowViewport);
+		Engine::graphics()->context()->RSSetViewports(1, &shadowViewport);
 
 		float color[4] = { 0, 0, 0, 1 };
-		DXGLMain::renderer()->setRenderTarget(nullptr, color, m_cascades[i].dsv);
+		Engine::renderer()->setRenderTarget(nullptr, color, m_cascades[i].dsv);
 
 		// set shadow cbuffer
 		m_vscbShadow->bind(1);
@@ -106,10 +106,10 @@ void DXGLShadow::draw() {
 
 		// set inputs that won't change per draw call
 		m_layout->bind();
-		DXGLMain::renderer()->shader()->VS_setShader(m_vs);
-		DXGLMain::renderer()->shader()->HS_setShader(nullptr);
-		DXGLMain::renderer()->shader()->DS_setShader(nullptr);
-		DXGLMain::renderer()->shader()->PS_setShader(m_ps);
+		Engine::renderer()->shader()->VS_setShader(m_vs);
+		Engine::renderer()->shader()->HS_setShader(nullptr);
+		Engine::renderer()->shader()->DS_setShader(nullptr);
+		Engine::renderer()->shader()->PS_setShader(m_ps);
 
 		for (auto group = m_meshGroups.begin(); group != m_meshGroups.end(); group++) {
 			const SP_Mesh& mesh = group->first;
@@ -121,12 +121,12 @@ void DXGLShadow::draw() {
 			tbuff.view = m_cascades[i].buffer.view;
 			tbuff.proj = m_cascades[i].buffer.proj;
 			m_cbTrans->update(&tbuff);
-			DXGLMain::renderer()->shader()->VS_setCBuffer(0, 1, m_cbTrans->get());
+			Engine::renderer()->shader()->VS_setCBuffer(0, 1, m_cbTrans->get());
 
 			std::vector<InstanceData> entityData{};
 			for (governor::EntityId id : entities) {
-				auto& transform = DXGLMain::entities()->getEntityComponent<TransformComponent>(id);
-				auto& mesh = DXGLMain::entities()->getEntityComponent<MeshComponent>(id);
+				auto& transform = Engine::entities()->getEntityComponent<TransformComponent>(id);
+				auto& mesh = Engine::entities()->getEntityComponent<MeshComponent>(id);
 				InstanceData data{};
 				data.id = id;
 				data.scale = transform.scale;
@@ -137,7 +137,7 @@ void DXGLShadow::draw() {
 			}
 
 			// create an instance buffer for each group of entities
-			SP_InstanceBuffer buffer = DXGLMain::resource()->createInstanceBuffer(&entityData[0], entities.size(), sizeof(InstanceData));
+			SP_InstanceBuffer buffer = Engine::resource()->createInstanceBuffer(&entityData[0], entities.size(), sizeof(InstanceData));
 
 			// set appropriate input data
 			mesh->getMeshVertexBuffer()->bind(0);
@@ -146,7 +146,7 @@ void DXGLShadow::draw() {
 
 			// draw entities based on mesh material
 			for (auto& m : mesh->getMeshes()) {
-				DXGLMain::renderer()->drawIndexedTriangleListInstanced(m.indexCount, entities.size(), m.baseIndex, m.baseVertex, 0);
+				Engine::renderer()->drawIndexedTriangleListInstanced(m.indexCount, entities.size(), m.baseIndex, m.baseVertex, 0);
 			}
 		}
 	}
@@ -175,7 +175,7 @@ void DXGLShadow::createCascades() {
 		shadowViewport.MinDepth = 0.0f;
 		shadowViewport.MaxDepth = 1.0f;
 
-		DXGLMain::graphics()->context()->RSSetViewports(1, &shadowViewport);
+		Engine::graphics()->context()->RSSetViewports(1, &shadowViewport);
 
 		ID3D11Texture2D* dsvBuffer = nullptr;
 		D3D11_TEXTURE2D_DESC dsvTexDesc{};
@@ -192,7 +192,7 @@ void DXGLShadow::createCascades() {
 		dsvTexDesc.CPUAccessFlags = 0;
 
 
-		HRESULT result = DXGLMain::graphics()->device()->CreateTexture2D(&dsvTexDesc, nullptr, &dsvBuffer);
+		HRESULT result = Engine::graphics()->device()->CreateTexture2D(&dsvTexDesc, nullptr, &dsvBuffer);
 
 		if (FAILED(result)) {
 			throw std::exception("DXGLShadow DepthStencilView Texture2D could not be created.");
@@ -205,7 +205,7 @@ void DXGLShadow::createCascades() {
 		dsvDesc.Flags = 0;
 
 		ID3D11DepthStencilView* dsv = nullptr;
-		result = DXGLMain::graphics()->device()->CreateDepthStencilView(dsvBuffer, &dsvDesc, &dsv);
+		result = Engine::graphics()->device()->CreateDepthStencilView(dsvBuffer, &dsvDesc, &dsv);
 
 		cascade.dsv = std::make_shared<DXGLDepthStencilView>(dsv);
 
@@ -219,7 +219,7 @@ void DXGLShadow::createCascades() {
 		srvDesc.Texture2D.MostDetailedMip = 0;
 		srvDesc.Texture2D.MipLevels = 1;
 
-		result = DXGLMain::graphics()->device()->CreateShaderResourceView(dsvBuffer, &srvDesc, &cascade.srv);
+		result = Engine::graphics()->device()->CreateShaderResourceView(dsvBuffer, &srvDesc, &cascade.srv);
 
 		if (FAILED(result)) {
 			throw std::exception("DXGLShadow ShaderResourceView could not be created.");

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DXGLRenderer.h"
+#include "Renderer.h"
 
 namespace dxgl {
 	struct alignas(16) Light {

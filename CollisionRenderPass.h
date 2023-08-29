@@ -4,7 +4,7 @@
 
 #include <d3dcompiler.h>
 
-#include "DXGLMain.h"
+#include "Engine.h"
 #include "RenderPass.h"
 
 namespace dxgl {

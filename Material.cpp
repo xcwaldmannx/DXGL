@@ -50,7 +50,7 @@ Material::Material(const std::string& filepath) {
 	texDesc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
 
 
-	HRESULT result = DXGLMain::graphics()->device()->CreateTexture2D(&texDesc, nullptr, &texture);
+	HRESULT result = Engine::graphics()->device()->CreateTexture2D(&texDesc, nullptr, &texture);
 
 	if (FAILED(result)) {
 		throw std::exception("DXGLMaterial texture could not be created.");
@@ -66,7 +66,7 @@ Material::Material(const std::string& filepath) {
 			UINT mipHeight = texDesc.Height >> j;
 			UINT rowPitch = mipWidth * 4;  // Assuming 32-bit RGBA format (4 bytes per pixel)
 
-			DXGLMain::graphics()->context()->UpdateSubresource(texture, subresourceIndex, nullptr,
+			Engine::graphics()->context()->UpdateSubresource(texture, subresourceIndex, nullptr,
 				images[i]->getImageData(), rowPitch, rowPitch * mipHeight);
 		}
 	}
@@ -78,13 +78,13 @@ Material::Material(const std::string& filepath) {
 	srvDesc.Texture2DArray.FirstArraySlice = 0;
 	srvDesc.Texture2DArray.MipLevels = -1;
 	srvDesc.Texture2DArray.MostDetailedMip = 0;
-	result = DXGLMain::graphics()->device()->CreateShaderResourceView(texture, &srvDesc, &m_srv);
+	result = Engine::graphics()->device()->CreateShaderResourceView(texture, &srvDesc, &m_srv);
 
 	if (FAILED(result)) {
 		throw std::exception("DXGLMaterial SRV could not be created.");
 	}
 
-	DXGLMain::graphics()->context()->GenerateMips(m_srv);
+	Engine::graphics()->context()->GenerateMips(m_srv);
 
 	for (int i = 0; i < 5; i++) {
 		images[i]->free();
@@ -134,7 +134,7 @@ Material::Material(const MaterialData& data) {
 	texDesc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
 
 
-	HRESULT result = DXGLMain::graphics()->device()->CreateTexture2D(&texDesc, nullptr, &texture);
+	HRESULT result = Engine::graphics()->device()->CreateTexture2D(&texDesc, nullptr, &texture);
 
 	if (FAILED(result)) {
 		throw std::exception("DXGLMaterial texture could not be created.");
@@ -154,7 +154,7 @@ Material::Material(const MaterialData& data) {
 				UINT mipHeight = texDesc.Height >> j;
 				UINT rowPitch = mipWidth * 4;  // Assuming 32-bit RGBA format (4 bytes per pixel)
 
-				DXGLMain::graphics()->context()->UpdateSubresource(texture, subresourceIndex, nullptr,
+				Engine::graphics()->context()->UpdateSubresource(texture, subresourceIndex, nullptr,
 					textures[i - skip].data, rowPitch, rowPitch * mipHeight);
 			}
 		} else {
@@ -169,13 +169,13 @@ Material::Material(const MaterialData& data) {
 	srvDesc.Texture2DArray.FirstArraySlice = 0;
 	srvDesc.Texture2DArray.MipLevels = -1;
 	srvDesc.Texture2DArray.MostDetailedMip = 0;
-	result = DXGLMain::graphics()->device()->CreateShaderResourceView(texture, &srvDesc, &m_srv);
+	result = Engine::graphics()->device()->CreateShaderResourceView(texture, &srvDesc, &m_srv);
 
 	if (FAILED(result)) {
 		throw std::exception("DXGLMaterial SRV could not be created.");
 	}
 
-	DXGLMain::graphics()->context()->GenerateMips(m_srv);
+	Engine::graphics()->context()->GenerateMips(m_srv);
 
 	texture->Release();
 }
@@ -185,10 +185,10 @@ Material::~Material() {
 }
 
 void Material::bind(int slot) {
-	DXGLMain::graphics()->context()->VSSetShaderResources(slot, 1, &m_srv);
-	DXGLMain::graphics()->context()->DSSetShaderResources(slot, 1, &m_srv);
-	DXGLMain::graphics()->context()->HSSetShaderResources(slot, 1, &m_srv);
-	DXGLMain::graphics()->context()->PSSetShaderResources(slot, 1, &m_srv);
+	Engine::graphics()->context()->VSSetShaderResources(slot, 1, &m_srv);
+	Engine::graphics()->context()->DSSetShaderResources(slot, 1, &m_srv);
+	Engine::graphics()->context()->HSSetShaderResources(slot, 1, &m_srv);
+	Engine::graphics()->context()->PSSetShaderResources(slot, 1, &m_srv);
 }
 
 ID3D11ShaderResourceView* Material::get() {

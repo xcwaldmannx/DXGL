@@ -10,7 +10,7 @@
 #include "DXGLDefinitions.h"
 
 #include "DXGLGraphics.h"
-#include "DXGLRenderer.h"
+#include "Renderer.h"
 
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"

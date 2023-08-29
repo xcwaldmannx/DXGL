@@ -66,7 +66,7 @@ namespace dxgl {
 
 		std::vector<unsigned int> m_indices{};
 
-		SP_DXGLCamera m_camera = nullptr;
+		SP_Camera m_camera = nullptr;
 
 		QuadTreeRect m_area{};
 		QuadTreeRect m_searchArea{};

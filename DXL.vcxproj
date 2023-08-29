@@ -208,9 +208,9 @@
     <ClCompile Include="LightingRenderPass.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="DXGLFoliageManager.cpp" />
-    <ClCompile Include="DXGLMain.cpp" />
-    <ClCompile Include="DXGLCamera.cpp" />
-    <ClCompile Include="DXGLCameraManager.cpp" />
+    <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="HSConstantBuffer.cpp" />
     <ClCompile Include="MousePickManager.cpp" />
     <ClCompile Include="MousePickRenderPass.cpp" />
@@ -237,7 +237,7 @@
     <ClCompile Include="DXGLMesh.cpp" />
     <ClCompile Include="DXGLOutputMerger.cpp" />
     <ClCompile Include="DXGLPixelShader.cpp" />
-    <ClCompile Include="DXGLRenderer.cpp" />
+    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderPass.cpp" />
     <ClCompile Include="RenderQueue.cpp" />
     <ClCompile Include="DXGLRenderTargetView.cpp" />
@@ -247,7 +247,7 @@
     <ClCompile Include="DXGLShadow.cpp" />
     <ClCompile Include="DXGLRaster.cpp" />
     <ClCompile Include="DXGLShader.cpp" />
-    <ClCompile Include="DXGLSwapChain.cpp" />
+    <ClCompile Include="SwapChain.cpp" />
     <ClCompile Include="DXGLInputManager.cpp" />
     <ClCompile Include="DXGLTerrainManager.cpp" />
     <ClCompile Include="Texture2D.cpp" />
@@ -272,9 +272,9 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Bindable.h" />
     <ClInclude Include="DXGLFoliageManager.h" />
-    <ClInclude Include="DXGLMain.h" />
-    <ClInclude Include="DXGLCamera.h" />
-    <ClInclude Include="DXGLCameraManager.h" />
+    <ClInclude Include="Engine.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraManager.h" />
     <ClInclude Include="HSConstantBuffer.h" />
     <ClInclude Include="MousePickManager.h" />
     <ClInclude Include="MousePickRenderPass.h" />
@@ -308,7 +308,7 @@
     <ClInclude Include="DXGLMesh.h" />
     <ClInclude Include="DXGLOutputMerger.h" />
     <ClInclude Include="DXGLPixelShader.h" />
-    <ClInclude Include="DXGLRenderer.h" />
+    <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderQueue.h" />
     <ClInclude Include="DXGLRenderTargetView.h" />
     <ClInclude Include="DXGLResourceManager.h" />
@@ -317,7 +317,7 @@
     <ClInclude Include="DXGLShadow.h" />
     <ClInclude Include="DXGLRaster.h" />
     <ClInclude Include="DXGLShader.h" />
-    <ClInclude Include="DXGLSwapChain.h" />
+    <ClInclude Include="SwapChain.h" />
     <ClInclude Include="DXGLInputManager.h" />
     <ClInclude Include="DXGLTerrainManager.h" />
     <ClInclude Include="Texture2D.h" />

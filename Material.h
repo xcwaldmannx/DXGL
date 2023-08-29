@@ -3,7 +3,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "DXGLMain.h"
+#include "Engine.h"
 #include "Bindable.h"
 
 #include "assimp/material.h"

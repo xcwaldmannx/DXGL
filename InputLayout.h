@@ -5,7 +5,7 @@
 #include <any>
 #include <unordered_map>
 
-#include "DXGLMain.h"
+#include "Engine.h"
 #include "Bindable.h"
 
 namespace dxgl {

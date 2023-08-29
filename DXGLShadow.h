@@ -4,7 +4,7 @@
 
 #include <vector>
 
-#include "DXGLMain.h"
+#include "Engine.h"
 #include "Mesh.h"
 #include "Mat4f.h"
 

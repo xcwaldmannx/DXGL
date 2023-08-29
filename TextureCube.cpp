@@ -44,7 +44,7 @@ TextureCube::TextureCube(const std::string& filepath) {
 	desc.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE | D3D11_RESOURCE_MISC_GENERATE_MIPS;
 	desc.CPUAccessFlags = 0;
 
-	HRESULT result = DXGLMain::graphics()->device()->CreateTexture2D(&desc, nullptr, &texture);
+	HRESULT result = Engine::graphics()->device()->CreateTexture2D(&desc, nullptr, &texture);
 
 	if (FAILED(result)) {
 		throw std::exception("TextureCube texture could not be created.");
@@ -61,7 +61,7 @@ TextureCube::TextureCube(const std::string& filepath) {
 			UINT mipHeight = desc.Height >> j;
 			UINT rowPitch = mipWidth * 4;
 
-			DXGLMain::graphics()->context()->UpdateSubresource(texture, subresourceIndex, nullptr,
+			Engine::graphics()->context()->UpdateSubresource(texture, subresourceIndex, nullptr,
 				images[i]->getImageData(), rowPitch, rowPitch * mipHeight);
 		}
 	}
@@ -71,13 +71,13 @@ TextureCube::TextureCube(const std::string& filepath) {
 	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
 	srvDesc.Texture2D.MipLevels = -1;
 	srvDesc.Texture2D.MostDetailedMip = 0;
-	result = DXGLMain::graphics()->device()->CreateShaderResourceView(texture, &srvDesc, &m_srv);
+	result = Engine::graphics()->device()->CreateShaderResourceView(texture, &srvDesc, &m_srv);
 
 	if (FAILED(result)) {
 		throw std::exception("TextureCube SRV could not be created.");
 	}
 
-	DXGLMain::graphics()->context()->GenerateMips(m_srv);
+	Engine::graphics()->context()->GenerateMips(m_srv);
 
 	for (int i = 0; i < 6; i++) {
 		images[i]->free();
@@ -92,10 +92,10 @@ TextureCube::~TextureCube() {
 }
 
 void TextureCube::bind(int slot) {
-	DXGLMain::graphics()->context()->VSSetShaderResources(slot, 1, &m_srv);
-	DXGLMain::graphics()->context()->HSSetShaderResources(slot, 1, &m_srv);
-	DXGLMain::graphics()->context()->DSSetShaderResources(slot, 1, &m_srv);
-	DXGLMain::graphics()->context()->PSSetShaderResources(slot, 1, &m_srv);
+	Engine::graphics()->context()->VSSetShaderResources(slot, 1, &m_srv);
+	Engine::graphics()->context()->HSSetShaderResources(slot, 1, &m_srv);
+	Engine::graphics()->context()->DSSetShaderResources(slot, 1, &m_srv);
+	Engine::graphics()->context()->PSSetShaderResources(slot, 1, &m_srv);
 }
 
 ID3D11ShaderResourceView* TextureCube::get() {

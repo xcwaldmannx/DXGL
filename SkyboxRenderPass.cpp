@@ -10,7 +10,7 @@ SkyboxRenderPass::SkyboxRenderPass() {
 	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
 	depthStencilDesc.StencilEnable = false;
 
-	HRESULT result = DXGLMain::graphics()->device()->CreateDepthStencilState(&depthStencilDesc, &m_dsState);
+	HRESULT result = Engine::graphics()->device()->CreateDepthStencilState(&depthStencilDesc, &m_dsState);
 
 	if (FAILED(result)) {
 		throw std::runtime_error("Skybox Depth Stencil State could not be created.");
@@ -29,7 +29,7 @@ SkyboxRenderPass::SkyboxRenderPass() {
 	rasterizerDesc.DepthBiasClamp = 0.0f;
 	rasterizerDesc.SlopeScaledDepthBias = 0.0f;
 
-	result = DXGLMain::graphics()->device()->CreateRasterizerState(&rasterizerDesc, &m_rasterState);
+	result = Engine::graphics()->device()->CreateRasterizerState(&rasterizerDesc, &m_rasterState);
 
 	if (FAILED(result)) {
 		throw std::runtime_error("Lighting Rasterizer State could not be created.");
@@ -38,18 +38,18 @@ SkyboxRenderPass::SkyboxRenderPass() {
 	// Input layout
 	dxgl::InputLayoutDesc descSkybox{};
 	descSkybox.add("POSITION", 0, dxgl::FLOAT3, false);
-	m_layout = dxgl::DXGLMain::resource()->createInputLayout(descSkybox, "Assets/Shaders/VS_Skybox.cso");
+	m_layout = dxgl::Engine::resource()->createInputLayout(descSkybox, "Assets/Shaders/VS_Skybox.cso");
 
 	// Shaders
-	m_vertexShader = DXGLMain::resource()->createShader<DXGLVertexShader>("Assets/Shaders/VS_Skybox.cso");
-	m_pixelShader = DXGLMain::resource()->createShader<DXGLPixelShader>("Assets/Shaders/PS_Skybox.cso");
+	m_vertexShader = Engine::resource()->createShader<DXGLVertexShader>("Assets/Shaders/VS_Skybox.cso");
+	m_pixelShader = Engine::resource()->createShader<DXGLPixelShader>("Assets/Shaders/PS_Skybox.cso");
 
 	// Cubemap
-	dxgl::DXGLMain::resource()->storeTextureCube("Assets/Cubemaps/space/", "space");
-	m_skybox = dxgl::DXGLMain::resource()->get<dxgl::SP_TextureCube>("space");
+	dxgl::Engine::resource()->storeTextureCube("Assets/Cubemaps/space/", "space");
+	m_skybox = dxgl::Engine::resource()->get<dxgl::SP_TextureCube>("space");
 
 	// transform buffer
-	m_vcbTransform = DXGLMain::resource()->createVSConstantBuffer(sizeof(Transform));
+	m_vcbTransform = Engine::resource()->createVSConstantBuffer(sizeof(Transform));
 }
 
 SkyboxRenderPass::~SkyboxRenderPass() {
@@ -58,15 +58,15 @@ SkyboxRenderPass::~SkyboxRenderPass() {
 
 void SkyboxRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<PerInstanceData>>& instances) {
 	// Bind the depth-stencil view and render target view
-	SP_DXGLRenderTargetView rtv = DXGLMain::renderer()->getRTV(RESOURCE_VIEW_SLOT_BACK_BUFFER);
+	SP_DXGLRenderTargetView rtv = Engine::renderer()->getRTV(RESOURCE_VIEW_SLOT_BACK_BUFFER);
 	ID3D11RenderTargetView* rtvv = rtv->get();
-	SP_DXGLDepthStencilView dsv = DXGLMain::renderer()->getDSV(RESOURCE_VIEW_SLOT_BACK_BUFFER);
-	DXGLMain::graphics()->context()->OMSetRenderTargets(1, &rtvv, dsv->get());
+	SP_DXGLDepthStencilView dsv = Engine::renderer()->getDSV(RESOURCE_VIEW_SLOT_BACK_BUFFER);
+	Engine::graphics()->context()->OMSetRenderTargets(1, &rtvv, dsv->get());
 
 	// Step 3: Clear the render target buffer at the beginning of the render pass
 	float clearColor[4] = { 0.0f, 0.0f, 0.0f, 0.0f }; // Set your clear color
-	DXGLMain::graphics()->context()->ClearRenderTargetView(rtvv, clearColor);
-	DXGLMain::graphics()->context()->ClearDepthStencilView(dsv->get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+	Engine::graphics()->context()->ClearRenderTargetView(rtvv, clearColor);
+	Engine::graphics()->context()->ClearDepthStencilView(dsv->get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 
 	// Step 4: Render the opaque objects with depth testing and depth writing enabled
 	// Bind shaders, vertex buffers, index buffers, etc.
@@ -74,8 +74,8 @@ void SkyboxRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<PerInstanceD
 	// Draw the opaque objects
 
 	// Set the depth/stencil state
-	DXGLMain::graphics()->context()->OMSetDepthStencilState(m_dsState, 0);
-	DXGLMain::graphics()->context()->RSSetState(m_rasterState);
+	Engine::graphics()->context()->OMSetDepthStencilState(m_dsState, 0);
+	Engine::graphics()->context()->RSSetState(m_rasterState);
 
 	// Step 5 (optional): Render the transparent objects without writing to the depth buffer
 	// Bind shaders, vertex buffers, index buffers, etc.
@@ -84,11 +84,11 @@ void SkyboxRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<PerInstanceD
 
 	// bind input layout and shaders
 	m_layout->bind();
-	DXGLMain::graphics()->context()->VSSetShader(m_vertexShader->get(), nullptr, 0);
-	DXGLMain::graphics()->context()->PSSetShader(m_pixelShader->get(), nullptr, 0);
+	Engine::graphics()->context()->VSSetShader(m_vertexShader->get(), nullptr, 0);
+	Engine::graphics()->context()->PSSetShader(m_pixelShader->get(), nullptr, 0);
 
 	// set up and bind view proj transform
-	SP_DXGLCamera cam = DXGLMain::renderer()->camera()->get("primary");
+	SP_Camera cam = Engine::renderer()->camera()->get("primary");
 	Transform t{};
 	t.world = cam->world();
 	t.view = cam->view();
@@ -100,12 +100,12 @@ void SkyboxRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<PerInstanceD
 	m_skybox->bind(0);
 
 	// draw skybox onto mesh
-	dxgl::SP_Mesh mesh = dxgl::DXGLMain::resource()->get<dxgl::SP_Mesh>("cubeFlipped");
+	dxgl::SP_Mesh mesh = dxgl::Engine::resource()->get<dxgl::SP_Mesh>("cubeFlipped");
 
 	mesh->getMeshVertexBuffer()->bind(0);
 	mesh->getIndexBuffer()->bind();
 
 	for (auto& subMesh : mesh->getMeshes()) {
-		dxgl::DXGLMain::renderer()->drawIndexedTriangleList(subMesh.indexCount, subMesh.baseIndex, subMesh.baseVertex);
+		dxgl::Engine::renderer()->drawIndexedTriangleList(subMesh.indexCount, subMesh.baseIndex, subMesh.baseVertex);
 	}
 }

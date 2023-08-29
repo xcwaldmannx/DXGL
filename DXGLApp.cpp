@@ -482,7 +482,7 @@ void DXGLApp::update(long double delta) {
 
 	// mouse picking start
 	if (input()->getMouseState(DXGLInputManager::LMB_STATE)) {
-		Point2f mouse = DXGLMain::input()->getMousePosition();
+		Point2f mouse = Engine::input()->getMousePosition();
 		POINT clientMouse = { mouse.x, mouse.y };
 		ScreenToClient(getWindow(), &clientMouse);
 		governor::EntityId id = mousePick()->getColorId(Point2f{ (float)clientMouse.x, (float)clientMouse.y });

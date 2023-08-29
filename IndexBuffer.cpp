@@ -15,7 +15,7 @@ IndexBuffer::IndexBuffer(void* indices, int indexCount) {
 	D3D11_SUBRESOURCE_DATA initData = {};
 	initData.pSysMem = indices;
 
-	HRESULT result = DXGLMain::graphics()->device()->CreateBuffer(&bufferDesc, &initData, &m_ibuffer);
+	HRESULT result = Engine::graphics()->device()->CreateBuffer(&bufferDesc, &initData, &m_ibuffer);
 
 	if (FAILED(result)) {
 		throw std::exception("DXGLIndexBuffer could not be created.");
@@ -27,7 +27,7 @@ IndexBuffer::~IndexBuffer() {
 }
 
 void IndexBuffer::bind(int slot) {
-	DXGLMain::graphics()->context()->IASetIndexBuffer(m_ibuffer, DXGI_FORMAT_R32_UINT, 0);
+	Engine::graphics()->context()->IASetIndexBuffer(m_ibuffer, DXGI_FORMAT_R32_UINT, 0);
 }
 
 ID3D11Buffer* IndexBuffer::get() {

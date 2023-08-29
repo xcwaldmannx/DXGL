@@ -3,7 +3,7 @@
 #include "DXGLInputListener.h"
 
 #include "DXGLDefinitions.h"
-#include "DXGLMain.h"
+#include "Engine.h"
 
 typedef int MOUSE_STATE;
 

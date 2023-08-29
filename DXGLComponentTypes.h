@@ -42,13 +42,6 @@ struct MeshComponent {
 	int instanceFlags = 0;
 };
 
-struct RenderPassComponent {
-	bool useEarlyZ = false;
-	bool useShadows = false;
-	bool useBloom = false;
-	bool useTransparency = false;
-};
-
 struct PickableComponent {
 	bool isSelected = false;
 };
@@ -64,4 +57,12 @@ struct RigidBodyComponent {
 	float dynamicFriction = 0;
 	float restitution = 0;
 	bool isStatic = false;
+};
+
+struct ControllableComponent {
+
+};
+
+struct CameraComponent {
+
 };

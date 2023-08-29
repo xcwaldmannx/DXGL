@@ -19,7 +19,7 @@ VertexBuffer::VertexBuffer(void* vertices, int vertexCount, int vertexSize) {
 	D3D11_SUBRESOURCE_DATA subresourceData{};
 	subresourceData.pSysMem = vertices;
 
-	HRESULT result = DXGLMain::graphics()->device()->CreateBuffer(&bufferDesc, &subresourceData, &m_vbuffer);
+	HRESULT result = Engine::graphics()->device()->CreateBuffer(&bufferDesc, &subresourceData, &m_vbuffer);
 
 	if (FAILED(result)) {
 		throw std::exception("VertexBuffer could not be created.");
@@ -33,7 +33,7 @@ VertexBuffer::~VertexBuffer() {
 void VertexBuffer::bind(int slot) {
 	UINT stride = m_size;
 	UINT offset = 0;
-	DXGLMain::graphics()->context()->IASetVertexBuffers(slot, 1, &m_vbuffer, &stride, &offset);
+	Engine::graphics()->context()->IASetVertexBuffers(slot, 1, &m_vbuffer, &stride, &offset);
 }
 
 ID3D11Buffer* VertexBuffer::get() {

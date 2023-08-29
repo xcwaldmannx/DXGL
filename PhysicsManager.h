@@ -9,7 +9,7 @@
 #include "PxPhysicsAPI.h"
 #include <pvd/PxPvd.h>
 
-#include "DXGLMain.h"
+#include "Engine.h"
 #include "OctTree.h"
 #include "OOBB.h"
 

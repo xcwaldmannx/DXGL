@@ -108,8 +108,8 @@ DXGLMesh::DXGLMesh(const std::string& filepath) {
     }
 
     computeTangents();
-    m_vertexBuffer = DXGLMain::resource()->createVertexBuffer(&m_vertices[0], (UINT)m_vertices.size(), sizeof(Vertex));
-    m_indexBuffer = DXGLMain::resource()->createIndexBuffer(&m_indices[0], (UINT)m_indices.size());
+    m_vertexBuffer = Engine::resource()->createVertexBuffer(&m_vertices[0], (UINT)m_vertices.size(), sizeof(Vertex));
+    m_indexBuffer = Engine::resource()->createIndexBuffer(&m_indices[0], (UINT)m_indices.size());
 }
 
 DXGLMesh::~DXGLMesh() {

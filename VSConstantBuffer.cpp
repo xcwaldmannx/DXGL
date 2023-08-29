@@ -10,7 +10,7 @@ VSConstantBuffer::VSConstantBuffer(UINT bytes) {
 	bufferDesc.CPUAccessFlags = 0;
 	bufferDesc.MiscFlags = 0;
 
-	HRESULT result = DXGLMain::graphics()->device()->CreateBuffer(&bufferDesc, nullptr, &m_cbuffer);
+	HRESULT result = Engine::graphics()->device()->CreateBuffer(&bufferDesc, nullptr, &m_cbuffer);
 
 	if (FAILED(result)) {
 		throw std::exception("VSConstantBuffer could not be created.");
@@ -22,11 +22,11 @@ VSConstantBuffer::~VSConstantBuffer() {
 }
 
 void VSConstantBuffer::bind(int slot) {
-	DXGLMain::graphics()->context()->VSSetConstantBuffers(slot, 1, &m_cbuffer);
+	Engine::graphics()->context()->VSSetConstantBuffers(slot, 1, &m_cbuffer);
 }
 
 void VSConstantBuffer::update(void* buffer) {
-	DXGLMain::graphics()->context()->UpdateSubresource(m_cbuffer, 0, 0, buffer, 0, 0);
+	Engine::graphics()->context()->UpdateSubresource(m_cbuffer, 0, 0, buffer, 0, 0);
 }
 
 ID3D11Buffer* VSConstantBuffer::get() {

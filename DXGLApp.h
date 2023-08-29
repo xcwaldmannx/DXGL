@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DXGLMain.h"
+#include "Engine.h"
 
 #include "DXGLComponentTypes.h"
 
@@ -21,7 +21,7 @@ struct DXGLVertex {
 	Vec3f color{};
 };
 
-class DXGLApp : public dxgl::DXGLMain {
+class DXGLApp : public dxgl::Engine {
 public:
 	DXGLApp();
 	~DXGLApp();
@@ -63,7 +63,7 @@ private:
 	SP_VSConstantBuffer m_vscbSkyboxBuffer = nullptr;
 	SP_PSConstantBuffer m_pscbSkyboxBuffer = nullptr;
 
-	SP_DXGLCamera m_camera = nullptr;
+	SP_Camera m_camera = nullptr;
 
 	DXGLTimer shadowTimer;
 };

@@ -5,7 +5,7 @@
 #include <d3d11.h>
 
 #include "DXGLDefinitions.h"
-#include "DXGLMain.h"
+#include "Engine.h"
 #include "Point2f.h"
 
 #include "DXGLComponentTypes.h"
