@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <iostream>
+#include <functional>
 
 #include "DXGLGovernorDefinitions.h"
 
@@ -34,6 +35,7 @@ namespace dxgl::governor {
 		void addEntityComponent(T& component, EntityId entityId) {
 			m_entityManager->addComponent<T>(component, entityId);
 			notifyGroupStateChange();
+			executeOnAddComponentCallbacks<T>(entityId);
 		}
 
 		template<typename T>
@@ -45,6 +47,7 @@ namespace dxgl::governor {
 		T removeEntityComponent(EntityId entityId) {
 			T component = m_entityManager->removeComponent<T>(entityId);
 			notifyGroupStateChange();
+			executeOnRemoveComponentCallbacks<T>(entityId);
 			return component;
 		}
 
@@ -99,6 +102,40 @@ namespace dxgl::governor {
 			return newGroup;
 		}
 
+		// callbacks
+		void onCreateEntity(std::function<void(EntityId)> function);
+		void onDestroyEntity(std::function<void(EntityId)> function);
+
+		template<typename T>
+		void onAddComponent(std::function<void(EntityId)> function) {
+			m_callbacksOnAddComponent[typeid(T)].push_back(function);
+		}
+
+		template<typename T>
+		void onRemoveComponent(std::function<void(EntityId)> function) {
+			m_callbacksOnRemoveComponent[typeid(T)].push_back(function);
+		}
+
+	private:
+		void executeOnCreateEntityCallbacks(EntityId id);
+		void executeOnDestroyEntityCallbacks(EntityId id);
+
+		template<typename T>
+		void executeOnAddComponentCallbacks(EntityId id) {
+			auto& callbacks = m_callbacksOnAddComponent[typeid(T)];
+			for (auto& callback : callbacks) {
+				callback(id);
+			}
+		}
+
+		template<typename T>
+		void executeOnRemoveComponentCallbacks(EntityId id) {
+			auto& callbacks = m_callbacksOnRemoveComponent[typeid(T)];
+			for (auto& callback : callbacks) {
+				callback(id);
+			}
+		}
+
 	private:
 		void notifyGroupStateChange();
 
@@ -108,5 +145,12 @@ namespace dxgl::governor {
 
 		std::vector<GroupData> m_groups{};
 		std::vector<Signature> m_groupSignatures{};
+
+		// callbacks
+		std::vector<std::function<void(EntityId)>> m_callbacksOnCreateEntity{};
+		std::vector<std::function<void(EntityId)>> m_callbacksOnDestroyEntity{};
+
+		std::unordered_map<std::type_index, std::vector<std::function<void(EntityId)>>> m_callbacksOnAddComponent{};
+		std::unordered_map<std::type_index, std::vector<std::function<void(EntityId)>>> m_callbacksOnRemoveComponent{};
 	};
 }

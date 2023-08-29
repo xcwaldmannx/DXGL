@@ -183,42 +183,48 @@ void Mesh::loadMaterialTextures(const aiScene* scene) {
 					std::cout << "Loading material: '" << textureName << "'...\n";
 				}
 
-				if (!DXGLMain::resource()->find<SP_Material>(textureName) && result == aiReturn_SUCCESS) {
-					if (auto texture = scene->GetEmbeddedTexture(texturePath.C_Str())) {
-						int width = 0;
-						int height = 0;
-						int channels = 0;
+				if (result == aiReturn_SUCCESS) {
+					if (!DXGLMain::resource()->find<SP_Material>(textureName)) {
+						if (auto texture = scene->GetEmbeddedTexture(texturePath.C_Str())) {
+							int width = 0;
+							int height = 0;
+							int channels = 0;
 
-						unsigned char* data = nullptr;
-						if (texture->mHeight == 0) {
-							data = DXGLImage::loadFromMemory(reinterpret_cast<unsigned char*>(texture->pcData),
-								texture->mWidth, width, height, channels);
+							unsigned char* data = nullptr;
+							if (texture->mHeight == 0) {
+								data = DXGLImage::loadFromMemory(reinterpret_cast<unsigned char*>(texture->pcData),
+									texture->mWidth, width, height, channels);
+							}
+							else {
+								data = DXGLImage::loadFromMemory(reinterpret_cast<unsigned char*>(texture->pcData),
+									texture->mWidth * texture->mHeight, width, height, channels);
+							}
+
+							TextureData t{
+								(TextureType)textureType,
+								width,
+								height,
+								channels,
+								data,
+							};
+
+							m.textures.push_back(t);
 						}
-						else {
-							data = DXGLImage::loadFromMemory(reinterpret_cast<unsigned char*>(texture->pcData),
-								texture->mWidth * texture->mHeight, width, height, channels);
-						}
-
-						TextureData t {
-							(TextureType)textureType,
-							width,
-							height,
-							channels,
-							data,
-						};
-
-						m_textureIndex = m_textureIndex | (1 << textureTypeIndex);
-
-						m.textures.push_back(t);
 					}
+
+					m_textureIndex = m_textureIndex | (1 << textureTypeIndex);
 				}
 			}
 		}
 
 		m_materialNames[i] = textureName;
-		DXGLMain::resource()->storeMaterial(m, textureName);
+		if (!DXGLMain::resource()->find<SP_Material>(textureName)) {
+			DXGLMain::resource()->storeMaterial(m, textureName);
+			std::cout << "Done.\n";
+		} else {
+			std::cout << "Already exists.\n";
+		}
 
-		std::cout << "Done.\n";
 	}
 
 	// set mesh material

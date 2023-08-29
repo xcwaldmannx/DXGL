@@ -253,6 +253,14 @@ void DXGLApp::create() {
 		PickableComponent pickable{};
 		pickable.isSelected = false;
 		entities()->addEntityComponent<PickableComponent>(pickable, m_guitar);
+
+		RigidBodyComponent rigidbody{};
+		rigidbody.mass = 25.0f;
+		rigidbody.staticFriction = 0.75f;
+		rigidbody.dynamicFriction = 0.75f;
+		rigidbody.restitution = 0.1f;
+		rigidbody.isStatic = false;
+		entities()->addEntityComponent<RigidBodyComponent>(rigidbody, m_guitar);
 	}
 
 	// gun
@@ -282,6 +290,7 @@ void DXGLApp::create() {
 		desc.miscAttributes = MISC_ALL;
 		desc.amountMetallic = 0;
 		desc.amountRoughness = 0;
+		resource()->storeMesh(desc, "Assets/Meshes/rock1.fbx", "rock1");
 		resource()->storeMesh(desc, "Assets/Meshes/box.fbx", "box");
 		resource()->storeMesh(desc, "Assets/Meshes/sphere.fbx", "sphere");
 		resource()->storeMesh(desc, "Assets/Meshes/torus.fbx", "torus");
@@ -291,7 +300,7 @@ void DXGLApp::create() {
 		for (int j = -10; j < 10; j++) {
 			for (int k = -10; k < 10; k++) {
 				TransformComponent transform{};
-				transform.scale = { 2.0f + std::rand() % 5, 2.0f + std::rand() % 5, 2.0f + std::rand() % 5 };
+				transform.scale = { 0.5f + std::rand() % 5, 0.5f + std::rand() % 5, 0.5f + std::rand() % 5 };
 				float rx = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 6);
 				float ry = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 6);
 				float rz = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 6);
@@ -303,11 +312,12 @@ void DXGLApp::create() {
 				transform.translation = { (float)i * 256 + tx, (float)j * 256 + ty, (float)k * 256 + tz };
 
 				MeshComponent mesh{};
-				mesh.mesh = resource()->get<SP_Mesh>("sphere");
+				mesh.mesh = resource()->get<SP_Mesh>("rock1");
 				mesh.useTessellation = false;
 				mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
 
 				dxgl::governor::EntityId id = entities()->createEntity(transform, mesh);
+				entities()->relocateEntity(id);
 
 				PickableComponent pickable{};
 				pickable.isSelected = false;
@@ -317,82 +327,19 @@ void DXGLApp::create() {
 				entities()->addEntityComponent<DestroyableComponent>(destroyable, id);
 
 				RigidBodyComponent rigidbody{};
-				rigidbody.elasticity = 0.3f;
-				rigidbody.mass = transform.scale.x * 100.0f;
+				rigidbody.mass = transform.scale.magnitude() * 100.0f;
+				rigidbody.staticFriction = 0.75f;
+				rigidbody.dynamicFriction = 0.75f;
+				rigidbody.restitution = 0.1f;
 				entities()->addEntityComponent<RigidBodyComponent>(rigidbody, id);
 			}
 		}
 	}
 
-	/*
-	{ // rock move right
-		TransformComponent transform{};
-		transform.scale = { 5, 5, 5 };
-		//transform.rotation = { 0, 2, 1 };
-		transform.translation = { -75, 2, 0 };
-
-		MeshComponent mesh{};
-		mesh.mesh = resource()->get<SP_Mesh>("box");
-		mesh.useTessellation = false;
-		mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
-
-		dxgl::governor::EntityId id = entities()->createEntity(transform, mesh);
-
-		RigidBodyComponent rigidbody{};
-		rigidbody.linearVelocity = { 25, 0, 0 };
-		rigidbody.angularVelocity = { 2, 0, 0 };
-		rigidbody.elasticity = 0.3f;
-		rigidbody.mass = transform.scale.x * 100.0f;
-		entities()->addEntityComponent<RigidBodyComponent>(rigidbody, id);
-	}
-
-	{ // rock move left
-		TransformComponent transform{};
-		transform.scale = { 5, 5, 5 };
-		//transform.rotation = { 0, 3, 2 };
-		transform.translation = { 75, 0, 0 };
-
-		MeshComponent mesh{};
-		mesh.mesh = resource()->get<SP_Mesh>("box");
-		mesh.useTessellation = false;
-		mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
-
-		dxgl::governor::EntityId id = entities()->createEntity(transform, mesh);
-
-		RigidBodyComponent rigidbody{};
-		rigidbody.linearVelocity = { -35, 0, 0 };
-		rigidbody.angularVelocity = { -2, 0, 0 };
-		rigidbody.elasticity = 0.3f;
-		rigidbody.mass = transform.scale.x * 100.0f;
-		entities()->addEntityComponent<RigidBodyComponent>(rigidbody, id);
-	}
-	*/
-
-	{ // rock centered
-		TransformComponent transform{};
-		transform.scale = { 5, 5, 5 };
-		//transform.rotation = { 0, 3, 2 };
-		transform.translation = { 0, 0, 0 };
-
-		MeshComponent mesh{};
-		mesh.mesh = resource()->get<SP_Mesh>("box");
-		mesh.useTessellation = false;
-		mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
-
-		dxgl::governor::EntityId id = entities()->createEntity(transform, mesh);
-
-		RigidBodyComponent rigidbody{};
-		rigidbody.linearVelocity = { 0, 0, 0 };
-		rigidbody.angularVelocity = { 0, 0, 0 };
-		rigidbody.elasticity = 0.3f;
-		rigidbody.mass = 0.0f;
-		entities()->addEntityComponent<RigidBodyComponent>(rigidbody, id);
-	}
-
 	{ // floor
 		TransformComponent transform{};
-		transform.scale = { 128, 1, 128 };
-		transform.rotation = { 0.35035f, 0, 0 };
+		transform.scale = { 128, 8, 128 };
+		transform.rotation = { 3.14f / 16.0f, 0, 0 };
 		transform.translation = { 0, -10, -10 };
 
 		MeshComponent mesh{};
@@ -403,10 +350,10 @@ void DXGLApp::create() {
 		m_floor = entities()->createEntity(transform, mesh);
 
 		RigidBodyComponent rigidbody{};
-		rigidbody.linearVelocity = { 0, 0, 0 };
-		rigidbody.angularVelocity = { 0, 0, 0 };
-		rigidbody.elasticity = 0.1f;
-		rigidbody.mass = 0.0f;
+		rigidbody.staticFriction = 0.75f;
+		rigidbody.dynamicFriction = 0.75f;
+		rigidbody.restitution = 0.1f;
+		rigidbody.isStatic = true;
 		entities()->addEntityComponent<RigidBodyComponent>(rigidbody, m_floor);
 	}
 
@@ -424,54 +371,12 @@ void DXGLApp::create() {
 		auto id = entities()->createEntity(transform, mesh);
 
 		RigidBodyComponent rigidbody{};
-		rigidbody.linearVelocity = { 0, 0, 0 };
-		rigidbody.angularVelocity = { 0, 0, 0 };
-		rigidbody.elasticity = 0.1f;
-		rigidbody.mass = 0.0f;
+		rigidbody.staticFriction = 0.5f;
+		rigidbody.dynamicFriction = 0.5f;
+		rigidbody.restitution = 0.5f;
+		rigidbody.isStatic = true;
 		entities()->addEntityComponent<RigidBodyComponent>(rigidbody, id);
 	}
-
-	//{ // rock move forward
-	//	TransformComponent transform{};
-	//	transform.scale = { 5, 5, 5 };
-	//	transform.rotation = { 5, 3, 2 };
-	//	transform.translation = { 0, -2, -75 };
-
-	//	MeshComponent mesh{};
-	//	mesh.mesh = resource()->get<SP_Mesh>("rock1");
-	//	mesh.useTessellation = false;
-	//	mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
-
-	//	dxgl::governor::EntityId id = entities()->createEntity(transform, mesh);
-
-	//CollisionComponent collision{};
-	//entities()->addEntityComponent<CollisionComponent>(collision, id);
-
-	//	RigidBodyComponent rigidbody{};
-	//	rigidbody.linearVelocity = { 0, 0, 25 };
-	//	rigidbody.angularVelocity = { -2, 0, 0 };
-	//	rigidbody.elasticity = 0.3f;
-	//	rigidbody.mass = transform.scale.x * 100.0f;
-	//	entities()->addEntityComponent<RigidBodyComponent>(rigidbody, id);
-	//}
-
-	//{
-	//	// colliding player
-	//	TransformComponent transform{};
-	//	transform.scale = { 0.5f, 0.5f, 0.5f };
-	//	transform.translation = { 0, 0, 0 };
-	//	MeshComponent mesh{};
-	//	mesh.mesh = resource()->get<SP_Mesh>("rock1");
-	//	m_player = entities()->createEntity(transform, mesh);
-
-	//CollisionComponent collision{};
-	//entities()->addEntityComponent<CollisionComponent>(collision, id);
-
-	//	RigidBodyComponent rigidbody{};
-	//	rigidbody.elasticity = 0.1f;
-	//	rigidbody.mass = 75.0f;
-	//	entities()->addEntityComponent<RigidBodyComponent>(rigidbody, m_player);
-	//}
 
 	// Depth Stencils
 	D3D11_DEPTH_STENCIL_DESC depthStencilDesc{};
@@ -529,7 +434,7 @@ void DXGLApp::update(long double delta) {
 		transform.translation = m_camera->getPosition() + m_camera->getDirection() * 2.0f;
 
 		MeshComponent mesh{};
-		mesh.mesh = resource()->get<SP_Mesh>("box");
+		mesh.mesh = resource()->get<SP_Mesh>("guitar");
 
 		dxgl::governor::EntityId id = entities()->createEntity(transform, mesh);
 
@@ -537,9 +442,12 @@ void DXGLApp::update(long double delta) {
 		entities()->addEntityComponent<DestroyableComponent>(destroyable, id);
 
 		RigidBodyComponent rigidbody{};
-		rigidbody.linearVelocity = m_camera->getDirection() * 20.0f;
-		rigidbody.elasticity = 0.5f;
-		rigidbody.mass = 50.0f;
+		rigidbody.linearVelocity = m_camera->getDirection() * 25.0f;
+		rigidbody.angularVelocity = Vec3f{ 1, 1, 1 };
+		rigidbody.mass = 25.0f;
+		rigidbody.staticFriction = 0.75f;
+		rigidbody.dynamicFriction = 0.75f;
+		rigidbody.restitution = 0.1f;
 		entities()->addEntityComponent<RigidBodyComponent>(rigidbody, id);
 	}
 
@@ -571,17 +479,6 @@ void DXGLApp::update(long double delta) {
 	}
 
 	// rotate guitar end
-
-	// player start
-	//{
-	//	auto& transform = entities()->getEntityComponent<TransformComponent>(m_player);
-	//	transform.rotation = m_camera->world().getRotation();
-	//	transform.translation = m_camera->world().getTranslation();
-
-	//	auto& rigidbody = entities()->getEntityComponent<RigidBodyComponent>(m_player);
-	//	rigidbody.linearVelocity = m_camera->getDirection() * m_camera->getCurrentSpeed();
-	//}
-	// player end
 
 	// mouse picking start
 	if (input()->getMouseState(DXGLInputManager::LMB_STATE)) {

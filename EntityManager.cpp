@@ -55,3 +55,12 @@ void EntityManager::relocateEntity(governor::EntityId id) {
 	rect.size = mesh.mesh->getAABB().max;
 	m_entities.relocate(id, rect);
 }
+
+// callbacks
+void EntityManager::onCreateEntity(std::function<void(governor::EntityId)> function) {
+	m_governor.onCreateEntity(function);
+}
+
+void EntityManager::onDestroyEntity(std::function<void(governor::EntityId)> function) {
+	m_governor.onDestroyEntity(function);
+}

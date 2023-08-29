@@ -14,12 +14,14 @@ DXGLGovernor::~DXGLGovernor() {
 }
 
 EntityId DXGLGovernor::createEntity() {
-	EntityId id = m_entityManager->create();
+	EntityId entityId = m_entityManager->create();
 	notifyGroupStateChange();
-	return id;
+	executeOnCreateEntityCallbacks(entityId);
+	return entityId;
 }
 
 void DXGLGovernor::destroyEntity(EntityId entityId) {
+	executeOnDestroyEntityCallbacks(entityId);
 	m_entityManager->destroy(entityId);
 	notifyGroupStateChange();
 }
@@ -34,3 +36,25 @@ void DXGLGovernor::notifyGroupStateChange() {
 		*(group.group) = newGroup;
 	}
 }
+
+// callbacks
+void DXGLGovernor::onCreateEntity(std::function<void(EntityId)> function) {
+	m_callbacksOnCreateEntity.push_back(function);
+}
+
+void DXGLGovernor::onDestroyEntity(std::function<void(EntityId)> function) {
+	m_callbacksOnDestroyEntity.push_back(function);
+}
+
+void DXGLGovernor::executeOnCreateEntityCallbacks(EntityId id) {
+	for (auto& callback : m_callbacksOnCreateEntity) {
+		callback(id);
+	}
+}
+
+void DXGLGovernor::executeOnDestroyEntityCallbacks(EntityId id) {
+	for (auto& callback : m_callbacksOnDestroyEntity) {
+		callback(id);
+	}
+}
+

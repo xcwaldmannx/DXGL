@@ -59,11 +59,9 @@ struct DestroyableComponent {
 struct RigidBodyComponent {
 	Vec3f linearVelocity{};
 	Vec3f angularVelocity{};
-	Vec3f force{};
-	Vec3f torque{};
 	float mass = 0;
-	float friction = 0;
-	float elasticity = 0;
-	float moi = 0;
-	bool isColliding = false;
+	float staticFriction = 0;
+	float dynamicFriction = 0;
+	float restitution = 0;
+	bool isStatic = false;
 };

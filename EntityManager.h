@@ -59,6 +59,20 @@ namespace dxgl {
 			return m_governor.collectAllWith<T...>(group);
 		}
 
+		// callbacks
+		void onCreateEntity(std::function<void(governor::EntityId)> function);
+		void onDestroyEntity(std::function<void(governor::EntityId)> function);
+
+		template<typename T>
+		void onAddComponent(std::function<void(governor::EntityId)> function) {
+			m_governor.onAddComponent<T>(function);
+		}
+
+		template<typename T>
+		void onRemoveComponent(std::function<void(governor::EntityId)> function) {
+			m_governor.onRemoveComponent<T>(function);
+		}
+
 	private:
 		governor::DXGLGovernor m_governor;
 		OctTree<governor::EntityId> m_entities{ OctTreeRect{}, 12 };
