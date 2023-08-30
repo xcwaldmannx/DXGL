@@ -35,6 +35,10 @@ namespace dxgl {
 
         std::array<PxRigidActor*, MAX_ENTITIES> m_actors{};
 
+        // cylindrical data for cylinder collider
+        std::vector<Vec3f> m_cylinderVertices{};
+        void generateCylinder(float segmentCount, float radius, float halfHeight);
+
         static PxFilterFlags testCCDFilterShader(
             PxFilterObjectAttributes attributes0,
             PxFilterData filterData0,

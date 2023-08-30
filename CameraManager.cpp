@@ -19,23 +19,39 @@ void CameraManager::update(long double delta) {
 	auto& transform = Engine::entities()->getEntityComponent<TransformComponent>(m_activeCameraId);
 	auto& camera = Engine::entities()->getEntityComponent<CameraComponent>(m_activeCameraId);
 
+    camera.worldMatrix.setIdentity();
+
 	if (camera.trackMouse) {
 		Point2f mouseDelta = Engine::input()->getMouseDelta();
 		camera.mouseRotX += mouseDelta.y * (float) delta / 5.0f;
 		camera.mouseRotY += mouseDelta.x * (float) delta / 5.0f;
-	}
 
-    Mat4f rot{};
-    camera.worldMatrix.setIdentity();
+        Mat4f rot{};
 
-    rot.setIdentity();
-    rot.setRotationX(camera.mouseRotX);
-    camera.worldMatrix *= rot;
-    rot.setIdentity();
-    rot.setRotationY(camera.mouseRotY);
-    camera.worldMatrix *= rot;
+        rot.setIdentity();
+        rot.setRotationX(camera.mouseRotX);
+        camera.worldMatrix *= rot;
+        rot.setIdentity();
+        rot.setRotationY(camera.mouseRotY);
+        camera.worldMatrix *= rot;
+    }
+    
+    if (camera.trackEntity) {
+        Mat4f rot{};
 
-	camera.worldMatrix.setTranslation(transform.translation);
+        rot.setIdentity();
+        rot.setRotationX(transform.rotation.x);
+        camera.worldMatrix *= rot;
+        rot.setIdentity();
+        rot.setRotationY(transform.rotation.y);
+        camera.worldMatrix *= rot;
+        rot.setIdentity();
+        rot.setRotationZ(transform.rotation.z);
+        camera.worldMatrix *= rot;
+    }
+
+    camera.translation = transform.translation;
+	camera.worldMatrix.setTranslation(camera.translation);
 
 	Mat4f inverseWorld = camera.worldMatrix;
 	inverseWorld.inverse();

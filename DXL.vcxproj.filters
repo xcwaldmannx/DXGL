@@ -253,6 +253,9 @@
     <Filter Include="DXGL\DXGLSource\DXGLGraphics\Renderer\RenderPass\RenderPasses">
       <UniqueIdentifier>{fdf4bb30-4676-4ee8-902d-ababdd48bfc7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DXGL\DXGLSource\DXGLGraphics\Managers\ControllerManager">
+      <UniqueIdentifier>{b5652bd8-011c-451a-b638-39708d592641}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ComputeShader.cpp">
@@ -434,6 +437,9 @@
     </ClCompile>
     <ClCompile Include="PhysicsManager.cpp">
       <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\PhysicsManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ControllerManager.cpp">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\ControllerManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -667,6 +673,9 @@
     </ClInclude>
     <ClInclude Include="PhysicsManager.h">
       <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\PhysicsManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ControllerManager.h">
+      <Filter>DXGL\DXGLSource\DXGLGraphics\Managers\ControllerManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

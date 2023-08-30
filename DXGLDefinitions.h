@@ -32,6 +32,12 @@ namespace dxgl {
 	class PhysicsManager;
 	typedef std::shared_ptr<PhysicsManager> SP_PhysicsManager;
 
+	class ControllerManager;
+	typedef std::shared_ptr<ControllerManager> SP_ControllerManager;
+
+	class CameraManager;
+	typedef std::shared_ptr<CameraManager> SP_CameraManager;
+
 	// STAGES
 	class DXGLShader;
 	typedef std::shared_ptr<DXGLShader> SP_DXGLShader;
@@ -46,9 +52,6 @@ namespace dxgl {
 	typedef std::shared_ptr<DXGLInputManager> SP_DXGLInputManager;
 
 	// Managers
-	class CameraManager;
-	typedef std::shared_ptr<CameraManager> SP_CameraManager;
-
 	class DXGLShadow;
 	typedef std::shared_ptr<DXGLShadow> SP_DXGLShadow;
 

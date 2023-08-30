@@ -202,6 +202,7 @@
   <ItemGroup>
     <ClCompile Include="CollisionRenderPass.cpp" />
     <ClCompile Include="ComputeShader.cpp" />
+    <ClCompile Include="ControllerManager.cpp" />
     <ClCompile Include="DSConstantBuffer.cpp" />
     <ClCompile Include="DXGLApp.cpp" />
     <ClCompile Include="EntityManager.cpp" />
@@ -265,6 +266,7 @@
     <ClInclude Include="AABB.h" />
     <ClInclude Include="CollisionRenderPass.h" />
     <ClInclude Include="ComputeShader.h" />
+    <ClInclude Include="ControllerManager.h" />
     <ClInclude Include="DSConstantBuffer.h" />
     <ClInclude Include="DXGLApp.h" />
     <ClInclude Include="EntityManager.h" />

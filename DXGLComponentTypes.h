@@ -2,6 +2,8 @@
 
 #include <functional>
 
+#include "PxPhysicsAPI.h"
+
 #include "DXGLDefinitions.h"
 
 #include "DXGLGovernor.h"
@@ -38,6 +40,7 @@ struct TransformComponent {
 
 struct MeshComponent {
 	SP_Mesh mesh = nullptr;
+	bool hideMesh = false;;
 	bool useTessellation = false;
 	int instanceFlags = 0;
 };
@@ -49,33 +52,137 @@ struct PickableComponent {
 struct DestroyableComponent {
 };
 
+//////////////////////
+//    Rigidbody     //
+//////////////////////
+
+struct RigidBodyShape {
+	virtual ~RigidBodyShape() {}
+};
+struct RigidBodyBox : RigidBodyShape {
+	RigidBodyBox(float x, float y, float z) : halfExtents(x, y, z) {
+	}
+
+	Vec3f halfExtents{ 1, 1, 1 };
+};
+
+struct RigidBodySphere : RigidBodyShape {
+	RigidBodySphere(float radius) : radius(radius) {
+	}
+	float radius = 1.0f;
+};
+
+struct RigidBodyCylinder : RigidBodyShape {
+	RigidBodyCylinder(float segmentCount, float radius, float halfHeight) :
+	segmentCount(segmentCount), radius(radius), halfHeight(halfHeight) {
+	}
+
+	float segmentCount = 16.0f;
+	float radius = 1.0f;
+	float halfHeight = 1.0f;
+};
+
+struct RigidBodyCapsule : RigidBodyShape {
+	RigidBodyCapsule(float radius, float halfHeight) : radius(radius), halfHeight(halfHeight) {
+	}
+
+	float radius = 1.0f;
+	float halfHeight = 1.0f;
+};
+
+struct RigidBodyConvexMesh : RigidBodyShape {};
+
+struct RigidBodyTriangleMesh : RigidBodyShape {};
+
+struct RigidBodyLockFlag {
+	enum Flag {
+		LOCK_LINEAR_X = physx::PxRigidDynamicLockFlag::eLOCK_LINEAR_X,
+		LOCK_LINEAR_Y = physx::PxRigidDynamicLockFlag::eLOCK_LINEAR_Y,
+		LOCK_LINEAR_Z = physx::PxRigidDynamicLockFlag::eLOCK_LINEAR_Z,
+		LOCK_ANGULAR_X = physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X,
+		LOCK_ANGULAR_Y = physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y,
+		LOCK_ANGULAR_Z = physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z,
+	};
+};
+
 struct RigidBodyComponent {
+public:
+	void applyForce(Vec3f force) {
+		if (actor->is<physx::PxRigidDynamic>()) {
+			float y = ((physx::PxRigidDynamic*)actor)->getLinearVelocity().y;
+			((physx::PxRigidDynamic*)actor)->setLinearVelocity({ force.x, force.y + y, force.z });
+		}
+	}
+
+	void clearForce() {
+		if (actor->is<physx::PxRigidDynamic>()) {
+			float y = ((physx::PxRigidDynamic*)actor)->getLinearVelocity().y;
+			if (y > 0) y = 0;
+			((physx::PxRigidDynamic*)actor)->setLinearVelocity({ 0, y, 0 });
+			((physx::PxRigidDynamic*)actor)->setAngularVelocity({ 0, 0, 0 });
+		}
+	}
+
+	RigidBodyShape* shape = nullptr;
+
 	Vec3f linearVelocity{};
 	Vec3f angularVelocity{};
+	float linearDamp = 0.1f;
+	float angularDamp = 0.1f;
+	unsigned int lockFlags;
+
 	float mass = 0;
 	float staticFriction = 0;
 	float dynamicFriction = 0;
 	float restitution = 0;
+
 	bool isStatic = false;
+	bool isStationary = false;
+
+
+private:
+	physx::PxRigidActor* actor = nullptr;
+
+	friend class PhysicsManager;
 };
 
-struct ControllableComponent {
+//////////////////////
+//    Controller    //
+//////////////////////
+
+struct ControllerActionFlag {
+	enum Flag {
+		ON_PRESS,
+		ON_HOLD,
+		ON_TAP,
+		ON_RELEASE,
+	};
+};
+
+struct ControllerComponent {
 public:
 	float speed = 0;
+	bool isActive = false;
 
-	void addAction(char key, std::function<void()> function) {
-		m_actions[key] = function;
+	void addAction(char key, ControllerActionFlag::Flag flag, std::function<void(governor::EntityId, long double)> function) {
+		actions.emplace_back(ControllerAction{ key, flag, function });
 	}
 
 private:
-	void executeActions(char key) {
-		if (m_actions.find(key) != m_actions.end()) {
-			m_actions[key]();
-		}
-	}
+	struct ControllerAction {
+		char key;
+		ControllerActionFlag::Flag flag;
+		std::function<void(governor::EntityId, long double)> function;
+	};
 
-	std::unordered_map<char, std::function<void()>> m_actions{};
+	std::vector<ControllerAction> actions{};
+
+	friend class ControllerManager;
 };
+
+//////////////////////
+//      Camera      //
+//////////////////////
 
 struct CameraComponent {
 public:
@@ -105,7 +212,8 @@ public:
 
 	Vec3f translation{};
 	Vec3f rotation{};
-	bool trackMouse = true;
+	bool trackMouse = false;
+	bool trackEntity = false;
 
 private:
 	bool isActive = false;

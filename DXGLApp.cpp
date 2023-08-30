@@ -217,8 +217,8 @@ void DXGLApp::create() {
 	entities()->registerComponent<PickableComponent>();
 	entities()->registerComponent<DestroyableComponent>();
 	entities()->registerComponent<RigidBodyComponent>();
-	entities()->registerComponent<ControllableComponent>();
 	entities()->registerComponent<CameraComponent>();
+	entities()->registerComponent<ControllerComponent>();
 
 	// standard meshes
 	{
@@ -240,39 +240,101 @@ void DXGLApp::create() {
 
 		MeshComponent mesh{};
 		mesh.mesh = resource()->get<SP_Mesh>("box");
+		mesh.hideMesh = true;
 		mesh.useTessellation = false;
 		mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
 
 		m_player = entities()->createEntity(transform, mesh);
 
+		RigidBodyComponent rigidbody{};
+		rigidbody.shape = new RigidBodyCapsule(1, 1);
+		rigidbody.lockFlags = RigidBodyLockFlag::LOCK_ANGULAR_X | RigidBodyLockFlag::LOCK_ANGULAR_Y | RigidBodyLockFlag::LOCK_ANGULAR_Z;
+		rigidbody.mass = 1000.0f;
+		rigidbody.staticFriction = 0.999f;
+		rigidbody.dynamicFriction = 0.999f;
+		rigidbody.restitution = 0.001f;
+		rigidbody.isStatic = false;
+		entities()->addEntityComponent<RigidBodyComponent>(rigidbody, m_player);
+
 		CameraComponent camera{};
 		camera.translation = transform.translation;
-		camera.rotation = { 0, 3.14f, 0 };
+		camera.rotation = { 0, 0, 0 };
 		camera.trackMouse = true;
+		camera.trackEntity = true;
 		entities()->addEntityComponent<CameraComponent>(camera, m_player);
 
-		ControllableComponent control{};
-		control.speed = 10.0f;
-		control.addAction('W', [&control, &transform, &camera] {
-			transform.translation += camera.forward() * control.speed;
-			camera.translation = transform.translation;
+		ControllerComponent controller{};
+		controller.speed = 15.0f;
+		controller.addAction('W', ControllerActionFlag::ON_PRESS, [&](governor::EntityId id, long double delta) {
+			auto& rigidbody = entities()->getEntityComponent<RigidBodyComponent>(id);
+			auto& controller = entities()->getEntityComponent<ControllerComponent>(id);
+			auto& camera = entities()->getEntityComponent<CameraComponent>(id);
+
+			Vec3f direction = Vec3f(camera.forward().x, 0, camera.forward().z).normalize();
+
+			rigidbody.applyForce(direction * controller.speed);
 		});
-		control.addAction('S', [&control, &transform, &camera] {
-			transform.translation += camera.forward() * -control.speed;
-			camera.translation = transform.translation;
+		controller.addAction('W', ControllerActionFlag::ON_RELEASE, [&](governor::EntityId id, long double delta) {
+			auto& rigidbody = entities()->getEntityComponent<RigidBodyComponent>(id);
+			rigidbody.clearForce();
 		});
-		control.addAction('A', [&control, &transform, &camera] {
-			transform.translation += camera.right() * -control.speed;
-			camera.translation = transform.translation;
+
+		controller.addAction('S', ControllerActionFlag::ON_PRESS, [&](governor::EntityId id, long double delta) {
+			auto& rigidbody = entities()->getEntityComponent<RigidBodyComponent>(id);
+			auto& controller = entities()->getEntityComponent<ControllerComponent>(id);
+			auto& camera = entities()->getEntityComponent<CameraComponent>(id);
+
+			Vec3f direction = Vec3f(camera.forward().x, 0, camera.forward().z).normalize();
+
+			rigidbody.applyForce(direction * -controller.speed);
 		});
-		control.addAction('D', [&control, &transform, &camera] {
-			transform.translation += camera.forward() * control.speed;
-			camera.translation = transform.translation;
+		controller.addAction('S', ControllerActionFlag::ON_RELEASE, [&](governor::EntityId id, long double delta) {
+			auto& rigidbody = entities()->getEntityComponent<RigidBodyComponent>(id);
+			rigidbody.clearForce();
 		});
-		entities()->addEntityComponent<ControllableComponent>(control, m_player);
+
+		controller.addAction('D', ControllerActionFlag::ON_PRESS, [&](governor::EntityId id, long double delta) {
+			auto& rigidbody = entities()->getEntityComponent<RigidBodyComponent>(id);
+			auto& controller = entities()->getEntityComponent<ControllerComponent>(id);
+			auto& camera = entities()->getEntityComponent<CameraComponent>(id);
+
+			Vec3f direction = Vec3f(camera.right().x, 0, camera.right().z).normalize();
+
+			rigidbody.applyForce(direction * controller.speed);
+		});
+		controller.addAction('D', ControllerActionFlag::ON_RELEASE, [&](governor::EntityId id, long double delta) {
+			auto& rigidbody = entities()->getEntityComponent<RigidBodyComponent>(id);
+			rigidbody.clearForce();
+		});
+
+		controller.addAction('A', ControllerActionFlag::ON_PRESS, [&](governor::EntityId id, long double delta) {
+			auto& rigidbody = entities()->getEntityComponent<RigidBodyComponent>(id);
+			auto& controller = entities()->getEntityComponent<ControllerComponent>(id);
+			auto& camera = entities()->getEntityComponent<CameraComponent>(id);
+
+			Vec3f direction = Vec3f(camera.right().x, 0, camera.right().z).normalize();
+
+			rigidbody.applyForce(direction * -controller.speed);
+		});
+		controller.addAction('A', ControllerActionFlag::ON_RELEASE, [&](governor::EntityId id, long double delta) {
+			auto& rigidbody = entities()->getEntityComponent<RigidBodyComponent>(id);
+			rigidbody.clearForce();
+		});
+		controller.addAction(VK_SPACE, ControllerActionFlag::ON_TAP, [&](governor::EntityId id, long double delta) {
+			auto& rigidbody = entities()->getEntityComponent<RigidBodyComponent>(id);
+			auto& controller = entities()->getEntityComponent<ControllerComponent>(id);
+			auto& camera = entities()->getEntityComponent<CameraComponent>(id);
+
+			if (rigidbody.isStationary) {
+				Vec3f direction = Vec3f(0, camera.up().y, 0).normalize();
+				rigidbody.applyForce(direction * controller.speed * 0.25f);
+			}
+		});
+		entities()->addEntityComponent<ControllerComponent>(controller, m_player);
 
 	}
 
+	controller()->setActiveController(m_player);
 	camera()->setActiveCamera(m_player);
 
 	// landscape
@@ -307,17 +369,19 @@ void DXGLApp::create() {
 		entities()->addEntityComponent<PickableComponent>(pickable, m_guitar);
 
 		RigidBodyComponent rigidbody{};
+		rigidbody.shape = new RigidBodyConvexMesh();
 		rigidbody.mass = 25.0f;
 		rigidbody.staticFriction = 0.75f;
 		rigidbody.dynamicFriction = 0.75f;
 		rigidbody.restitution = 0.1f;
-		rigidbody.isStatic = false;
+		rigidbody.isStatic = true;
 		entities()->addEntityComponent<RigidBodyComponent>(rigidbody, m_guitar);
 
 		CameraComponent camera{};
 		camera.translation = transform.translation;
 		camera.rotation = { 0, 0, 0 };
 		camera.trackMouse = true;
+		camera.trackEntity = true;
 		entities()->addEntityComponent<CameraComponent>(camera, m_guitar);
 	}
 
@@ -382,6 +446,7 @@ void DXGLApp::create() {
 				entities()->addEntityComponent<DestroyableComponent>(destroyable, id);
 
 				RigidBodyComponent rigidbody{};
+				rigidbody.shape = new RigidBodyConvexMesh();
 				rigidbody.mass = transform.scale.magnitude() * 100.0f;
 				rigidbody.staticFriction = 0.75f;
 				rigidbody.dynamicFriction = 0.75f;
@@ -405,6 +470,7 @@ void DXGLApp::create() {
 		m_floor = entities()->createEntity(transform, mesh);
 
 		RigidBodyComponent rigidbody{};
+		rigidbody.shape = new RigidBodyBox(64, 4, 64);
 		rigidbody.staticFriction = 0.75f;
 		rigidbody.dynamicFriction = 0.75f;
 		rigidbody.restitution = 0.1f;
@@ -426,6 +492,7 @@ void DXGLApp::create() {
 		auto id = entities()->createEntity(transform, mesh);
 
 		RigidBodyComponent rigidbody{};
+		rigidbody.shape = new RigidBodyTriangleMesh();
 		rigidbody.staticFriction = 0.5f;
 		rigidbody.dynamicFriction = 0.5f;
 		rigidbody.restitution = 0.5f;
@@ -508,6 +575,7 @@ void DXGLApp::update(long double delta) {
 		entities()->addEntityComponent<DestroyableComponent>(destroyable, id);
 
 		RigidBodyComponent rigidbody{};
+		rigidbody.shape = new RigidBodyConvexMesh();
 		rigidbody.linearVelocity = cam.forward() * 25.0f;
 		rigidbody.angularVelocity = Vec3f{ 1, 1, 1 };
 		rigidbody.mass = 25.0f;

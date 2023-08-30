@@ -45,6 +45,11 @@ SP_PhysicsManager Engine::physics() {
 	return Engine::m_physics;
 }
 
+SP_ControllerManager Engine::m_controller = std::make_shared<ControllerManager>();
+SP_ControllerManager Engine::controller() {
+	return Engine::m_controller;
+}
+
 SP_CameraManager Engine::m_camera = std::make_shared<CameraManager>();
 SP_CameraManager Engine::camera() {
 	return Engine::m_camera;
@@ -88,6 +93,7 @@ void Engine::onUpdate() {
 	DXGLInputSystem::get()->update();
 
 	// update managers
+	controller()->update(m_deltaTime);
 	camera()->update(m_deltaTime);
 
 	// update call

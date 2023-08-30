@@ -18,7 +18,7 @@ void RenderQueue::submit(OctTree<governor::EntityId>::list entities) {
 		auto& transform = Engine::entities()->getEntityComponent<TransformComponent>(id);
 		auto& mesh = Engine::entities()->getEntityComponent<MeshComponent>(id);
 
-		if (!Engine::camera()->cullActiveCamera(id)) {
+		if (!Engine::camera()->cullActiveCamera(id) && !mesh.hideMesh) {
 			m_meshToInstances[mesh.mesh].emplace_back(
 				PerInstanceData {
 					.id = id,

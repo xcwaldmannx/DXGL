@@ -14,8 +14,9 @@ namespace dxgl {
         ~DXGLInputManager();
 
         bool getKeyHoldState(char key, float duration);
-        float getKeyPressState(char key);
-        float getKeyTapState(char key);
+        bool getKeyPressState(char key);
+        bool getKeyTapState(char key);
+        bool getKeyReleaseState(char key);
 
         float getMouseState(MOUSE_STATE state);
         const Point2f& getMousePosition();
@@ -37,11 +38,13 @@ namespace dxgl {
 
     private:
         // Tracks the duration a key was held for.
-        float m_keyHoldStates[256]{};
+        int m_keyHoldStates[256]{};
         // Tracks if a key is up or down.
-        float m_keyPressStates[256]{};
+        int m_keyPressStates[256]{};
         // Tracks if a key is tapped and released.
-        float m_keyTapStates[256]{};
+        int m_keyTapStates[256]{};
+        // Tracks if a key is released.
+        int m_keyReleaseStates[256]{};
 
         // mouse position
         Point2f m_position{};

@@ -18,7 +18,7 @@ PhysicsManager::PhysicsManager() {
 	tolerance.speed = 9.81f;
 	m_physics = PxCreatePhysics(PX_PHYSICS_VERSION, *m_foundation, tolerance, true, m_pvd);
 	PxSceneDesc sceneDesc(m_physics->getTolerancesScale());
-	sceneDesc.gravity = PxVec3(0.0f, 0.0f, 0.0f);
+	sceneDesc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
 	sceneDesc.cpuDispatcher = m_dispatcher;
 	sceneDesc.filterShader = testCCDFilterShader;
 	sceneDesc.flags |= PxSceneFlag::eENABLE_CCD;
@@ -62,8 +62,59 @@ PhysicsManager::PhysicsManager() {
 		PxActorTypeFlags actorTypes = PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC;
 		PxU32 numActors = m_scene->getNbActors(actorTypes);
 
-		// generate shapes
-		if (rigidbody.isStatic) {
+
+		// generate shape
+
+		PxShape* shape = nullptr;
+		PxGeometry* geometry = nullptr;
+
+		if (RigidBodyBox* box = dynamic_cast<RigidBodyBox*>(rigidbody.shape)) {
+
+			geometry = new PxBoxGeometry(box->halfExtents.x, box->halfExtents.y, box->halfExtents.z);
+
+		} else if (RigidBodySphere* sphere = dynamic_cast<RigidBodySphere*>(rigidbody.shape)) {
+
+			geometry = new PxSphereGeometry(sphere->radius);
+
+		} else if (RigidBodyCylinder* cylinder = dynamic_cast<RigidBodyCylinder*>(rigidbody.shape)) {
+
+			generateCylinder(cylinder->segmentCount, cylinder->radius, cylinder->halfHeight);
+			PxConvexMeshDesc convexDesc;
+			convexDesc.points.count = m_cylinderVertices.size();
+			convexDesc.points.stride = sizeof(Vec3f);
+			convexDesc.points.data = &m_cylinderVertices[0];
+			convexDesc.flags = PxConvexFlag::eCOMPUTE_CONVEX;
+
+			PxDefaultMemoryOutputStream writeBuf;
+			PxCookConvexMesh(cookingParams, convexDesc, writeBuf);
+
+			PxDefaultMemoryInputData readBuf(writeBuf.getData(), writeBuf.getSize());
+			PxConvexMesh* convexMesh = m_physics->createConvexMesh(readBuf);
+
+			geometry = new PxConvexMeshGeometry(convexMesh);
+
+		} else if (RigidBodyCapsule* capsule = dynamic_cast<RigidBodyCapsule*>(rigidbody.shape)) {
+
+			geometry = new PxCapsuleGeometry(capsule->radius, capsule->halfHeight);
+
+		} else if (RigidBodyConvexMesh* capsule = dynamic_cast<RigidBodyConvexMesh*>(rigidbody.shape)) {
+
+			PxConvexMeshDesc convexDesc;
+			convexDesc.points.count = vertices.size() / 3;
+			convexDesc.points.stride = sizeof(Vec3f);
+			convexDesc.points.data = &vertices[0];
+			convexDesc.flags = PxConvexFlag::eCOMPUTE_CONVEX;
+
+			PxDefaultMemoryOutputStream writeBuf;
+			PxCookConvexMesh(cookingParams, convexDesc, writeBuf);
+
+			PxDefaultMemoryInputData readBuf(writeBuf.getData(), writeBuf.getSize());
+			PxConvexMesh* convexMesh = m_physics->createConvexMesh(readBuf);
+
+			geometry = new PxConvexMeshGeometry(convexMesh, scale);
+
+		} else if (RigidBodyTriangleMesh* capsule = dynamic_cast<RigidBodyTriangleMesh*>(rigidbody.shape)) {
+
 			PxTriangleMeshDesc meshDesc;
 			meshDesc.points.count = vertices.size() / 3;
 			meshDesc.points.stride = sizeof(float) * 3;
@@ -80,40 +131,38 @@ PhysicsManager::PhysicsManager() {
 			PxDefaultMemoryInputData readBuffer(writeBuffer.getData(), writeBuffer.getSize());
 			PxTriangleMesh* triangleMesh = m_physics->createTriangleMesh(readBuffer);
 
-			PxShape* shape = m_physics->createShape(PxTriangleMeshGeometry(triangleMesh, scale), *material, true);
+			geometry = new PxTriangleMeshGeometry(triangleMesh, scale);
 
-			shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
-			shape->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, true);
+		} else {
 
+			geometry = new PxBoxGeometry(1, 1, 1);
+
+		}
+
+		shape = m_physics->createShape(*geometry, *material, true);
+		shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
+		shape->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, true);
+
+		delete geometry;
+
+		// create rigidbodies
+
+		if (rigidbody.isStatic) {
 			PxRigidStatic* rb = PxCreateStatic(*m_physics, xTransform, *shape);
 			m_scene->addActor(*rb);
 			m_actors[id] = rb;
+			rigidbody.actor = rb;
 		} else {
-			PxConvexMeshDesc convexDesc;
-			convexDesc.points.count = vertices.size() / 3;
-			convexDesc.points.stride = sizeof(Vec3f);
-			convexDesc.points.data = &vertices[0];
-			convexDesc.flags = PxConvexFlag::eCOMPUTE_CONVEX;
-
-			PxDefaultMemoryOutputStream writeBuf;
-			PxCookConvexMesh(cookingParams, convexDesc, writeBuf);
-
-			PxDefaultMemoryInputData readBuf(writeBuf.getData(), writeBuf.getSize());
-			PxConvexMesh* convexMesh = m_physics->createConvexMesh(readBuf);
-
-			PxShape* shape = m_physics->createShape(PxConvexMeshGeometry(convexMesh, scale), *material, true);
-
-			shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
-			shape->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, true);
-
 			PxRigidDynamic* rb = PxCreateDynamic(*m_physics, xTransform, *shape, rigidbody.mass);
 			rb->setLinearVelocity(PxVec3(rigidbody.linearVelocity.x, rigidbody.linearVelocity.y, rigidbody.linearVelocity.z));
 			rb->setAngularVelocity(PxVec3(rigidbody.angularVelocity.x, rigidbody.angularVelocity.y, rigidbody.angularVelocity.z));
-			rb->setLinearDamping(0.1f);
-			rb->setAngularDamping(0.1f);
+			rb->setLinearDamping((PxReal) rigidbody.linearDamp);
+			rb->setAngularDamping((PxReal) rigidbody.angularDamp);
+			rb->setRigidDynamicLockFlags((PxRigidDynamicLockFlags) rigidbody.lockFlags);
 			rb->setRigidBodyFlag(PxRigidBodyFlag::eENABLE_CCD, true);
 			m_scene->addActor(*rb);
 			m_actors[id] = rb;
+			rigidbody.actor = rb;
 		}
 
 	});
@@ -156,6 +205,7 @@ void PhysicsManager::update(std::list<OctTree<governor::EntityId>::ptr>& entitie
 
 		if (actor && actor->is<PxRigidDynamic>()) {
 			auto& transform = Engine::entities()->getEntityComponent<TransformComponent>(id);
+			auto& rigidbody = Engine::entities()->getEntityComponent<RigidBodyComponent>(id);
 
 			PxTransform pxTransform = actor->getGlobalPose();
 			PxVec3& p = pxTransform.p;
@@ -167,7 +217,27 @@ void PhysicsManager::update(std::list<OctTree<governor::EntityId>::ptr>& entitie
 			Engine::entities()->relocateEntity(id);
 
 			quatToEuler(q, transform.rotation.x, transform.rotation.y, transform.rotation.z);
+
+			float vy = ((PxRigidDynamic*)actor)->getLinearVelocity().y;
+			if (abs(vy) <= 0.1f) {
+				rigidbody.isStationary = true;
+			}
+			else {
+				rigidbody.isStationary = false;
+			}
 		}
+	}
+}
+
+void PhysicsManager::generateCylinder(float segmentCount, float radius, float halfHeight) {
+	m_cylinderVertices.clear();
+	float advance = 6.28318530718f / segmentCount;
+	for (int i = 0; i < segmentCount; i++) {
+		float deg = advance * i;
+		Vec3f v0 = { sin(deg) * radius,  halfHeight, cos(deg) * radius };
+		Vec3f v1 = { sin(deg) * radius, -halfHeight, cos(deg) * radius };
+		m_cylinderVertices.push_back(v0);
+		m_cylinderVertices.push_back(v1);
 	}
 }
 
