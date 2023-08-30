@@ -4,7 +4,7 @@
 
 using namespace dxgl;
 
-DXGLHullShader::DXGLHullShader(void* byteCode, size_t length, SP_DXGLGraphics graphics) : m_byteCode(byteCode), m_length(length) {
+DXGLHullShader::DXGLHullShader(void* byteCode, size_t length, SP_Graphics graphics) : m_byteCode(byteCode), m_length(length) {
 	HRESULT result = graphics->device()->CreateHullShader(byteCode, length, nullptr, &m_hullShader);
 
 	if (FAILED(result)) {

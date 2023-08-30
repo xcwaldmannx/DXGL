@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Engine.h"
-
 #include "OctTree.h"
 #include "OOBB.h"
 

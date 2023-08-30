@@ -1,5 +1,10 @@
 #include "CollisionRenderPass.h"
 
+#include "Engine.h"
+#include "Graphics.h"
+#include "ResourceManager.h"
+#include "CameraManager.h"
+
 using namespace dxgl;
 
 CollisionRenderPass::CollisionRenderPass() {

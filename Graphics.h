@@ -4,10 +4,10 @@
 
 namespace dxgl {
 
-	class DXGLGraphics {
+	class Graphics {
 	public:
-		DXGLGraphics();
-		~DXGLGraphics();
+		Graphics();
+		~Graphics();
 
 		ID3D11Device* device();
 		IDXGIFactory* factory();

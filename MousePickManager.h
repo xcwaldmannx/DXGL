@@ -5,10 +5,9 @@
 #include <d3d11.h>
 
 #include "DXGLDefinitions.h"
-#include "Engine.h"
 #include "Point2f.h"
 
-#include "DXGLComponentTypes.h"
+#include "EntityComponentTypes.h"
 
 namespace dxgl {
 	class MousePickManager {

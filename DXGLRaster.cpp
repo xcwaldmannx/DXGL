@@ -2,7 +2,7 @@
 
 using namespace dxgl;
 
-DXGLRaster::DXGLRaster(SP_DXGLGraphics graphics) : m_graphics(graphics) {
+DXGLRaster::DXGLRaster(SP_Graphics graphics) : m_graphics(graphics) {
 
 }
 

@@ -4,13 +4,13 @@
 
 #include "DXGLDefinitions.h"
 
-#include "DXGLGraphics.h"
+#include "Graphics.h"
 
 namespace dxgl {
 
 	class DXGLDomainShader {
 	public:
-		DXGLDomainShader(void* byteCode, size_t length, SP_DXGLGraphics graphics);
+		DXGLDomainShader(void* byteCode, size_t length, SP_Graphics graphics);
 		~DXGLDomainShader();
 
 		ID3D11DomainShader* get();

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DXGLGraphics.h"
+#include <d3d11.h>
 
 namespace dxgl {
 	class DXGLShaderResourceView {

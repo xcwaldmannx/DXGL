@@ -1,12 +1,13 @@
 #pragma once
 
-#include "Engine.h"
+#include <d3d11.h>
+
 #include "Bindable.h"
 
 namespace dxgl {
 	class PSConstantBuffer : public Bindable {
 	public:
-		PSConstantBuffer(UINT bytes);
+		PSConstantBuffer(unsigned int bytes);
 		~PSConstantBuffer();
 
 		void bind(int slot) override;

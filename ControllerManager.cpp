@@ -1,5 +1,9 @@
 #include "ControllerManager.h"
 
+#include "Engine.h"
+#include "InputManager.h"
+#include "EntityManager.h"
+
 using namespace dxgl;
 
 ControllerManager::ControllerManager() {
@@ -41,7 +45,7 @@ void ControllerManager::update(long double delta) {
 }
 
 ControllerComponent& ControllerManager::getActiveController() {
-	assert(m_activeCameraId != -1 && "No controller is currently active. Could not return ControllerComponent.");
+	assert(m_activeControllerId != -1 && "No controller is currently active. Could not return ControllerComponent.");
 	return Engine::entities()->getEntityComponent<ControllerComponent>(m_activeControllerId);
 }
 

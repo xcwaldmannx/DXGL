@@ -2,12 +2,12 @@
 
 #include "Point2f.h"
 
-class DXGLInputListener {
+class InputListener {
 public:
-	DXGLInputListener() {
+	InputListener() {
 	}
 
-	~DXGLInputListener() {
+	~InputListener() {
 	}
 
 	// Keyboard

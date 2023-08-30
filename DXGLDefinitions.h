@@ -11,8 +11,8 @@ namespace dxgl {
 	class Engine;
 	typedef std::shared_ptr<Engine> SP_Engine;
 
-	class DXGLGraphics;
-	typedef std::shared_ptr<DXGLGraphics> SP_DXGLGraphics;
+	class Graphics;
+	typedef std::shared_ptr<Graphics> SP_Graphics;
 
 	class SwapChain;
 	typedef std::shared_ptr<SwapChain> SP_SwapChain;
@@ -20,8 +20,8 @@ namespace dxgl {
 	class Renderer;
 	typedef std::shared_ptr<Renderer> SP_Renderer;
 
-	class DXGLResourceManager;
-	typedef std::shared_ptr<DXGLResourceManager> SP_DXGLResourceManager;
+	class ResourceManager;
+	typedef std::shared_ptr<ResourceManager> SP_ResourceManager;
 
 	class MousePickManager;
 	typedef std::shared_ptr<MousePickManager> SP_MousePickManager;
@@ -48,8 +48,8 @@ namespace dxgl {
 
 	class DXGLWindow;
 	typedef std::shared_ptr<DXGLWindow> SP_DXGLWindow;
-	class DXGLInputManager;
-	typedef std::shared_ptr<DXGLInputManager> SP_DXGLInputManager;
+	class InputManager;
+	typedef std::shared_ptr<InputManager> SP_InputManager;
 
 	// Managers
 	class DXGLShadow;

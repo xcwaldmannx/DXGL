@@ -2,7 +2,15 @@
 
 #include <algorithm>
 
-#include "DXGLComponentTypes.h"
+#include "Engine.h"
+#include "ResourceManager.h"
+#include "EntityManager.h"
+#include "CameraManager.h"
+
+#include "DXGLGroup.h"
+#include "Mesh.h"
+
+#include "EntityComponentTypes.h"
 
 using namespace dxgl;
 

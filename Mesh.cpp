@@ -1,5 +1,11 @@
 #include "Mesh.h"
 
+#include "Engine.h"
+#include "ResourceManager.h"
+
+#include "DXGLImage.h"
+#include "Material.h"
+
 using namespace dxgl;
 
 Mesh::Mesh(const MeshDesc& desc, const std::string& filename) : m_desc(desc) {

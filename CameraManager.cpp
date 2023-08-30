@@ -1,5 +1,11 @@
 #include "CameraManager.h"
 
+#include "Engine.h"
+#include "InputManager.h"
+#include "EntityManager.h"
+
+#include "Mesh.h"
+
 using namespace dxgl;
 
 CameraManager::CameraManager() {
@@ -23,11 +29,17 @@ void CameraManager::update(long double delta) {
 
 	if (camera.trackMouse) {
 		Point2f mouseDelta = Engine::input()->getMouseDelta();
+
 		camera.mouseRotX += mouseDelta.y * (float) delta / 5.0f;
 		camera.mouseRotY += mouseDelta.x * (float) delta / 5.0f;
 
-        Mat4f rot{};
+        if (camera.mouseRotX >= 1.57f) {
+            camera.mouseRotX = 1.57f;
+        }  else if (camera.mouseRotX <= -1.57f) {
+            camera.mouseRotX = -1.57f;
+        }
 
+        Mat4f rot{};
         rot.setIdentity();
         rot.setRotationX(camera.mouseRotX);
         camera.worldMatrix *= rot;

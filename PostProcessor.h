@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Engine.h"
+#include "DXGLDefinitions.h"
+
+#include "Vec3f.h"
 
 struct ScreenBuffer {
 	float screenWidth;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Engine.h"
+#include "EntityComponentTypes.h"
 
 namespace dxgl {
 	class ControllerManager {

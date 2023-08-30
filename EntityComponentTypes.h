@@ -107,19 +107,21 @@ struct RigidBodyLockFlag {
 
 struct RigidBodyComponent {
 public:
-	void applyForce(Vec3f force) {
+	void applyTransform(Vec3f force) {
 		if (actor->is<physx::PxRigidDynamic>()) {
 			float y = ((physx::PxRigidDynamic*)actor)->getLinearVelocity().y;
-			((physx::PxRigidDynamic*)actor)->setLinearVelocity({ force.x, force.y + y, force.z });
+			physx::PxTransform transform = ((physx::PxRigidDynamic*)actor)->getGlobalPose();
+			transform.p += physx::PxVec3(force.x, force.y, force.z);
+			((physx::PxRigidDynamic*)actor)->setGlobalPose(transform);
 		}
 	}
 
-	void clearForce() {
+	void applyVelocity(Vec3f force) {
 		if (actor->is<physx::PxRigidDynamic>()) {
 			float y = ((physx::PxRigidDynamic*)actor)->getLinearVelocity().y;
-			if (y > 0) y = 0;
-			((physx::PxRigidDynamic*)actor)->setLinearVelocity({ 0, y, 0 });
-			((physx::PxRigidDynamic*)actor)->setAngularVelocity({ 0, 0, 0 });
+			physx::PxVec3 v0 = ((physx::PxRigidDynamic*)actor)->getLinearVelocity();
+			physx::PxVec3 v1 = v0 + physx::PxVec3(force.x, force.y, force.z);
+			((physx::PxRigidDynamic*)actor)->setLinearVelocity(v1);
 		}
 	}
 
@@ -144,6 +146,15 @@ private:
 	physx::PxRigidActor* actor = nullptr;
 
 	friend class PhysicsManager;
+};
+
+//////////////////////
+//     Movement     //
+//////////////////////
+
+struct MovementComponent {
+	float speed = 1.0f;
+	Vec3f direction{};
 };
 
 //////////////////////

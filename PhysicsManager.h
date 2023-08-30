@@ -7,11 +7,10 @@
 #endif
 
 #include "PxPhysicsAPI.h"
-#include <pvd/PxPvd.h>
+#include "pvd/PxPvd.h"
 
-#include "Engine.h"
+#include "DXGLGovernor.h"
 #include "OctTree.h"
-#include "OOBB.h"
 
 using namespace physx;
 

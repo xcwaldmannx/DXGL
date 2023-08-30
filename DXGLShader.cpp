@@ -5,7 +5,7 @@
 
 using namespace dxgl;
 
-DXGLShader::DXGLShader(SP_DXGLGraphics graphics) : m_graphics(graphics) {
+DXGLShader::DXGLShader(SP_Graphics graphics) : m_graphics(graphics) {
 }
 
 DXGLShader::~DXGLShader() {

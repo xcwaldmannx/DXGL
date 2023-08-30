@@ -5,7 +5,7 @@
 
 #include "DXGLDefinitions.h"
 
-#include "DXGLGraphics.h"
+#include "Graphics.h"
 #include "DXGLVertexShader.h"
 #include "DXGLHullShader.h"
 #include "DXGLDomainShader.h"
@@ -24,7 +24,7 @@ namespace dxgl {
 
 	class DXGLShader {
 	public:
-		DXGLShader(SP_DXGLGraphics graphics);
+		DXGLShader(SP_Graphics graphics);
 		~DXGLShader();
 
 		template<class T>
@@ -58,7 +58,7 @@ namespace dxgl {
 		void PS_setSampler(UINT slot, UINT count, SP_DXGLSamplerState sampler);
 
 	private:
-		SP_DXGLGraphics m_graphics = nullptr;
+		SP_Graphics m_graphics = nullptr;
 		std::unordered_map<std::string, SP_DXGLShaderSet> m_shaderSets{};
 	};
 

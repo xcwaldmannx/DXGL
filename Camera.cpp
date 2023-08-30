@@ -1,5 +1,10 @@
 #include "Camera.h"
 
+#include "Engine.h"
+#include "InputManager.h"
+
+#include "Point2f.h"
+
 using namespace dxgl;
 
 Camera::Camera() {
@@ -46,7 +51,7 @@ void Camera::update(long double deltaTime) {
     Vec3f currentPos = m_world.getTranslation();
     float speed = 64.0f * (float) deltaTime;
 
-    if (Engine::input()->getMouseState(DXGLInputManager::RMB_STATE)) {
+    if (Engine::input()->getMouseState(InputManager::RMB_STATE)) {
         speed = 8.0f * (float) deltaTime;
     }
 

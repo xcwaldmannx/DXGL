@@ -4,13 +4,13 @@
 
 #include "DXGLDefinitions.h"
 
-#include "DXGLGraphics.h"
+#include "Graphics.h"
 
 namespace dxgl {
 
 	class DXGLVertexShader {
 	public:
-		DXGLVertexShader(void* byteCode, size_t length, SP_DXGLGraphics graphics);
+		DXGLVertexShader(void* byteCode, size_t length, SP_Graphics graphics);
 		~DXGLVertexShader();
 
 		ID3D11VertexShader* get();

@@ -1,6 +1,7 @@
 #include "InstanceBuffer.h"
 
-#include <d3d11.h>
+#include "Engine.h"
+#include "Graphics.h"
 
 using namespace dxgl;
 
@@ -31,8 +32,8 @@ InstanceBuffer::~InstanceBuffer() {
 }
 
 void InstanceBuffer::bind(int slot) {
-	UINT stride = m_size;
-	UINT offset = 0;
+	unsigned int stride = m_size;
+	unsigned int offset = 0;
 	Engine::graphics()->context()->IASetVertexBuffers(slot, 1, &m_ibuffer, &stride, &offset);
 }
 

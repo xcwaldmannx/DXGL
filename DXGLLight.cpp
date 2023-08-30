@@ -1,6 +1,7 @@
 #include "DXGLLight.h"
 
-#include <iostream>
+#include "Engine.h"
+#include "ResourceManager.h"
 
 using namespace dxgl;
 

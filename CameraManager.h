@@ -1,7 +1,8 @@
 #pragma once
 
 #include "DXGLDefinitions.h"
-#include "Engine.h"
+
+#include "EntityComponentTypes.h"
 
 namespace dxgl {
 	class CameraManager {

@@ -4,7 +4,7 @@
 
 using namespace dxgl;
 
-DXGLDomainShader::DXGLDomainShader(void* byteCode, size_t length, SP_DXGLGraphics graphics) : m_byteCode(byteCode), m_length(length) {
+DXGLDomainShader::DXGLDomainShader(void* byteCode, size_t length, SP_Graphics graphics) : m_byteCode(byteCode), m_length(length) {
 	HRESULT result = graphics->device()->CreateDomainShader(byteCode, length, nullptr, &m_domainShader);
 
 	if (FAILED(result)) {

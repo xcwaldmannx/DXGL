@@ -2,21 +2,19 @@
 
 #include <chrono>
 
+#include "DXGLWindow.h"
+
 #include "DXGLDefinitions.h"
 
-#include "DXGLGraphics.h"
-#include "SwapChain.h"
-#include "Renderer.h"
-#include "EntityManager.h"
-#include "PhysicsManager.h"
-#include "ControllerManager.h"
-#include "CameraManager.h"
-#include "MousePickManager.h"
-#include "DXGLResourceManager.h"
+class dxgl::Graphics;
+class dxgl::Renderer;
+class dxgl::EntityManager;
+class dxgl::PhysicsManager;
+class dxgl::CameraManager;
+class dxgl::ControllerManager;
+class dxgl::MousePickManager;
+class dxgl::ResourceManager;
 
-#include "DXGLWindow.h"
-#include "DXGLInputSystem.h"
-#include "DXGLInputManager.h"
 
 namespace dxgl {
 
@@ -25,16 +23,16 @@ namespace dxgl {
 		Engine();
 		~Engine();
 
-		static SP_Engine              window();
-		static SP_DXGLGraphics        graphics();
-		static SP_Renderer            renderer();
-		static SP_DXGLResourceManager resource();
-		static SP_EntityManager       entities();
-		static SP_PhysicsManager      physics();
-		static SP_ControllerManager   controller();
-		static SP_CameraManager       camera();
-		static SP_MousePickManager    mousePick();
-		static SP_DXGLInputManager    input();
+		static SP_Engine            window();
+		static SP_Graphics          graphics();
+		static SP_Renderer          renderer();
+		static SP_ResourceManager   resource();
+		static SP_EntityManager     entities();
+		static SP_PhysicsManager    physics();
+		static SP_ControllerManager controller();
+		static SP_CameraManager     camera();
+		static SP_MousePickManager  mousePick();
+		static SP_InputManager      input();
 
 		void enableVSync(bool enable);
 
@@ -54,15 +52,15 @@ namespace dxgl {
 
 	private:
 		static SP_Engine              m_window;
-		static SP_DXGLGraphics        m_graphics;
+		static SP_Graphics            m_graphics;
 		static SP_Renderer            m_renderer;
-		static SP_DXGLResourceManager m_resource;
+		static SP_ResourceManager     m_resource;
 		static SP_EntityManager       m_entities;
 		static SP_PhysicsManager      m_physics;
 		static SP_ControllerManager   m_controller;
 		static SP_CameraManager       m_camera;
 		static SP_MousePickManager    m_mousePick;
-		static SP_DXGLInputManager    m_userInput;
+		static SP_InputManager        m_userInput;
 
 
 		bool m_vsyncEnabled = true;

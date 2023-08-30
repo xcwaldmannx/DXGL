@@ -6,7 +6,7 @@
 #include <chrono>
 #include <random>
 
-#include "Engine.h"
+#include "DXGLDefinitions.h"
 
 #include "Math.h"
 #include "Vec3f.h"

@@ -195,7 +195,7 @@ public:
 	// creates points along an edge, forming an outline
 	static void outlineEdge(Vec2f begin, Vec2f end, float density, std::vector<Vec2f>& output) {
 		for (int i = 0; i < density; i++) {
-			Vec2f point = begin + (end / density) * i;
+			Vec2f point = begin + (end / density) * (float) i;
 			output.push_back(point);
 		}
 	}
@@ -218,9 +218,9 @@ public:
 		std::vector<Vec2f> output{};
 
 		for (int i = 1; i < density; i++) {
-			outlineEdge(A + (AtoCenter / density) * i, AB, density, output);
-			outlineEdge(B + (BtoCenter / density) * i, BC, density, output);
-			outlineEdge(C + (CtoCenter / density) * i, CA, density, output);
+			outlineEdge(A + (AtoCenter / density) * (float) i, AB, density, output);
+			outlineEdge(B + (BtoCenter / density) * (float) i, BC, density, output);
+			outlineEdge(C + (CtoCenter / density) * (float) i, CA, density, output);
 		}
 
 

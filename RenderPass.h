@@ -1,8 +1,11 @@
 #pragma once
 
 #include <d3d11.h>
-#include "Engine.h"
-#include "DXGLComponentTypes.h"
+
+#include "EntityComponentTypes.h"
+
+#include "DXGLRenderTargetView.h"
+#include "DXGLDepthStencilView.h"
 
 namespace dxgl {
 	struct PerInstanceData {

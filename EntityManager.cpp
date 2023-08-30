@@ -1,5 +1,10 @@
 #include "EntityManager.h"
 
+#include "Engine.h"
+#include "CameraManager.h"
+
+#include "Mesh.h"
+
 using namespace dxgl;
 
 EntityManager::EntityManager() {

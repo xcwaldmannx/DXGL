@@ -1,5 +1,8 @@
 #include "IndexBuffer.h"
 
+#include "Engine.h"
+#include "Graphics.h"
+
 using namespace dxgl;
 
 IndexBuffer::IndexBuffer(void* indices, int indexCount) {

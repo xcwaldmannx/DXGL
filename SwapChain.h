@@ -5,10 +5,6 @@
 
 #include "DXGLDefinitions.h"
 
-#include "Engine.h"
-#include "DXGLRenderTargetView.h"
-#include "DXGLDepthStencilView.h"
-
 namespace dxgl {
 
 	static const int RESOURCE_VIEW_COUNT_MAX = 4;

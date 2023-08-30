@@ -1,5 +1,7 @@
 #include "Renderer.h"
 
+#include "Engine.h"
+
 using namespace dxgl;
 
 Renderer::Renderer() {

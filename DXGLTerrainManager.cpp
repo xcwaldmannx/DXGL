@@ -1,5 +1,9 @@
 #include "DXGLTerrainManager.h"
 
+#include "Engine.h"
+#include "ResourceManager.h"
+#include "CameraManager.h"
+
 using namespace dxgl;
 
 DXGLTerrainManager::DXGLTerrainManager() {

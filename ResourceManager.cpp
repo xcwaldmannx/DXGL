@@ -1,16 +1,18 @@
-#include "DXGLResourceManager.h"
+#include "ResourceManager.h"
+
+#include "Engine.h"
 
 using namespace dxgl;
 
-DXGLResourceManager::DXGLResourceManager() {
+ResourceManager::ResourceManager() {
 
 }
 
-DXGLResourceManager::~DXGLResourceManager() {
+ResourceManager::~ResourceManager() {
 }
 
 template<typename T>
-T DXGLResourceManager::get(const std::string& alias) {
+T ResourceManager::get(const std::string& alias) {
 	std::unordered_map<std::string, std::any> res;
 
 	if (find<T>(alias)) {
@@ -22,7 +24,7 @@ T DXGLResourceManager::get(const std::string& alias) {
 }
 
 template<typename T>
-bool DXGLResourceManager::find(const std::string& alias) {
+bool ResourceManager::find(const std::string& alias) {
 	auto it1 = m_resources.find(typeid(T));
 
 	if (it1 != m_resources.end()) {
@@ -37,42 +39,42 @@ bool DXGLResourceManager::find(const std::string& alias) {
 }
 
 // get
-template SP_VertexBuffer     DXGLResourceManager::get<SP_VertexBuffer>(const std::string&);
-template SP_IndexBuffer      DXGLResourceManager::get<SP_IndexBuffer>(const std::string&);
-template SP_InstanceBuffer   DXGLResourceManager::get<SP_InstanceBuffer>(const std::string&);
-template SP_VSConstantBuffer DXGLResourceManager::get<SP_VSConstantBuffer>(const std::string&);
-template SP_HSConstantBuffer DXGLResourceManager::get<SP_HSConstantBuffer>(const std::string&);
-template SP_DSConstantBuffer DXGLResourceManager::get<SP_DSConstantBuffer>(const std::string&);
-template SP_PSConstantBuffer DXGLResourceManager::get<SP_PSConstantBuffer>(const std::string&);
-template SP_InputLayout      DXGLResourceManager::get<SP_InputLayout>(const std::string&);
+template SP_VertexBuffer     ResourceManager::get<SP_VertexBuffer>(const std::string&);
+template SP_IndexBuffer      ResourceManager::get<SP_IndexBuffer>(const std::string&);
+template SP_InstanceBuffer   ResourceManager::get<SP_InstanceBuffer>(const std::string&);
+template SP_VSConstantBuffer ResourceManager::get<SP_VSConstantBuffer>(const std::string&);
+template SP_HSConstantBuffer ResourceManager::get<SP_HSConstantBuffer>(const std::string&);
+template SP_DSConstantBuffer ResourceManager::get<SP_DSConstantBuffer>(const std::string&);
+template SP_PSConstantBuffer ResourceManager::get<SP_PSConstantBuffer>(const std::string&);
+template SP_InputLayout      ResourceManager::get<SP_InputLayout>(const std::string&);
 
-template SP_DXGLSamplerState   DXGLResourceManager::get<SP_DXGLSamplerState>(const std::string&);
+template SP_DXGLSamplerState   ResourceManager::get<SP_DXGLSamplerState>(const std::string&);
 
-template SP_Texture2D      DXGLResourceManager::get<SP_Texture2D>(const std::string&);
-template SP_TextureCube    DXGLResourceManager::get<SP_TextureCube>(const std::string&);
+template SP_Texture2D      ResourceManager::get<SP_Texture2D>(const std::string&);
+template SP_TextureCube    ResourceManager::get<SP_TextureCube>(const std::string&);
 
-template SP_Material       DXGLResourceManager::get<SP_Material>(const std::string&);
-template SP_Mesh           DXGLResourceManager::get<SP_Mesh>(const std::string&);
+template SP_Material       ResourceManager::get<SP_Material>(const std::string&);
+template SP_Mesh           ResourceManager::get<SP_Mesh>(const std::string&);
 
 // find
-template bool DXGLResourceManager::find<SP_VertexBuffer>(const std::string&);
-template bool DXGLResourceManager::find<SP_IndexBuffer>(const std::string&);
-template bool DXGLResourceManager::find<SP_InstanceBuffer>(const std::string&);
-template bool DXGLResourceManager::find<SP_VSConstantBuffer>(const std::string&);
-template bool DXGLResourceManager::find<SP_HSConstantBuffer>(const std::string&);
-template bool DXGLResourceManager::find<SP_DSConstantBuffer>(const std::string&);
-template bool DXGLResourceManager::find<SP_PSConstantBuffer>(const std::string&);
-template bool DXGLResourceManager::find<SP_InputLayout>(const std::string&);
+template bool ResourceManager::find<SP_VertexBuffer>(const std::string&);
+template bool ResourceManager::find<SP_IndexBuffer>(const std::string&);
+template bool ResourceManager::find<SP_InstanceBuffer>(const std::string&);
+template bool ResourceManager::find<SP_VSConstantBuffer>(const std::string&);
+template bool ResourceManager::find<SP_HSConstantBuffer>(const std::string&);
+template bool ResourceManager::find<SP_DSConstantBuffer>(const std::string&);
+template bool ResourceManager::find<SP_PSConstantBuffer>(const std::string&);
+template bool ResourceManager::find<SP_InputLayout>(const std::string&);
 
-template bool DXGLResourceManager::find<SP_DXGLSamplerState>(const std::string&);
+template bool ResourceManager::find<SP_DXGLSamplerState>(const std::string&);
 
-template bool DXGLResourceManager::find<SP_Texture2D>(const std::string&);
-template bool DXGLResourceManager::find<SP_TextureCube>(const std::string&);
+template bool ResourceManager::find<SP_Texture2D>(const std::string&);
+template bool ResourceManager::find<SP_TextureCube>(const std::string&);
 
-template bool DXGLResourceManager::find<SP_Material>(const std::string&);
-template bool DXGLResourceManager::find<SP_Mesh>(const std::string&);
+template bool ResourceManager::find<SP_Material>(const std::string&);
+template bool ResourceManager::find<SP_Mesh>(const std::string&);
 
-SP_VertexBuffer DXGLResourceManager::createVertexBuffer(void* vertices, int vertexCount, int vertexSize) {
+SP_VertexBuffer ResourceManager::createVertexBuffer(void* vertices, int vertexCount, int vertexSize) {
 	SP_VertexBuffer buffer = nullptr;
 	try {
 		buffer = std::make_shared<VertexBuffer>(vertices, vertexCount, vertexSize);
@@ -82,7 +84,7 @@ SP_VertexBuffer DXGLResourceManager::createVertexBuffer(void* vertices, int vert
 	return buffer;
 }
 
-void DXGLResourceManager::storeVertexBuffer(void* vertices, int vertexCount, int vertexSize, const std::string& alias) {
+void ResourceManager::storeVertexBuffer(void* vertices, int vertexCount, int vertexSize, const std::string& alias) {
 	SP_VertexBuffer buffer = nullptr;
 	try {
 		buffer = std::make_shared<VertexBuffer>(vertices, vertexCount, vertexSize);
@@ -92,7 +94,7 @@ void DXGLResourceManager::storeVertexBuffer(void* vertices, int vertexCount, int
 	}
 }
 
-SP_IndexBuffer DXGLResourceManager::createIndexBuffer(void* indices, int indexCount) {
+SP_IndexBuffer ResourceManager::createIndexBuffer(void* indices, int indexCount) {
 	SP_IndexBuffer buffer = nullptr;
 	try {
 		buffer = std::make_shared<IndexBuffer>(indices, indexCount);
@@ -102,7 +104,7 @@ SP_IndexBuffer DXGLResourceManager::createIndexBuffer(void* indices, int indexCo
 	return buffer;
 }
 
-void DXGLResourceManager::storeIndexBuffer(void* indices, int indexCount, const std::string& alias) {
+void ResourceManager::storeIndexBuffer(void* indices, int indexCount, const std::string& alias) {
 	SP_IndexBuffer buffer = nullptr;
 	try {
 		buffer = std::make_shared<IndexBuffer>(indices, indexCount);
@@ -112,7 +114,7 @@ void DXGLResourceManager::storeIndexBuffer(void* indices, int indexCount, const 
 	}
 }
 
-SP_InstanceBuffer DXGLResourceManager::createInstanceBuffer(void* instances, int instanceCount, int instanceSize) {
+SP_InstanceBuffer ResourceManager::createInstanceBuffer(void* instances, int instanceCount, int instanceSize) {
 	SP_InstanceBuffer buffer = nullptr;
 	try {
 		buffer = std::make_shared<InstanceBuffer>(instances, instanceCount, instanceSize);
@@ -122,7 +124,7 @@ SP_InstanceBuffer DXGLResourceManager::createInstanceBuffer(void* instances, int
 	return buffer;
 }
 
-void DXGLResourceManager::storeInstanceBuffer(void* instances, int instanceCount, int instanceSize, const std::string& alias) {
+void ResourceManager::storeInstanceBuffer(void* instances, int instanceCount, int instanceSize, const std::string& alias) {
 	SP_InstanceBuffer buffer = nullptr;
 	try {
 		buffer = std::make_shared<InstanceBuffer>(instances, instanceCount, instanceSize);
@@ -132,7 +134,7 @@ void DXGLResourceManager::storeInstanceBuffer(void* instances, int instanceCount
 	}
 }
 
-SP_VSConstantBuffer DXGLResourceManager::createVSConstantBuffer(UINT bytes) {
+SP_VSConstantBuffer ResourceManager::createVSConstantBuffer(UINT bytes) {
 	SP_VSConstantBuffer buffer = nullptr;
 	try {
 		buffer = std::make_shared<VSConstantBuffer>(bytes);
@@ -142,7 +144,7 @@ SP_VSConstantBuffer DXGLResourceManager::createVSConstantBuffer(UINT bytes) {
 	return buffer;
 }
 
-void DXGLResourceManager::storeVSConstantBuffer(UINT bytes, std::string alias) {
+void ResourceManager::storeVSConstantBuffer(UINT bytes, std::string alias) {
 	SP_VSConstantBuffer buffer = nullptr;
 	try {
 		buffer = std::make_shared<VSConstantBuffer>(bytes);
@@ -152,7 +154,7 @@ void DXGLResourceManager::storeVSConstantBuffer(UINT bytes, std::string alias) {
 	}
 }
 
-SP_HSConstantBuffer DXGLResourceManager::createHSConstantBuffer(UINT bytes) {
+SP_HSConstantBuffer ResourceManager::createHSConstantBuffer(UINT bytes) {
 	SP_HSConstantBuffer buffer = nullptr;
 	try {
 		buffer = std::make_shared<HSConstantBuffer>(bytes);
@@ -163,7 +165,7 @@ SP_HSConstantBuffer DXGLResourceManager::createHSConstantBuffer(UINT bytes) {
 	return buffer;
 }
 
-void DXGLResourceManager::storeHSConstantBuffer(UINT bytes, std::string alias) {
+void ResourceManager::storeHSConstantBuffer(UINT bytes, std::string alias) {
 	SP_HSConstantBuffer buffer = nullptr;
 	try {
 		buffer = std::make_shared<HSConstantBuffer>(bytes);
@@ -174,7 +176,7 @@ void DXGLResourceManager::storeHSConstantBuffer(UINT bytes, std::string alias) {
 	}
 }
 
-SP_DSConstantBuffer DXGLResourceManager::createDSConstantBuffer(UINT bytes) {
+SP_DSConstantBuffer ResourceManager::createDSConstantBuffer(UINT bytes) {
 	SP_DSConstantBuffer buffer = nullptr;
 	try {
 		buffer = std::make_shared<DSConstantBuffer>(bytes);
@@ -185,7 +187,7 @@ SP_DSConstantBuffer DXGLResourceManager::createDSConstantBuffer(UINT bytes) {
 	return buffer;
 }
 
-void DXGLResourceManager::storeDSConstantBuffer(UINT bytes, std::string alias) {
+void ResourceManager::storeDSConstantBuffer(UINT bytes, std::string alias) {
 	SP_DSConstantBuffer buffer = nullptr;
 	try {
 		buffer = std::make_shared<DSConstantBuffer>(bytes);
@@ -196,7 +198,7 @@ void DXGLResourceManager::storeDSConstantBuffer(UINT bytes, std::string alias) {
 	}
 }
 
-SP_PSConstantBuffer DXGLResourceManager::createPSConstantBuffer(UINT bytes) {
+SP_PSConstantBuffer ResourceManager::createPSConstantBuffer(UINT bytes) {
 	SP_PSConstantBuffer buffer = nullptr;
 	try {
 		buffer = std::make_shared<PSConstantBuffer>(bytes);
@@ -207,7 +209,7 @@ SP_PSConstantBuffer DXGLResourceManager::createPSConstantBuffer(UINT bytes) {
 	return buffer;
 }
 
-void DXGLResourceManager::storePSConstantBuffer(UINT bytes, std::string alias) {
+void ResourceManager::storePSConstantBuffer(UINT bytes, std::string alias) {
 	SP_PSConstantBuffer buffer = nullptr;
 	try {
 		buffer = std::make_shared<PSConstantBuffer>(bytes);
@@ -218,7 +220,7 @@ void DXGLResourceManager::storePSConstantBuffer(UINT bytes, std::string alias) {
 	}
 }
 
-SP_InputLayout DXGLResourceManager::createInputLayout(const InputLayoutDesc& desc, const std::string& filename) {
+SP_InputLayout ResourceManager::createInputLayout(const InputLayoutDesc& desc, const std::string& filename) {
 	SP_InputLayout buffer = nullptr;
 	try {
 		buffer = std::make_shared<InputLayout>(desc, filename);
@@ -228,7 +230,7 @@ SP_InputLayout DXGLResourceManager::createInputLayout(const InputLayoutDesc& des
 	return buffer;
 }
 
-SP_InputLayout DXGLResourceManager::createInputLayout(const InputLayoutDesc& desc, ID3DBlob* shaderBytecode) {
+SP_InputLayout ResourceManager::createInputLayout(const InputLayoutDesc& desc, ID3DBlob* shaderBytecode) {
 	SP_InputLayout buffer = nullptr;
 	try {
 		buffer = std::make_shared<InputLayout>(desc, shaderBytecode);
@@ -239,7 +241,7 @@ SP_InputLayout DXGLResourceManager::createInputLayout(const InputLayoutDesc& des
 	return buffer;
 }
 
-void DXGLResourceManager::storeInputLayout(const InputLayoutDesc& desc, const std::string& filename, const std::string& alias) {
+void ResourceManager::storeInputLayout(const InputLayoutDesc& desc, const std::string& filename, const std::string& alias) {
 	SP_InputLayout buffer = nullptr;
 	try {
 		buffer = std::make_shared<InputLayout>(desc, filename);
@@ -249,7 +251,7 @@ void DXGLResourceManager::storeInputLayout(const InputLayoutDesc& desc, const st
 	}
 }
 
-void DXGLResourceManager::storeInputLayout(const InputLayoutDesc& desc, ID3DBlob* shaderBytecode, const std::string& alias) {
+void ResourceManager::storeInputLayout(const InputLayoutDesc& desc, ID3DBlob* shaderBytecode, const std::string& alias) {
 	SP_InputLayout buffer = nullptr;
 	try {
 		buffer = std::make_shared<InputLayout>(desc, shaderBytecode);
@@ -261,7 +263,7 @@ void DXGLResourceManager::storeInputLayout(const InputLayoutDesc& desc, ID3DBlob
 }
 
 template<class T>
-std::shared_ptr<T> DXGLResourceManager::createShader(const std::string& filename) {
+std::shared_ptr<T> ResourceManager::createShader(const std::string& filename) {
 	std::ifstream ifs(filename, std::ifstream::in | std::ifstream::binary);
 	ifs.seekg(0, std::ios::end);
 	std::vector<std::byte> byteCode;
@@ -282,7 +284,7 @@ std::shared_ptr<T> DXGLResourceManager::createShader(const std::string& filename
 }
 
 template<class T>
-void DXGLResourceManager::storeShader(const std::string& filename, const std::string& alias) {
+void ResourceManager::storeShader(const std::string& filename, const std::string& alias) {
 	std::ifstream ifs(filename, std::ifstream::in | std::ifstream::binary);
 	ifs.seekg(0, std::ios::end);
 	std::vector<std::byte> byteCode;
@@ -301,17 +303,17 @@ void DXGLResourceManager::storeShader(const std::string& filename, const std::st
 	}
 }
 
-template SP_DXGLVertexShader DXGLResourceManager::createShader<DXGLVertexShader>(const std::string&);
-template SP_DXGLHullShader   DXGLResourceManager::createShader<DXGLHullShader>(const std::string&);
-template SP_DXGLDomainShader DXGLResourceManager::createShader<DXGLDomainShader>(const std::string&);
-template SP_DXGLPixelShader  DXGLResourceManager::createShader<DXGLPixelShader>(const std::string&);
+template SP_DXGLVertexShader ResourceManager::createShader<DXGLVertexShader>(const std::string&);
+template SP_DXGLHullShader   ResourceManager::createShader<DXGLHullShader>(const std::string&);
+template SP_DXGLDomainShader ResourceManager::createShader<DXGLDomainShader>(const std::string&);
+template SP_DXGLPixelShader  ResourceManager::createShader<DXGLPixelShader>(const std::string&);
 
-template void DXGLResourceManager::storeShader<DXGLVertexShader>(const std::string&, const std::string&);
-template void DXGLResourceManager::storeShader<DXGLHullShader>(const std::string&, const std::string&);
-template void DXGLResourceManager::storeShader<DXGLDomainShader>(const std::string&, const std::string&);
-template void DXGLResourceManager::storeShader<DXGLPixelShader>(const std::string&, const std::string&);
+template void ResourceManager::storeShader<DXGLVertexShader>(const std::string&, const std::string&);
+template void ResourceManager::storeShader<DXGLHullShader>(const std::string&, const std::string&);
+template void ResourceManager::storeShader<DXGLDomainShader>(const std::string&, const std::string&);
+template void ResourceManager::storeShader<DXGLPixelShader>(const std::string&, const std::string&);
 
-SP_DXGLSamplerState DXGLResourceManager::createSamplerState(D3D11_FILTER filter, D3D11_TEXTURE_ADDRESS_MODE addressUVW,
+SP_DXGLSamplerState ResourceManager::createSamplerState(D3D11_FILTER filter, D3D11_TEXTURE_ADDRESS_MODE addressUVW,
 	D3D11_COMPARISON_FUNC comparison, FLOAT borderColor) {
 	SP_DXGLSamplerState sampler = nullptr;
 	try {
@@ -323,7 +325,7 @@ SP_DXGLSamplerState DXGLResourceManager::createSamplerState(D3D11_FILTER filter,
 	return sampler;
 }
 
-void DXGLResourceManager::storeSamplerState(D3D11_FILTER filter, D3D11_TEXTURE_ADDRESS_MODE addressUVW,
+void ResourceManager::storeSamplerState(D3D11_FILTER filter, D3D11_TEXTURE_ADDRESS_MODE addressUVW,
 	D3D11_COMPARISON_FUNC comparison, FLOAT borderColor, const std::string& alias) {
 	SP_DXGLSamplerState sampler = nullptr;
 	try {
@@ -347,7 +349,7 @@ void storeBlendState();
 // Assets //
 ////////////
 
-SP_Texture2D DXGLResourceManager::createTexture2D(const std::string& filename) {
+SP_Texture2D ResourceManager::createTexture2D(const std::string& filename) {
 	SP_Texture2D texture = nullptr;
 	try {
 		texture = std::make_shared<Texture2D>(filename);
@@ -357,7 +359,7 @@ SP_Texture2D DXGLResourceManager::createTexture2D(const std::string& filename) {
 	return texture;
 }
 
-SP_Texture2D DXGLResourceManager::createTexture2D(unsigned int width, unsigned int height, unsigned char* data) {
+SP_Texture2D ResourceManager::createTexture2D(unsigned int width, unsigned int height, unsigned char* data) {
 	SP_Texture2D texture = nullptr;
 	try {
 		texture = std::make_shared<Texture2D>(width, height, data);
@@ -367,7 +369,7 @@ SP_Texture2D DXGLResourceManager::createTexture2D(unsigned int width, unsigned i
 	return texture;
 }
 
-void DXGLResourceManager::storeTexture2D(const std::string& filename, const std::string& alias) {
+void ResourceManager::storeTexture2D(const std::string& filename, const std::string& alias) {
 	SP_Texture2D texture = nullptr;
 	try {
 		if (!find<SP_Texture2D>(alias)) {
@@ -379,7 +381,7 @@ void DXGLResourceManager::storeTexture2D(const std::string& filename, const std:
 	}
 }
 
-void DXGLResourceManager::storeTexture2D(unsigned int width, unsigned int height, unsigned char* data, const std::string& alias) {
+void ResourceManager::storeTexture2D(unsigned int width, unsigned int height, unsigned char* data, const std::string& alias) {
 	SP_Texture2D texture = nullptr;
 	try {
 		if (!find<SP_Texture2D>(alias)) {
@@ -391,7 +393,7 @@ void DXGLResourceManager::storeTexture2D(unsigned int width, unsigned int height
 	}
 }
 
-SP_TextureCube DXGLResourceManager::createTextureCube(const std::string& filename) {
+SP_TextureCube ResourceManager::createTextureCube(const std::string& filename) {
 	SP_TextureCube texture = nullptr;
 	try {
 		texture = std::make_shared<TextureCube>(filename);
@@ -402,7 +404,7 @@ SP_TextureCube DXGLResourceManager::createTextureCube(const std::string& filenam
 	return texture;
 }
 
-void DXGLResourceManager::storeTextureCube(const std::string& filename, const std::string& alias) {
+void ResourceManager::storeTextureCube(const std::string& filename, const std::string& alias) {
 	SP_TextureCube texture = nullptr;
 	try {
 		if (!find<SP_TextureCube>(alias)) {
@@ -415,7 +417,7 @@ void DXGLResourceManager::storeTextureCube(const std::string& filename, const st
 	}
 }
 
-SP_Material DXGLResourceManager::createMaterial(const std::string& filepath) {
+SP_Material ResourceManager::createMaterial(const std::string& filepath) {
 	SP_Material material = nullptr;
 	try {
 		material = std::make_shared<Material>(filepath);
@@ -425,7 +427,7 @@ SP_Material DXGLResourceManager::createMaterial(const std::string& filepath) {
 	return material;
 }
 
-SP_Material DXGLResourceManager::createMaterial(const MaterialData& data) {
+SP_Material ResourceManager::createMaterial(const MaterialData& data) {
 	SP_Material material = nullptr;
 	try {
 		material = std::make_shared<Material>(data);
@@ -435,7 +437,7 @@ SP_Material DXGLResourceManager::createMaterial(const MaterialData& data) {
 	return material;
 }
 
-void DXGLResourceManager::storeMaterial(const std::string& filepath, const std::string& alias) {
+void ResourceManager::storeMaterial(const std::string& filepath, const std::string& alias) {
 	SP_Material material = nullptr;
 	try {
 		if (!find<SP_Material>(alias)) {
@@ -447,7 +449,7 @@ void DXGLResourceManager::storeMaterial(const std::string& filepath, const std::
 	}
 }
 
-void DXGLResourceManager::storeMaterial(const MaterialData& data, const std::string& alias) {
+void ResourceManager::storeMaterial(const MaterialData& data, const std::string& alias) {
 	SP_Material material = nullptr;
 	try {
 		if (!find<SP_Material>(alias)) {
@@ -459,7 +461,7 @@ void DXGLResourceManager::storeMaterial(const MaterialData& data, const std::str
 	}
 }
 
-SP_Mesh DXGLResourceManager::createMesh(const MeshDesc& desc, const std::string& filepath) {
+SP_Mesh ResourceManager::createMesh(const MeshDesc& desc, const std::string& filepath) {
 	SP_Mesh mesh = nullptr;
 	try {
 		mesh = std::make_shared<Mesh>(desc, filepath);
@@ -469,7 +471,7 @@ SP_Mesh DXGLResourceManager::createMesh(const MeshDesc& desc, const std::string&
 	return mesh;
 }
 
-void DXGLResourceManager::storeMesh(const MeshDesc& desc, const std::string& filepath, const std::string& alias) {
+void ResourceManager::storeMesh(const MeshDesc& desc, const std::string& filepath, const std::string& alias) {
 	SP_Mesh mesh = nullptr;
 	try {
 		if (!find<SP_Mesh>(alias)) {

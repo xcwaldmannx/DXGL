@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Renderer.h"
+#include "DXGLDefinitions.h"
+
 #include "Vec3f.h"
 
 namespace dxgl {

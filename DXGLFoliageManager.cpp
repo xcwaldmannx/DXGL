@@ -1,5 +1,9 @@
 #include "DXGLFoliageManager.h"
 
+#include "Engine.h"
+#include "ResourceManager.h"
+#include "CameraManager.h"
+
 using namespace dxgl;
 
 DXGLFoliageManager::DXGLFoliageManager() {

@@ -3,7 +3,7 @@
 using namespace dxgl;
 
 DXGLSamplerState::DXGLSamplerState(D3D11_FILTER filter, D3D11_TEXTURE_ADDRESS_MODE addressUVW,
-	D3D11_COMPARISON_FUNC comparison, FLOAT borderColor, SP_DXGLGraphics graphics) {
+	D3D11_COMPARISON_FUNC comparison, FLOAT borderColor, SP_Graphics graphics) {
 
 	D3D11_SAMPLER_DESC desc{};
 	desc.Filter = filter;

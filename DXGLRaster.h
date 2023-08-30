@@ -2,13 +2,13 @@
 
 #include <unordered_map>
 
-#include "DXGLGraphics.h"
+#include "Graphics.h"
 
 namespace dxgl {
 
 	class DXGLRaster {
 	public:
-		DXGLRaster(SP_DXGLGraphics graphics);
+		DXGLRaster(SP_Graphics graphics);
 		~DXGLRaster();
 
 		void create(const D3D11_RASTERIZER_DESC& desc, std::string alias);
@@ -18,7 +18,7 @@ namespace dxgl {
 		void RS_setState(std::string alias);
 
 	private:
-		SP_DXGLGraphics m_graphics = nullptr;
+		SP_Graphics m_graphics = nullptr;
 
 		std::unordered_map<std::string, ID3D11RasterizerState*> m_states{};
 	};

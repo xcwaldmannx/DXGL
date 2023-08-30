@@ -2,7 +2,7 @@
 
 using namespace dxgl;
 
-DXGLOutputMerger::DXGLOutputMerger(SP_DXGLGraphics graphics) : m_graphics(graphics) {
+DXGLOutputMerger::DXGLOutputMerger(SP_Graphics graphics) : m_graphics(graphics) {
 
 }
 

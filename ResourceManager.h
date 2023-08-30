@@ -9,7 +9,7 @@
 
 #include "DXGLDefinitions.h"
 
-#include "DXGLGraphics.h"
+#include "Graphics.h"
 #include "Renderer.h"
 
 #include "VertexBuffer.h"
@@ -60,10 +60,10 @@ namespace dxgl {
 		MESH,
 	};
 
-	class DXGLResourceManager {
+	class ResourceManager {
 	public:
-		DXGLResourceManager();
-		~DXGLResourceManager();
+		ResourceManager();
+		~ResourceManager();
 
 		template<typename T>
 		T get(const std::string& alias);

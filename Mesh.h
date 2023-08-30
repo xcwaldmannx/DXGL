@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <unordered_map>
 #include <vector>
 
 #include "assimp/Importer.hpp"
@@ -8,9 +9,7 @@
 #include "assimp/scene.h"
 #include "assimp/postprocess.h"
 
-#include "Engine.h"
-#include "DXGLImage.h"
-#include "Material.h"
+#include "DXGLDefinitions.h"
 
 #include "Vertex.h"
 #include "Vec2f.h"

@@ -2,26 +2,38 @@
 
 #include <iostream>
 
+#include "Graphics.h"
+#include "Renderer.h"
+#include "EntityManager.h"
+#include "PhysicsManager.h"
+#include "ControllerManager.h"
+#include "CameraManager.h"
+#include "MousePickManager.h"
+#include "ResourceManager.h"
+
+#include "InputSystem.h"
+#include "InputManager.h"
+
 using namespace dxgl;
 
 
 SP_Engine Engine::m_window = nullptr;
 
 Engine::Engine() {
-	DXGLInputSystem::create(m_hwnd);
+	InputSystem::create(m_hwnd);
 	m_window = SP_Engine(this, [](Engine*) {});
 }
 
 Engine::~Engine() {
-	DXGLInputSystem::destroy();
+	InputSystem::destroy();
 }
 
 SP_Engine Engine::window() {
 	return m_window;
 }
 
-SP_DXGLGraphics Engine::m_graphics = std::make_shared<DXGLGraphics>();
-SP_DXGLGraphics Engine::graphics() {
+SP_Graphics Engine::m_graphics = std::make_shared<Graphics>();
+SP_Graphics Engine::graphics() {
 	return Engine::m_graphics;
 }
 
@@ -30,8 +42,8 @@ SP_Renderer Engine::renderer() {
 	return Engine::m_renderer;
 }
 
-SP_DXGLResourceManager Engine::m_resource = std::make_shared<DXGLResourceManager>();
-SP_DXGLResourceManager Engine::resource() {
+SP_ResourceManager Engine::m_resource = std::make_shared<ResourceManager>();
+SP_ResourceManager Engine::resource() {
 	return Engine::m_resource;
 }
 
@@ -60,8 +72,8 @@ SP_MousePickManager Engine::mousePick() {
 	return Engine::m_mousePick;
 }
 
-SP_DXGLInputManager Engine::m_userInput = std::make_shared<DXGLInputManager>();
-SP_DXGLInputManager Engine::input() {
+SP_InputManager Engine::m_userInput = std::make_shared<InputManager>();
+SP_InputManager Engine::input() {
 	return m_userInput;
 }
 
@@ -75,8 +87,8 @@ void Engine::onCreate() {
 
 	renderer()->createSwapchain(this);
 
-	m_userInput = std::make_shared<DXGLInputManager>();
-	DXGLInputSystem::get()->addListener(m_userInput.get());
+	InputSystem::get()->addListener(m_userInput.get());
+
 	create();
 
 	m_lastUpdate = std::chrono::steady_clock::now();
@@ -90,7 +102,7 @@ void Engine::onUpdate() {
 	DXGLWindow::onUpdate();
 
 	// update input events
-	DXGLInputSystem::get()->update();
+	InputSystem::get()->update();
 
 	// update managers
 	controller()->update(m_deltaTime);
@@ -129,12 +141,12 @@ void Engine::onDestroy() {
 
 void Engine::onFocus() {
 	DXGLWindow::onFocus();
-	DXGLInputSystem::get()->addListener(m_userInput.get());
+	InputSystem::get()->addListener(m_userInput.get());
 }
 
 void Engine::onKillFocus() {
 	DXGLWindow::onKillFocus();
-	DXGLInputSystem::get()->removeListener(m_userInput.get());
+	InputSystem::get()->removeListener(m_userInput.get());
 }
 
 void Engine::onMove() {

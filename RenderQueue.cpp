@@ -1,6 +1,10 @@
 #include "RenderQueue.h"
 
-#include "DXGLComponentTypes.h"
+#include "Engine.h"
+#include "EntityManager.h"
+#include "CameraManager.h"
+
+#include "EntityComponentTypes.h"
 
 using namespace dxgl;
 

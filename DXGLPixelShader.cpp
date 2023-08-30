@@ -4,7 +4,7 @@
 
 using namespace dxgl;
 
-DXGLPixelShader::DXGLPixelShader(void* byteCode, size_t length, SP_DXGLGraphics graphics) : m_byteCode(byteCode), m_length(length) {
+DXGLPixelShader::DXGLPixelShader(void* byteCode, size_t length, SP_Graphics graphics) : m_byteCode(byteCode), m_length(length) {
 	HRESULT result = graphics->device()->CreatePixelShader(byteCode, length, nullptr, &m_pixelShader);
 
 	if (FAILED(result)) {

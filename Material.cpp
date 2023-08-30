@@ -1,6 +1,7 @@
 #include "Material.h"
 
-#include <filesystem>
+#include "Engine.h"
+#include "Graphics.h"
 
 #include "DXGLImage.h"
 

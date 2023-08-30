@@ -1,11 +1,14 @@
 #pragma once
 
+#include <fstream>
+
 #include <string>
 #include <vector>
 #include <any>
 #include <unordered_map>
 
-#include "Engine.h"
+#include <d3d11.h>
+
 #include "Bindable.h"
 
 namespace dxgl {

@@ -1,4 +1,4 @@
-#include "DXGLInputSystem.h"
+#include "InputSystem.h"
 
 #include <exception>
 
@@ -6,16 +6,16 @@
 
 using namespace dxgl;
 
-DXGLInputSystem* DXGLInputSystem::m_inputSystem = nullptr;
+InputSystem* InputSystem::m_inputSystem = nullptr;
 
-DXGLInputSystem::DXGLInputSystem(HWND& window) : m_window(window) {
+InputSystem::InputSystem(HWND& window) : m_window(window) {
 }
 
-DXGLInputSystem::~DXGLInputSystem() {
+InputSystem::~InputSystem() {
 	m_inputSystem = nullptr;
 }
 
-void DXGLInputSystem::update() {
+void InputSystem::update() {
 
 	POINT currentMousePos{};
 	GetCursorPos(&currentMousePos);
@@ -27,7 +27,7 @@ void DXGLInputSystem::update() {
 
 	if (currentMousePos.x != m_oldMousePos.x || currentMousePos.y != m_oldMousePos.y) {
 		// Mouse move event
-		std::unordered_set<DXGLInputListener*>::iterator it = m_listeners.begin();
+		std::unordered_set<InputListener*>::iterator it = m_listeners.begin();
 		while (it != m_listeners.end()) {
 			(*it)->onMouseMove(Point2f((float)currentMousePos.x, (float)currentMousePos.y),
 				Point2f((float)currentMousePos.x - m_oldMousePos.x, (float)currentMousePos.y - m_oldMousePos.y));
@@ -40,7 +40,7 @@ void DXGLInputSystem::update() {
 		for (unsigned int i = 0; i < 256; i++) {
 			// Key is down
 			if (m_keysState[i] & 0x80) {
-				std::unordered_set<DXGLInputListener*>::iterator it = m_listeners.begin();
+				std::unordered_set<InputListener*>::iterator it = m_listeners.begin();
 				while (it != m_listeners.end()) {
 
 					// LEFT MOUSE
@@ -65,7 +65,7 @@ void DXGLInputSystem::update() {
 			// Key is up
 			else {
 				if (m_keysState[i] != m_keysStateOld[i]) {
-					std::unordered_set<DXGLInputListener*>::iterator it = m_listeners.begin();
+					std::unordered_set<InputListener*>::iterator it = m_listeners.begin();
 					while (it != m_listeners.end()) {
 						// LEFT MOUSE
 						if (i == VK_LBUTTON) {
@@ -89,37 +89,37 @@ void DXGLInputSystem::update() {
 	}
 }
 
-void DXGLInputSystem::addListener(DXGLInputListener* listener) {
+void InputSystem::addListener(InputListener* listener) {
 	m_listeners.insert(listener);
 }
 
-void DXGLInputSystem::removeListener(DXGLInputListener* listener) {
+void InputSystem::removeListener(InputListener* listener) {
 	m_listeners.erase(listener);
 }
 
-void DXGLInputSystem::setCursorPosition(const Point2f& pos) {
+void InputSystem::setCursorPosition(const Point2f& pos) {
 	SetCursorPos((int)pos.x, (int)pos.y);
 	m_oldMousePos = { pos.x, pos.y };
 }
 
-void DXGLInputSystem::showCursor(bool show) {
+void InputSystem::showCursor(bool show) {
 	ShowCursor(show);
 }
 
-void DXGLInputSystem::create(HWND& window) {
-	if (DXGLInputSystem::m_inputSystem) {
+void InputSystem::create(HWND& window) {
+	if (InputSystem::m_inputSystem) {
 		throw std::exception("DXGLInputSystem already exists.");
 	}
-	DXGLInputSystem::m_inputSystem = new DXGLInputSystem(window);
+	InputSystem::m_inputSystem = new InputSystem(window);
 }
 
-void DXGLInputSystem::destroy() {
-	if (!DXGLInputSystem::m_inputSystem) {
+void InputSystem::destroy() {
+	if (!InputSystem::m_inputSystem) {
 		return;
 	}
-	delete DXGLInputSystem::m_inputSystem;
+	delete InputSystem::m_inputSystem;
 }
 
-DXGLInputSystem* DXGLInputSystem::get() {
+InputSystem* InputSystem::get() {
 	return m_inputSystem;
 }

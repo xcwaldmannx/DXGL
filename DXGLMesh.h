@@ -3,7 +3,8 @@
 #include <string>
 #include <vector>
 
-#include "Renderer.h"
+#include "DXGLDefinitions.h"
+
 #include "Vertex.h"
 #include "Vec3f.h"
 

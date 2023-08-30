@@ -1,13 +1,10 @@
 #pragma once
 
-
 #include "DXGLDefinitions.h"
-#include "DXGLComponentTypes.h"
+#include "EntityComponentTypes.h"
 
 #include "DXGLGovernor.h"
 #include "OctTree.h"
-
-#include "Mesh.h"
 
 namespace dxgl {
 	class EntityManager {

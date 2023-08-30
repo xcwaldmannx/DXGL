@@ -1,8 +1,8 @@
-#include "DXGLInputManager.h"
+#include "InputManager.h"
 
 using namespace dxgl;
 
-DXGLInputManager::DXGLInputManager() {
+InputManager::InputManager() {
 	for (int i = 0; i < 256; i++) {
 		m_keyHoldStates[i] = 0;
 		m_keyPressStates[i] = 0;
@@ -15,18 +15,18 @@ DXGLInputManager::DXGLInputManager() {
 	m_rmbState = 0;
 }
 
-DXGLInputManager::~DXGLInputManager() {
+InputManager::~InputManager() {
 }
 
-bool DXGLInputManager::getKeyHoldState(char key, float duration) {
+bool InputManager::getKeyHoldState(char key, float duration) {
 	return m_keyHoldStates[key] >= duration;
 }
 
-bool DXGLInputManager::getKeyPressState(char key) {
+bool InputManager::getKeyPressState(char key) {
 	return m_keyPressStates[key];
 }
 
-bool DXGLInputManager::getKeyTapState(char key) {
+bool InputManager::getKeyTapState(char key) {
 	int value = m_keyTapStates[key];
 
 	if (value == 1) {
@@ -37,7 +37,7 @@ bool DXGLInputManager::getKeyTapState(char key) {
 	return false;
 }
 
-bool DXGLInputManager::getKeyReleaseState(char key) {
+bool InputManager::getKeyReleaseState(char key) {
 	int value = m_keyReleaseStates[key];
 
 	if (value == 1) {
@@ -48,7 +48,7 @@ bool DXGLInputManager::getKeyReleaseState(char key) {
 	return false;
 }
 
-float DXGLInputManager::getMouseState(MOUSE_STATE state) {
+float InputManager::getMouseState(MOUSE_STATE state) {
 	switch (state) {
 	case LMB_STATE:
 		return m_lmbState;
@@ -61,49 +61,49 @@ float DXGLInputManager::getMouseState(MOUSE_STATE state) {
 	}
 }
 
-const Point2f& DXGLInputManager::getMousePosition() {
+const Point2f& InputManager::getMousePosition() {
 	return m_position;
 }
 
-const Point2f& DXGLInputManager::getMouseDelta() {
+const Point2f& InputManager::getMouseDelta() {
 	const Point2f output = m_delta;
 	m_delta = { 0, 0 };
 	return output;
 }
 
-void DXGLInputManager::onKeyDown(int key) {
+void InputManager::onKeyDown(int key) {
 	m_keyHoldStates[key]++;
 	m_keyPressStates[key] = 1;
 	if (m_keyTapStates[key] == 0) m_keyTapStates[key] = 1;
 	m_keyReleaseStates[key] = 0;
 }
 
-void DXGLInputManager::onKeyUp(int key) {
+void InputManager::onKeyUp(int key) {
 	m_keyHoldStates[key] = 0;
 	m_keyPressStates[key] = 0;
 	m_keyTapStates[key] = 0;
 	if (m_keyReleaseStates[key] == 0) m_keyReleaseStates[key] = 1;
 }
 
-void DXGLInputManager::onMouseMove(const Point2f& mousePos, const Point2f& mouseDelta) {
+void InputManager::onMouseMove(const Point2f& mousePos, const Point2f& mouseDelta) {
 	m_position.x = mousePos.x;
 	m_position.y = mousePos.y;
 	m_delta.x = mouseDelta.x;
 	m_delta.y = mouseDelta.y;
 }
 
-void DXGLInputManager::onLeftMouseDown(const Point2f& mousePos) {
+void InputManager::onLeftMouseDown(const Point2f& mousePos) {
 	m_lmbState = 1.0f;
 }
 
-void DXGLInputManager::onLeftMouseUp(const Point2f& mousePos) {
+void InputManager::onLeftMouseUp(const Point2f& mousePos) {
 	m_lmbState = 0.0f;
 }
 
-void DXGLInputManager::onRightMouseDown(const Point2f& mousePos) {
+void InputManager::onRightMouseDown(const Point2f& mousePos) {
 	m_rmbState = 1.0f;
 }
 
-void DXGLInputManager::onRightMouseUp(const Point2f& mousePos) {
+void InputManager::onRightMouseUp(const Point2f& mousePos) {
 	m_rmbState = 0.0f;
 }

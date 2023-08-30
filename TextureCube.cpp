@@ -2,6 +2,9 @@
 
 #include <filesystem>
 
+#include "Engine.h"
+#include "Graphics.h"
+
 #include "DXGLImage.h"
 
 using namespace dxgl;

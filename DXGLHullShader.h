@@ -4,13 +4,13 @@
 
 #include "DXGLDefinitions.h"
 
-#include "DXGLGraphics.h"
+#include "Graphics.h"
 
 namespace dxgl {
 
 	class DXGLHullShader {
 	public:
-		DXGLHullShader(void* byteCode, size_t length, SP_DXGLGraphics graphics);
+		DXGLHullShader(void* byteCode, size_t length, SP_Graphics graphics);
 		~DXGLHullShader();
 
 		ID3D11HullShader* get();

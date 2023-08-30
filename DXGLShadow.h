@@ -3,9 +3,17 @@
 #include <d3d11.h>
 
 #include <vector>
+#include <unordered_map>
 
-#include "Engine.h"
-#include "Mesh.h"
+#include "DXGLDefinitions.h"
+
+#include "DXGLRenderTargetView.h"
+#include "DXGLDepthStencilView.h"
+
+#include "DXGLGroup.h"
+
+class dxgl::Mesh;
+
 #include "Mat4f.h"
 
 namespace dxgl {

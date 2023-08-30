@@ -2,7 +2,7 @@
 
 #include "DXGLDefinitions.h"
 
-#include "DXGLGraphics.h"
+#include "Graphics.h"
 #include "SwapChain.h"
 
 #include "DXGLGovernor.h"

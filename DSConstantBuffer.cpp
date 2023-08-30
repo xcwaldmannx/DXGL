@@ -1,8 +1,11 @@
 #include "DSConstantBuffer.h"
 
+#include "Engine.h"
+#include "Graphics.h"
+
 using namespace dxgl;
 
-DSConstantBuffer::DSConstantBuffer(UINT bytes) {
+DSConstantBuffer::DSConstantBuffer(unsigned int bytes) {
 	D3D11_BUFFER_DESC bufferDesc{};
 	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	bufferDesc.ByteWidth = bytes;

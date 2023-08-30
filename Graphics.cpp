@@ -1,4 +1,4 @@
-#include "DXGLGraphics.h"
+#include "Graphics.h"
 
 #pragma comment(lib, "d3d11.lib")
 
@@ -6,7 +6,7 @@
 
 using namespace dxgl;
 
-DXGLGraphics::DXGLGraphics() {
+Graphics::Graphics() {
     // create directx11 device and context
     D3D_DRIVER_TYPE driverTypes[] = {
     D3D_DRIVER_TYPE_HARDWARE,
@@ -37,7 +37,7 @@ DXGLGraphics::DXGLGraphics() {
     m_dxgiAdapter->GetParent(__uuidof(IDXGIFactory), (void**)&m_dxgiFactory);
 }
 
-DXGLGraphics::~DXGLGraphics() {
+Graphics::~Graphics() {
     m_dxgiFactory->Release();
     m_dxgiAdapter->Release();
     m_dxgiDevice->Release();
@@ -46,14 +46,14 @@ DXGLGraphics::~DXGLGraphics() {
     m_d3dDevice->Release();
 }
 
-ID3D11Device* DXGLGraphics::device() {
+ID3D11Device* Graphics::device() {
     return m_d3dDevice;
 }
 
-IDXGIFactory* DXGLGraphics::factory() {
+IDXGIFactory* Graphics::factory() {
     return m_dxgiFactory;
 }
 
-ID3D11DeviceContext* DXGLGraphics::context() {
+ID3D11DeviceContext* Graphics::context() {
     return m_d3dContext;
 }

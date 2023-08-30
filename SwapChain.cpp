@@ -1,5 +1,12 @@
 #include "SwapChain.h"
 
+#include "Engine.h"
+#include "Graphics.h"
+
+#include "DXGLRenderTargetView.h"
+#include "DXGLDepthStencilView.h"
+#include "DXGLShaderResourceView.h"
+
 using namespace dxgl;
 
 SwapChain::SwapChain() {

@@ -2,9 +2,6 @@
 
 #include <vector>
 
-#include "Engine.h"
-
-#include "Point2f.h"
 #include "Mat4f.h"
 
 namespace dxgl {

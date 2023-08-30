@@ -1,5 +1,10 @@
 #include "PhysicsManager.h"
 
+#include "Engine.h"
+#include "EntityManager.h"
+
+#include "Mesh.h"
+
 using namespace dxgl;
 using namespace physx;
 
@@ -68,6 +73,8 @@ PhysicsManager::PhysicsManager() {
 		PxShape* shape = nullptr;
 		PxGeometry* geometry = nullptr;
 
+		std::vector<PxGeometry*> geometries{};
+
 		if (RigidBodyBox* box = dynamic_cast<RigidBodyBox*>(rigidbody.shape)) {
 
 			geometry = new PxBoxGeometry(box->halfExtents.x, box->halfExtents.y, box->halfExtents.z);
@@ -97,7 +104,7 @@ PhysicsManager::PhysicsManager() {
 
 			geometry = new PxCapsuleGeometry(capsule->radius, capsule->halfHeight);
 
-		} else if (RigidBodyConvexMesh* capsule = dynamic_cast<RigidBodyConvexMesh*>(rigidbody.shape)) {
+		} else if (RigidBodyConvexMesh* convex = dynamic_cast<RigidBodyConvexMesh*>(rigidbody.shape)) {
 
 			PxConvexMeshDesc convexDesc;
 			convexDesc.points.count = vertices.size() / 3;
@@ -113,8 +120,32 @@ PhysicsManager::PhysicsManager() {
 
 			geometry = new PxConvexMeshGeometry(convexMesh, scale);
 
-		} else if (RigidBodyTriangleMesh* capsule = dynamic_cast<RigidBodyTriangleMesh*>(rigidbody.shape)) {
+		} else if (RigidBodyTriangleMesh* triangle = dynamic_cast<RigidBodyTriangleMesh*>(rigidbody.shape)) {
 
+			for (auto& subMesh : mesh.mesh->getMeshes()) {
+				int startIndex = subMesh.baseIndex;
+				int startVertex = subMesh.baseVertex;
+				int indexCount = subMesh.indexCount;
+
+				PxTriangleMeshDesc meshDesc;
+				meshDesc.points.count = (vertices.size() / 3) - startVertex; // Calculate based on startVertex and indexCount
+				meshDesc.points.stride = sizeof(Vec3f);
+				meshDesc.points.data = &vertices[startVertex * 3]; // Multiply by 3 to get the actual start position in vertices array
+
+				meshDesc.triangles.count = indexCount / 3;
+				meshDesc.triangles.stride = sizeof(unsigned int) * 3;
+				meshDesc.triangles.data = &indices[startIndex];
+
+				PxDefaultMemoryOutputStream writeBuffer;
+				PxTriangleMeshCookingResult::Enum result;
+				bool status = PxCookTriangleMesh(cookingParams, meshDesc, writeBuffer, &result);
+
+				PxDefaultMemoryInputData readBuffer(writeBuffer.getData(), writeBuffer.getSize());
+				PxTriangleMesh* triangleMesh = m_physics->createTriangleMesh(readBuffer);
+
+				geometries.push_back(new PxTriangleMeshGeometry(triangleMesh, scale));
+			}
+			/*
 			PxTriangleMeshDesc meshDesc;
 			meshDesc.points.count = vertices.size() / 3;
 			meshDesc.points.stride = sizeof(float) * 3;
@@ -132,6 +163,7 @@ PhysicsManager::PhysicsManager() {
 			PxTriangleMesh* triangleMesh = m_physics->createTriangleMesh(readBuffer);
 
 			geometry = new PxTriangleMeshGeometry(triangleMesh, scale);
+			*/
 
 		} else {
 
@@ -139,16 +171,33 @@ PhysicsManager::PhysicsManager() {
 
 		}
 
-		shape = m_physics->createShape(*geometry, *material, true);
-		shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
-		shape->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, true);
+		if (geometries.size() > 0) {
 
-		delete geometry;
+		} else {
+			shape = m_physics->createShape(*geometry, *material, true);
+			if (RigidBodyCapsule* capsule = dynamic_cast<RigidBodyCapsule*>(rigidbody.shape)) {
+				PxTransform relativePose(PxQuat(PxHalfPi, PxVec3(0, 0, 1)));
+				shape->setLocalPose(relativePose);
+			}
+
+			shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
+			shape->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, true);
+		}
+
+
 
 		// create rigidbodies
 
 		if (rigidbody.isStatic) {
-			PxRigidStatic* rb = PxCreateStatic(*m_physics, xTransform, *shape);
+			PxRigidStatic* rb = nullptr;
+			if (geometries.size() > 0) {
+				rb = m_physics->createRigidStatic(xTransform);
+				for (auto& g : geometries) {
+					PxShape* es = PxRigidActorExt::createExclusiveShape(*rb, *g, *material);
+				}
+			} else {
+				rb = PxCreateStatic(*m_physics, xTransform, *shape);
+			}
 			m_scene->addActor(*rb);
 			m_actors[id] = rb;
 			rigidbody.actor = rb;
@@ -185,11 +234,11 @@ PhysicsManager::PhysicsManager() {
 }
 
 PhysicsManager::~PhysicsManager() {
-	if (m_scene) m_scene->release();
-	if (m_physics) m_physics->release();
-	if (m_dispatcher) m_dispatcher->release();
-	if (m_pvd) m_pvd->release();
-	if (m_foundation) m_foundation->release();
+	//if (m_scene) m_scene->release();
+	//if (m_physics) m_physics->release();
+	//if (m_dispatcher) m_dispatcher->release();
+	//if (m_pvd) m_pvd->release();
+	//if (m_foundation) m_foundation->release();
 }
 
 void PhysicsManager::update(std::list<OctTree<governor::EntityId>::ptr>& entities, long double delta) {

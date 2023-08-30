@@ -2,6 +2,9 @@
 
 #include <iostream>
 
+#include "Engine.h"
+#include "ResourceManager.h"
+
 #define TINYOBJLOADER_IMPLEMENTATION 
 // define this in only *one* .cc
 // Optional. define TINYOBJLOADER_USE_MAPBOX_EARCUT gives robust trinagulation. Requires C++11

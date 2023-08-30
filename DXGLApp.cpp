@@ -1,8 +1,16 @@
 #include "DXGLApp.h"
 
 #include <iostream>
-
 #include <chrono>
+
+#include "ResourceManager.h"
+#include "InputSystem.h"
+#include "InputManager.h"
+#include "MousePickManager.h"
+#include "PhysicsManager.h"
+#include "EntityManager.h"
+#include "ControllerManager.h"
+#include "CameraManager.h"
 
 // uses buffer zero
 struct alignas(16) EntityBuffer {
@@ -217,8 +225,9 @@ void DXGLApp::create() {
 	entities()->registerComponent<PickableComponent>();
 	entities()->registerComponent<DestroyableComponent>();
 	entities()->registerComponent<RigidBodyComponent>();
-	entities()->registerComponent<CameraComponent>();
+	entities()->registerComponent<MovementComponent>();
 	entities()->registerComponent<ControllerComponent>();
+	entities()->registerComponent<CameraComponent>();
 
 	// standard meshes
 	{
@@ -232,11 +241,44 @@ void DXGLApp::create() {
 		resource()->storeMesh(desc, "Assets/Meshes/torus.fbx", "torus");
 	}
 
+	{ // house
+
+		{
+			MeshDesc desc{};
+			desc.vertexAttributes = VERTEX_ALL;
+			desc.miscAttributes = MISC_ALL;
+			desc.amountMetallic = 1;
+			desc.amountRoughness = 1;
+			resource()->storeMesh(desc, "Assets/Meshes/house.fbx", "house");
+		}
+
+		TransformComponent transform{};
+		transform.scale = { 1, 1, 1 };
+		transform.rotation = { 0, 0, 0 };
+		transform.translation = { 0, 0, 32 };
+
+		MeshComponent mesh{};
+		mesh.mesh = resource()->get<SP_Mesh>("house");
+		mesh.useTessellation = false;
+		mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
+
+		auto id = entities()->createEntity(transform, mesh);
+
+		RigidBodyComponent rigidbody{};
+		rigidbody.shape = new RigidBodyTriangleMesh();
+		rigidbody.mass = 100.0f;
+		rigidbody.staticFriction = 0.75f;
+		rigidbody.dynamicFriction = 0.75f;
+		rigidbody.restitution = 0.1f;
+		rigidbody.isStatic = true;
+		entities()->addEntityComponent<RigidBodyComponent>(rigidbody, id);
+	}
+
 	{ // player
 		TransformComponent transform{};
 		transform.scale = { 1, 1, 1 };
 		transform.rotation = { 0, 0, 0 };
-		transform.translation = { 0, 0, 0 };
+		transform.translation = { 0, 1, 0 };
 
 		MeshComponent mesh{};
 		mesh.mesh = resource()->get<SP_Mesh>("box");
@@ -247,9 +289,9 @@ void DXGLApp::create() {
 		m_player = entities()->createEntity(transform, mesh);
 
 		RigidBodyComponent rigidbody{};
-		rigidbody.shape = new RigidBodyCapsule(1, 1);
+		rigidbody.shape = new RigidBodyCapsule(0.5f, 1);
 		rigidbody.lockFlags = RigidBodyLockFlag::LOCK_ANGULAR_X | RigidBodyLockFlag::LOCK_ANGULAR_Y | RigidBodyLockFlag::LOCK_ANGULAR_Z;
-		rigidbody.mass = 1000.0f;
+		rigidbody.mass = 100.0f;
 		rigidbody.staticFriction = 0.999f;
 		rigidbody.dynamicFriction = 0.999f;
 		rigidbody.restitution = 0.001f;
@@ -263,8 +305,11 @@ void DXGLApp::create() {
 		camera.trackEntity = true;
 		entities()->addEntityComponent<CameraComponent>(camera, m_player);
 
+		MovementComponent movement{};
+		entities()->addEntityComponent<MovementComponent>(movement, m_player);
+
 		ControllerComponent controller{};
-		controller.speed = 15.0f;
+		controller.speed = 6.0f;
 		controller.addAction('W', ControllerActionFlag::ON_PRESS, [&](governor::EntityId id, long double delta) {
 			auto& rigidbody = entities()->getEntityComponent<RigidBodyComponent>(id);
 			auto& controller = entities()->getEntityComponent<ControllerComponent>(id);
@@ -272,11 +317,7 @@ void DXGLApp::create() {
 
 			Vec3f direction = Vec3f(camera.forward().x, 0, camera.forward().z).normalize();
 
-			rigidbody.applyForce(direction * controller.speed);
-		});
-		controller.addAction('W', ControllerActionFlag::ON_RELEASE, [&](governor::EntityId id, long double delta) {
-			auto& rigidbody = entities()->getEntityComponent<RigidBodyComponent>(id);
-			rigidbody.clearForce();
+			rigidbody.applyTransform(direction * controller.speed * delta);
 		});
 
 		controller.addAction('S', ControllerActionFlag::ON_PRESS, [&](governor::EntityId id, long double delta) {
@@ -286,11 +327,7 @@ void DXGLApp::create() {
 
 			Vec3f direction = Vec3f(camera.forward().x, 0, camera.forward().z).normalize();
 
-			rigidbody.applyForce(direction * -controller.speed);
-		});
-		controller.addAction('S', ControllerActionFlag::ON_RELEASE, [&](governor::EntityId id, long double delta) {
-			auto& rigidbody = entities()->getEntityComponent<RigidBodyComponent>(id);
-			rigidbody.clearForce();
+			rigidbody.applyTransform(direction * -controller.speed * delta);
 		});
 
 		controller.addAction('D', ControllerActionFlag::ON_PRESS, [&](governor::EntityId id, long double delta) {
@@ -300,11 +337,7 @@ void DXGLApp::create() {
 
 			Vec3f direction = Vec3f(camera.right().x, 0, camera.right().z).normalize();
 
-			rigidbody.applyForce(direction * controller.speed);
-		});
-		controller.addAction('D', ControllerActionFlag::ON_RELEASE, [&](governor::EntityId id, long double delta) {
-			auto& rigidbody = entities()->getEntityComponent<RigidBodyComponent>(id);
-			rigidbody.clearForce();
+			rigidbody.applyTransform(direction * controller.speed * delta);
 		});
 
 		controller.addAction('A', ControllerActionFlag::ON_PRESS, [&](governor::EntityId id, long double delta) {
@@ -314,21 +347,25 @@ void DXGLApp::create() {
 
 			Vec3f direction = Vec3f(camera.right().x, 0, camera.right().z).normalize();
 
-			rigidbody.applyForce(direction * -controller.speed);
+			rigidbody.applyTransform(direction * -controller.speed * delta);
 		});
-		controller.addAction('A', ControllerActionFlag::ON_RELEASE, [&](governor::EntityId id, long double delta) {
-			auto& rigidbody = entities()->getEntityComponent<RigidBodyComponent>(id);
-			rigidbody.clearForce();
-		});
-		controller.addAction(VK_SPACE, ControllerActionFlag::ON_TAP, [&](governor::EntityId id, long double delta) {
+		controller.addAction(VK_SPACE, ControllerActionFlag::ON_PRESS, [&](governor::EntityId id, long double delta) {
 			auto& rigidbody = entities()->getEntityComponent<RigidBodyComponent>(id);
 			auto& controller = entities()->getEntityComponent<ControllerComponent>(id);
 			auto& camera = entities()->getEntityComponent<CameraComponent>(id);
 
 			if (rigidbody.isStationary) {
 				Vec3f direction = Vec3f(0, camera.up().y, 0).normalize();
-				rigidbody.applyForce(direction * controller.speed * 0.25f);
+				rigidbody.applyVelocity(direction * controller.speed);
 			}
+		});
+		controller.addAction(VK_SHIFT, ControllerActionFlag::ON_PRESS, [&](governor::EntityId id, long double delta) {
+			auto& control = entities()->getEntityComponent<ControllerComponent>(id);
+			control.speed = 10.0f;
+		});
+		controller.addAction(VK_SHIFT, ControllerActionFlag::ON_RELEASE, [&](governor::EntityId id, long double delta) {
+			auto& control = entities()->getEntityComponent<ControllerComponent>(id);
+			control.speed = 6.0f;
 		});
 		entities()->addEntityComponent<ControllerComponent>(controller, m_player);
 
@@ -355,7 +392,7 @@ void DXGLApp::create() {
 		TransformComponent transform{};
 		transform.scale = { 1, 1, 1 };
 		transform.rotation = { 0, 0, 0 };
-		transform.translation = { 10, 0, -5 };
+		transform.translation = { 0, 5, 0 };
 
 		MeshComponent mesh{};
 		mesh.mesh = resource()->get<SP_Mesh>("guitar");
@@ -415,6 +452,8 @@ void DXGLApp::create() {
 		resource()->storeMesh(desc, "Assets/Meshes/rock1.fbx", "rock1");
 	}
 
+	/*
+
 	for (int i = -10; i < 10; i++) {
 		for (int j = -10; j < 10; j++) {
 			for (int k = -10; k < 10; k++) {
@@ -456,11 +495,13 @@ void DXGLApp::create() {
 		}
 	}
 
+	*/
+
 	{ // floor
 		TransformComponent transform{};
-		transform.scale = { 128, 8, 128 };
-		transform.rotation = { 3.14f / 16.0f, 0, 0 };
-		transform.translation = { 0, -10, -10 };
+		transform.scale = { 128, 1, 128 };
+		transform.rotation = { 0, 0, 0 };
+		transform.translation = { 0, -0.5f, 0 };
 
 		MeshComponent mesh{};
 		mesh.mesh = resource()->get<SP_Mesh>("box");
@@ -470,7 +511,7 @@ void DXGLApp::create() {
 		m_floor = entities()->createEntity(transform, mesh);
 
 		RigidBodyComponent rigidbody{};
-		rigidbody.shape = new RigidBodyBox(64, 4, 64);
+		rigidbody.shape = new RigidBodyBox(64, 0.5f, 64);
 		rigidbody.staticFriction = 0.75f;
 		rigidbody.dynamicFriction = 0.75f;
 		rigidbody.restitution = 0.1f;
@@ -480,9 +521,9 @@ void DXGLApp::create() {
 
 	{ // torus
 		TransformComponent transform{};
-		transform.scale = { 5, 5, 5 };
+		transform.scale = { 3, 3, 3 };
 		transform.rotation = { 0, 3.14159f / 2.0f, 0 };
-		transform.translation = { -20, 0, 0 };
+		transform.translation = { -20, -6, 0 };
 
 		MeshComponent mesh{};
 		mesh.mesh = resource()->get<SP_Mesh>("torus");
@@ -536,12 +577,12 @@ void DXGLApp::update(long double delta) {
 
 	if (input()->getKeyTapState('P')) {
 		m_playState = !m_playState;
-		dxgl::DXGLInputSystem::get()->showCursor(!m_playState);
+		dxgl::InputSystem::get()->showCursor(!m_playState);
 	}
 
 	if (m_playState) {
 		POINT center = getWindowCenter();
-		dxgl::DXGLInputSystem::get()->setCursorPosition(Point2f{ (float) center.x, (float) center.y });
+		dxgl::InputSystem::get()->setCursorPosition(Point2f{ (float) center.x, (float) center.y });
 	}
 
 	RECT dim = getScreenSize();
@@ -590,7 +631,7 @@ void DXGLApp::update(long double delta) {
 	// point gun start
 	{
 		Vec3f aim(-0.75f, -0.25f, 1.0f);
-		if (input()->getMouseState(DXGLInputManager::RMB_STATE)) {
+		if (input()->getMouseState(InputManager::RMB_STATE)) {
 			aim = Vec3f(0.0f, -0.185f, 1.0f);
 		}
 
@@ -615,7 +656,7 @@ void DXGLApp::update(long double delta) {
 	// rotate guitar end
 
 	// mouse picking start
-	if (input()->getMouseState(DXGLInputManager::LMB_STATE)) {
+	if (input()->getMouseState(InputManager::LMB_STATE)) {
 		Point2f mouse = Engine::input()->getMousePosition();
 		POINT clientMouse = { mouse.x, mouse.y };
 		ScreenToClient(getWindow(), &clientMouse);

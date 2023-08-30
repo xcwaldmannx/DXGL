@@ -2,18 +2,13 @@
 
 #include "Engine.h"
 
-#include "DXGLComponentTypes.h"
-
-#include "DXGLTimer.h"
+#include "EntityComponentTypes.h"
 
 #include "PostProcessor.h"
 #include "Skybox.h"
-
-#include "Mesh.h"
-
 #include "RenderQueue.h"
 
-#include "OOBB.h"
+class Mesh;
 
 struct DXGLVertex {
 	Vec3f pos{};
@@ -62,6 +57,4 @@ private:
 
 	SP_VSConstantBuffer m_vscbSkyboxBuffer = nullptr;
 	SP_PSConstantBuffer m_pscbSkyboxBuffer = nullptr;
-
-	DXGLTimer shadowTimer;
 };

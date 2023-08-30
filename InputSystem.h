@@ -3,31 +3,31 @@
 #include <unordered_set>
 #include <Windows.h>
 
-#include "DXGLInputListener.h"
+#include "InputListener.h"
 
 namespace dxgl {
-	class DXGLInputSystem {
+	class InputSystem {
 	private:
-		DXGLInputSystem(HWND& window);
-		~DXGLInputSystem();
+		InputSystem(HWND& window);
+		~InputSystem();
 	public:
 		void update();
-		void addListener(DXGLInputListener* listener);
-		void removeListener(DXGLInputListener* listener);
+		void addListener(InputListener* listener);
+		void removeListener(InputListener* listener);
 
 		void setCursorPosition(const Point2f& pos);
 		void showCursor(bool show);
 
 		static void create(HWND& window);
 		static void destroy();
-		static DXGLInputSystem* get();
+		static InputSystem* get();
 
 	private:
 		HWND m_window;
 
-		static DXGLInputSystem* m_inputSystem;
+		static InputSystem* m_inputSystem;
 
-		std::unordered_set<DXGLInputListener*> m_listeners{};
+		std::unordered_set<InputListener*> m_listeners{};
 		unsigned char m_keysState[256] = {};
 		unsigned char m_keysStateOld[256] = {};
 

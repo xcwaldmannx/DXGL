@@ -1,5 +1,9 @@
 #include "PostProcessor.h"
 
+#include "Engine.h"
+#include "ResourceManager.h"
+#include "InputManager.h"
+
 PostProcessor::PostProcessor() {
 	dxgl::InputLayoutDesc descPost{};
 	descPost.add("POSITION", 0, dxgl::FLOAT3, false);

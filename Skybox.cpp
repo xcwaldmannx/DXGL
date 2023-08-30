@@ -1,5 +1,9 @@
 #include "Skybox.h"
 
+#include "Engine.h"
+#include "ResourceManager.h"
+#include "CameraManager.h"
+
 Skybox::Skybox() {
 	// cubemaps
 	dxgl::Engine::resource()->storeTextureCube("Assets/Cubemaps/desert/", "desert");

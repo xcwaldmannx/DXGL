@@ -1,6 +1,7 @@
 #include "InputLayout.h"
 
-#include <fstream>
+#include "Engine.h"
+#include "Graphics.h"
 
 using namespace dxgl;
 

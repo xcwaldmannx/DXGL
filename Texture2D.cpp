@@ -1,5 +1,8 @@
 #include "Texture2D.h"
 
+#include "Engine.h"
+#include "Graphics.h"
+
 #include "DXGLImage.h"
 
 using namespace dxgl;

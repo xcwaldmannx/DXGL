@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DXGLInputListener.h"
+#include "InputListener.h"
 
 #include "DXGLDefinitions.h"
 #include "Engine.h"
@@ -8,10 +8,10 @@
 typedef int MOUSE_STATE;
 
 namespace dxgl {
-	class DXGLInputManager : public DXGLInputListener {
+	class InputManager : public InputListener {
     public:
-        DXGLInputManager();
-        ~DXGLInputManager();
+        InputManager();
+        ~InputManager();
 
         bool getKeyHoldState(char key, float duration);
         bool getKeyPressState(char key);

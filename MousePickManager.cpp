@@ -1,5 +1,10 @@
 #include "MousePickManager.h"
 
+#include "Engine.h"
+#include "Renderer.h"
+#include "EntityManager.h"
+#include "DXGLShaderResourceView.h"
+
 using namespace dxgl;
 
 MousePickManager::MousePickManager() {

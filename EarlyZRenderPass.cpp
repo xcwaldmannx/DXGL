@@ -1,5 +1,10 @@
 #include "EarlyZRenderPass.h"
 
+#include "Engine.h"
+#include "Graphics.h"
+#include "ResourceManager.h"
+#include "CameraManager.h"
+
 using namespace dxgl;
 
 EarlyZRenderPass::EarlyZRenderPass() {
@@ -209,11 +214,6 @@ void EarlyZRenderPass::draw(std::unordered_map<SP_Mesh, std::vector<PerInstanceD
 
 		triangleCount += (mesh->getIndexBuffer()->count() / 3) * instances[mesh].size();
 		entityCount += instances[mesh].size();
-	}
-
-	if (Engine::input()->getKeyTapState('C')) {
-		std::cout << "Entity Count: " << entityCount << "\n";
-		std::cout << "Triangle Count: " << triangleCount << "\n";
 	}
 
 	// reset/clean up
