@@ -7,6 +7,11 @@
 using namespace dxgl;
 
 Graphics::Graphics() {
+    // This flag adds support for surfaces with a different color channel 
+    // ordering than the API default.
+    // You need it for compatibility with Direct2D.
+    UINT D2D_Flag = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
+
     // create directx11 device and context
     D3D_DRIVER_TYPE driverTypes[] = {
     D3D_DRIVER_TYPE_HARDWARE,
@@ -21,7 +26,7 @@ Graphics::Graphics() {
     HRESULT result = 0;
 
     for (UINT driverTypeIndex = 0; driverTypeIndex < numDriverTypes; driverTypeIndex++) {
-        result = D3D11CreateDevice(NULL, driverTypes[driverTypeIndex], NULL, D3D11_CREATE_DEVICE_DEBUG,
+        result = D3D11CreateDevice(NULL, driverTypes[driverTypeIndex], NULL, D3D11_CREATE_DEVICE_DEBUG | D2D_Flag,
             featureLevels, numFeatureLevels, D3D11_SDK_VERSION, &m_d3dDevice, &m_featureLevel, &m_d3dContext);
         if (SUCCEEDED(result)) {
             break;

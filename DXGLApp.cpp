@@ -4,13 +4,15 @@
 #include <chrono>
 
 #include "ResourceManager.h"
-#include "InputSystem.h"
-#include "InputManager.h"
+#include "TextRenderManager.h"
 #include "MousePickManager.h"
 #include "PhysicsManager.h"
 #include "EntityManager.h"
 #include "ControllerManager.h"
 #include "CameraManager.h"
+
+#include "InputSystem.h"
+#include "InputManager.h"
 
 // uses buffer zero
 struct alignas(16) EntityBuffer {
@@ -224,6 +226,7 @@ void DXGLApp::create() {
 	entities()->registerComponent<MeshComponent>();
 	entities()->registerComponent<PickableComponent>();
 	entities()->registerComponent<DestroyableComponent>();
+	entities()->registerComponent<DescriptionComponent>();
 	entities()->registerComponent<RigidBodyComponent>();
 	entities()->registerComponent<MovementComponent>();
 	entities()->registerComponent<ControllerComponent>();
@@ -289,7 +292,7 @@ void DXGLApp::create() {
 		m_player = entities()->createEntity(transform, mesh);
 
 		RigidBodyComponent rigidbody{};
-		rigidbody.shape = new RigidBodyCapsule(0.5f, 1);
+		rigidbody.shape = new RigidBodyCapsule(0.75f, 0.75f);
 		rigidbody.lockFlags = RigidBodyLockFlag::LOCK_ANGULAR_X | RigidBodyLockFlag::LOCK_ANGULAR_Y | RigidBodyLockFlag::LOCK_ANGULAR_Z;
 		rigidbody.mass = 100.0f;
 		rigidbody.staticFriction = 0.999f;
@@ -452,51 +455,6 @@ void DXGLApp::create() {
 		resource()->storeMesh(desc, "Assets/Meshes/rock1.fbx", "rock1");
 	}
 
-	/*
-
-	for (int i = -10; i < 10; i++) {
-		for (int j = -10; j < 10; j++) {
-			for (int k = -10; k < 10; k++) {
-				TransformComponent transform{};
-				transform.scale = { 0.5f + std::rand() % 5, 0.5f + std::rand() % 5, 0.5f + std::rand() % 5 };
-				float rx = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 6);
-				float ry = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 6);
-				float rz = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 6);
-				transform.rotation = { rx, ry, rz };
-
-				float tx = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 96);
-				float ty = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 96);
-				float tz = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * (float)(std::rand() % 96);
-				transform.translation = { (float)i * 256 + tx, (float)j * 256 + ty, (float)k * 256 + tz };
-
-				MeshComponent mesh{};
-				mesh.mesh = resource()->get<SP_Mesh>("rock1");
-				mesh.useTessellation = false;
-				mesh.instanceFlags = INSTANCE_USE_LIGHTING | INSTANCE_USE_SHADOWING;
-
-				dxgl::governor::EntityId id = entities()->createEntity(transform, mesh);
-				entities()->relocateEntity(id);
-
-				PickableComponent pickable{};
-				pickable.isSelected = false;
-				entities()->addEntityComponent<PickableComponent>(pickable, id);
-
-				DestroyableComponent destroyable{};
-				entities()->addEntityComponent<DestroyableComponent>(destroyable, id);
-
-				RigidBodyComponent rigidbody{};
-				rigidbody.shape = new RigidBodyConvexMesh();
-				rigidbody.mass = transform.scale.magnitude() * 100.0f;
-				rigidbody.staticFriction = 0.75f;
-				rigidbody.dynamicFriction = 0.75f;
-				rigidbody.restitution = 0.1f;
-				entities()->addEntityComponent<RigidBodyComponent>(rigidbody, id);
-			}
-		}
-	}
-
-	*/
-
 	{ // floor
 		TransformComponent transform{};
 		transform.scale = { 128, 1, 128 };
@@ -615,6 +573,11 @@ void DXGLApp::update(long double delta) {
 		DestroyableComponent destroyable{};
 		entities()->addEntityComponent<DestroyableComponent>(destroyable, id);
 
+		DescriptionComponent description{};
+		description.name = "Guitar " + std::to_string(id);
+		description.description = "This guitar's ID is " + std::to_string(id);
+		entities()->addEntityComponent<DescriptionComponent>(description, id);
+
 		RigidBodyComponent rigidbody{};
 		rigidbody.shape = new RigidBodyConvexMesh();
 		rigidbody.linearVelocity = cam.forward() * 25.0f;
@@ -665,6 +628,21 @@ void DXGLApp::update(long double delta) {
 			entities()->destroyEntity(id);
 		}
 	}
+
+	if (input()->getMouseState(InputManager::RMB_STATE)) {
+		Point2f mouse = Engine::input()->getMousePosition();
+		POINT clientMouse = { mouse.x, mouse.y };
+		ScreenToClient(getWindow(), &clientMouse);
+		governor::EntityId id = mousePick()->getColorId(Point2f{ (float)clientMouse.x, (float)clientMouse.y });
+		if (entities()->entityHasComponent<DescriptionComponent>(id)) {
+			auto& description = entities()->getEntityComponent<DescriptionComponent>(id);
+			Text t{};
+			t.text = description.name;
+			t.color = { 0, 0, 0 };
+			m_queue.submit(t);
+		}
+	}
+
 	// mouse picking end
 
 	// update entities start

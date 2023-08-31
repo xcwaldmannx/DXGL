@@ -53,6 +53,15 @@ struct DestroyableComponent {
 };
 
 //////////////////////
+//   Description    //
+//////////////////////
+
+struct DescriptionComponent {
+	std::string name{};
+	std::string description{};
+};
+
+//////////////////////
 //    Rigidbody     //
 //////////////////////
 

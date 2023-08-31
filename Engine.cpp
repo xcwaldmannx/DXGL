@@ -4,12 +4,13 @@
 
 #include "Graphics.h"
 #include "Renderer.h"
+#include "ResourceManager.h"
+#include "TextRenderManager.h"
 #include "EntityManager.h"
+#include "MousePickManager.h"
 #include "PhysicsManager.h"
 #include "ControllerManager.h"
 #include "CameraManager.h"
-#include "MousePickManager.h"
-#include "ResourceManager.h"
 
 #include "InputSystem.h"
 #include "InputManager.h"
@@ -45,6 +46,11 @@ SP_Renderer Engine::renderer() {
 SP_ResourceManager Engine::m_resource = std::make_shared<ResourceManager>();
 SP_ResourceManager Engine::resource() {
 	return Engine::m_resource;
+}
+
+SP_TextRenderManager Engine::m_textrender = std::make_shared<TextRenderManager>();
+SP_TextRenderManager Engine::textrender() {
+	return Engine::m_textrender;
 }
 
 SP_EntityManager Engine::m_entities = std::make_shared<EntityManager>();

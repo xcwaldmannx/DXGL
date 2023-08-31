@@ -256,6 +256,27 @@
     <Filter Include="DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses">
       <UniqueIdentifier>{fdf4bb30-4676-4ee8-902d-ababdd48bfc7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DXGL\DXGLSource\Graphics\Managers\TextRenderManager">
+      <UniqueIdentifier>{595c8fc7-e1f2-493b-af26-a4cd1b685606}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses\Collision">
+      <UniqueIdentifier>{dfb66591-72ba-4df9-b1b3-ef743245fe55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses\Lighting">
+      <UniqueIdentifier>{f6e72b27-806a-4e33-ba38-1e54c7bdb5f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses\EarlyZ">
+      <UniqueIdentifier>{c8acb09f-8aa1-41a8-81fb-5dd91d5dc283}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses\MousePick">
+      <UniqueIdentifier>{635ca39a-84b4-495d-8877-bb0468548cc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses\Skybox">
+      <UniqueIdentifier>{c794f700-7fb2-462f-afe7-bf238760a17a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses\HUD">
+      <UniqueIdentifier>{0efc0bb5-5530-4ac2-b5fb-87de05368554}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ComputeShader.cpp">
@@ -405,9 +426,6 @@
     <ClCompile Include="RenderPass.cpp">
       <Filter>DXGL\DXGLSource\Graphics\Renderer\RenderPass</Filter>
     </ClCompile>
-    <ClCompile Include="EarlyZRenderPass.cpp">
-      <Filter>DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses</Filter>
-    </ClCompile>
     <ClCompile Include="PSConstantBuffer.cpp">
       <Filter>DXGL\DXGLSource\Graphics\Managers\ResourceManager\Resources\Buffers\ConstantBuffer</Filter>
     </ClCompile>
@@ -417,29 +435,38 @@
     <ClCompile Include="DSConstantBuffer.cpp">
       <Filter>DXGL\DXGLSource\Graphics\Managers\ResourceManager\Resources\Buffers\ConstantBuffer</Filter>
     </ClCompile>
-    <ClCompile Include="LightingRenderPass.cpp">
-      <Filter>DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses</Filter>
-    </ClCompile>
-    <ClCompile Include="SkyboxRenderPass.cpp">
-      <Filter>DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses</Filter>
-    </ClCompile>
-    <ClCompile Include="MousePickRenderPass.cpp">
-      <Filter>DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses</Filter>
-    </ClCompile>
     <ClCompile Include="MousePickManager.cpp">
       <Filter>DXGL\DXGLSource\Graphics\Managers\MousePickManager</Filter>
     </ClCompile>
     <ClCompile Include="EntityManager.cpp">
       <Filter>DXGL\DXGLSource\Graphics\Managers\EntityManager</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionRenderPass.cpp">
-      <Filter>DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses</Filter>
-    </ClCompile>
     <ClCompile Include="PhysicsManager.cpp">
       <Filter>DXGL\DXGLSource\Graphics\Managers\PhysicsManager</Filter>
     </ClCompile>
     <ClCompile Include="ControllerManager.cpp">
       <Filter>DXGL\DXGLSource\Graphics\Managers\ControllerManager</Filter>
+    </ClCompile>
+    <ClCompile Include="TextRenderManager.cpp">
+      <Filter>DXGL\DXGLSource\Graphics\Managers\TextRenderManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionRenderPass.cpp">
+      <Filter>DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="LightingRenderPass.cpp">
+      <Filter>DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="EarlyZRenderPass.cpp">
+      <Filter>DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses\EarlyZ</Filter>
+    </ClCompile>
+    <ClCompile Include="MousePickRenderPass.cpp">
+      <Filter>DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses\MousePick</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyboxRenderPass.cpp">
+      <Filter>DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses\Skybox</Filter>
+    </ClCompile>
+    <ClCompile Include="HUDRenderPass.cpp">
+      <Filter>DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses\HUD</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -626,9 +653,6 @@
     <ClInclude Include="RenderPass.h">
       <Filter>DXGL\DXGLSource\Graphics\Renderer\RenderPass</Filter>
     </ClInclude>
-    <ClInclude Include="EarlyZRenderPass.h">
-      <Filter>DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses</Filter>
-    </ClInclude>
     <ClInclude Include="Bindable.h">
       <Filter>DXGL\DXGLSource\Graphics\Renderer\DXGLBindable</Filter>
     </ClInclude>
@@ -641,20 +665,11 @@
     <ClInclude Include="DSConstantBuffer.h">
       <Filter>DXGL\DXGLSource\Graphics\Managers\ResourceManager\Resources\Buffers\ConstantBuffer</Filter>
     </ClInclude>
-    <ClInclude Include="LightingRenderPass.h">
-      <Filter>DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses</Filter>
-    </ClInclude>
-    <ClInclude Include="SkyboxRenderPass.h">
-      <Filter>DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses</Filter>
-    </ClInclude>
     <ClInclude Include="OctTree.h">
       <Filter>DXGL\DXGLSource\Util\Structure</Filter>
     </ClInclude>
     <ClInclude Include="Point3f.h">
       <Filter>DXGL\DXGLSource\Util\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="MousePickRenderPass.h">
-      <Filter>DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses</Filter>
     </ClInclude>
     <ClInclude Include="MousePickManager.h">
       <Filter>DXGL\DXGLSource\Graphics\Managers\MousePickManager</Filter>
@@ -668,14 +683,32 @@
     <ClInclude Include="OOBB.h">
       <Filter>DXGL\DXGLSource\Util\Math</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionRenderPass.h">
-      <Filter>DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses</Filter>
-    </ClInclude>
     <ClInclude Include="PhysicsManager.h">
       <Filter>DXGL\DXGLSource\Graphics\Managers\PhysicsManager</Filter>
     </ClInclude>
     <ClInclude Include="ControllerManager.h">
       <Filter>DXGL\DXGLSource\Graphics\Managers\ControllerManager</Filter>
+    </ClInclude>
+    <ClInclude Include="TextRenderManager.h">
+      <Filter>DXGL\DXGLSource\Graphics\Managers\TextRenderManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionRenderPass.h">
+      <Filter>DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="LightingRenderPass.h">
+      <Filter>DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="EarlyZRenderPass.h">
+      <Filter>DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses\EarlyZ</Filter>
+    </ClInclude>
+    <ClInclude Include="MousePickRenderPass.h">
+      <Filter>DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses\MousePick</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyboxRenderPass.h">
+      <Filter>DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses\Skybox</Filter>
+    </ClInclude>
+    <ClInclude Include="HUDRenderPass.h">
+      <Filter>DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses\HUD</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -20,6 +20,9 @@ namespace dxgl {
 	class Renderer;
 	typedef std::shared_ptr<Renderer> SP_Renderer;
 
+	class TextRenderManager;
+	typedef std::shared_ptr<TextRenderManager> SP_TextRenderManager;
+
 	class ResourceManager;
 	typedef std::shared_ptr<ResourceManager> SP_ResourceManager;
 

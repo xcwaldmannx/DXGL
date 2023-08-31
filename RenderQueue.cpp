@@ -35,6 +35,10 @@ void RenderQueue::submit(OctTree<governor::EntityId>::list entities) {
 	}
 }
 
+void RenderQueue::submit(Text& text) {
+	m_texts.push_back(text);
+}
+
 void RenderQueue::submit(const std::vector<OOBB>& oobbs) {
 	for (auto& OOBB : oobbs) {
 		m_oobbLines.push_back(OOBB.m_center);
@@ -61,6 +65,9 @@ void RenderQueue::draw() {
 	m_mousePick.draw(m_meshToInstances);
 	m_collision.draw(m_oobbLines);
 
+	m_hud.draw(m_texts);
+
 	m_meshToInstances.clear();
+	m_texts.clear();
 	m_oobbLines.clear();
 }

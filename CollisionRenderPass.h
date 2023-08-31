@@ -1,8 +1,7 @@
 #pragma once
 
-#pragma comment(lib, "d3dcompiler")
-
 #include <d3dcompiler.h>
+#pragma comment(lib, "d3dcompiler")
 
 #include "RenderPass.h"
 

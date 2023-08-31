@@ -8,12 +8,13 @@
 
 class dxgl::Graphics;
 class dxgl::Renderer;
+class dxgl::ResourceManager;
+class dxgl::TextRenderManager;
 class dxgl::EntityManager;
+class dxgl::MousePickManager;
 class dxgl::PhysicsManager;
 class dxgl::CameraManager;
 class dxgl::ControllerManager;
-class dxgl::MousePickManager;
-class dxgl::ResourceManager;
 
 
 namespace dxgl {
@@ -27,6 +28,7 @@ namespace dxgl {
 		static SP_Graphics          graphics();
 		static SP_Renderer          renderer();
 		static SP_ResourceManager   resource();
+		static SP_TextRenderManager textrender();
 		static SP_EntityManager     entities();
 		static SP_PhysicsManager    physics();
 		static SP_ControllerManager controller();
@@ -55,6 +57,7 @@ namespace dxgl {
 		static SP_Graphics            m_graphics;
 		static SP_Renderer            m_renderer;
 		static SP_ResourceManager     m_resource;
+		static SP_TextRenderManager   m_textrender;
 		static SP_EntityManager       m_entities;
 		static SP_PhysicsManager      m_physics;
 		static SP_ControllerManager   m_controller;
