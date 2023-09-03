@@ -7,12 +7,9 @@
 
 #include "DXGLDefinitions.h"
 
-namespace dxgl {
-	struct Text {
-		std::string text{};
-		Vec3f color{};
-	};
+#include "TextRenderManager.h"
 
+namespace dxgl {
 	class HUDRenderPass : public RenderPass<std::vector<Text>> {
 	public:
 		HUDRenderPass();

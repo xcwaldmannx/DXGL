@@ -3,7 +3,6 @@
 #include "Engine.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
-#include "TextRenderManager.h"
 
 using namespace dxgl;
 
@@ -32,7 +31,7 @@ HUDRenderPass::HUDRenderPass() {
 
 	const char* pixelShaderCode = R"(
 		SamplerState textureSampler: register(s0);
-		Texture2D    tex:            register(t0);
+		Texture2D    text:            register(t0);
 
 		struct PS_Input {
 			float4 position: SV_POSITION;
@@ -40,12 +39,13 @@ HUDRenderPass::HUDRenderPass() {
 		};
 
 		float4 main(PS_Input input) : SV_TARGET {
+			float4 textSample = text.Sample(textureSampler, input.texcoord);
 
-			float4 color = tex.Sample(textureSampler, input.texcoord);
+			if (textSample.a == 0) {
+				discard;
+			}
 
-			if (color.a == 0) discard;
-
-			return float4(color.rgb, 1.0f);
+			return textSample;
 		}
 	)";
 
@@ -123,12 +123,10 @@ void HUDRenderPass::draw(std::vector<Text>& texts) {
 	vertexBuffer->bind(0);
 	indexBuffer->bind();
 
-	Engine::textrender()->renderText(L"", {0, 0, 0});
+	Engine::textrender()->clearText();
 
 	for (auto& text : texts) {
-		std::wstring widestr = std::wstring(text.text.begin(), text.text.end());
-		const wchar_t* widecstr = widestr.c_str();
-		Engine::textrender()->renderText(widecstr, text.color);
+		Engine::textrender()->renderText(text);
 	}
 
 	Engine::renderer()->shader()->PS_setResource(0, Engine::textrender()->getSRV());

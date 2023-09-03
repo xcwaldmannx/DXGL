@@ -505,6 +505,9 @@ void DXGLApp::create() {
 	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
 	renderer()->merger()->createDepthStencil(depthStencilDesc, "basic");
+
+	// load font
+	Engine::textrender()->createFont("Assets/Fonts/heavy heap.ttf", "hh");
  }
 
 void DXGLApp::update(long double delta) {
@@ -636,14 +639,34 @@ void DXGLApp::update(long double delta) {
 		governor::EntityId id = mousePick()->getColorId(Point2f{ (float)clientMouse.x, (float)clientMouse.y });
 		if (entities()->entityHasComponent<DescriptionComponent>(id)) {
 			auto& description = entities()->getEntityComponent<DescriptionComponent>(id);
-			Text t{};
-			t.text = description.name;
-			t.color = { 0, 0, 0 };
-			m_queue.submit(t);
+			dxgl::Text name{};
+			name.text = description.name;
+			name.size = 16.0f;
+			name.bounds = { 0, 0, 0.5f, 0.25f };
+			name.color = { 1, 1, 1 };
+			name.alias = "hh";
+			m_queue.submit(name);
+
+			dxgl::Text desc{};
+			desc.text = description.description;
+			desc.size = 16.0f;
+			desc.bounds = { 0, 0.05f, 0.5f, 0.25f };
+			desc.color = { 1, 1, 1 };
+			desc.alias = "hh";
+			m_queue.submit(desc);
 		}
 	}
 
 	// mouse picking end
+
+	// draw FPS
+	Text t{};
+	t.text = "FPS: " + std::to_string(Engine::getAverageFPS());
+	t.size = 8.0f;
+	t.bounds = { 0, 0, 0.1f, 0.1f };
+	t.color = { 1, 1, 1 };
+	t.alias = "hh";
+	m_queue.submit(t);
 
 	// update entities start
 
@@ -654,6 +677,7 @@ void DXGLApp::update(long double delta) {
 	m_queue.submit(searchedEntities);
 
 	// update entities end
+
 }
 
 void DXGLApp::draw() {

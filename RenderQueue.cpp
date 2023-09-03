@@ -60,12 +60,17 @@ void RenderQueue::submit(const std::vector<OOBB>& oobbs) {
 
 void RenderQueue::draw() {
 	m_skybox.draw(m_meshToInstances);
-	//m_earlyZ.draw(m_meshToInstances);
-	m_lighting.draw(m_meshToInstances);
-	m_mousePick.draw(m_meshToInstances);
-	m_collision.draw(m_oobbLines);
 
-	m_hud.draw(m_texts);
+	if (m_meshToInstances.size() > 0) {
+		//m_earlyZ.draw(m_meshToInstances);
+		m_lighting.draw(m_meshToInstances);
+		m_mousePick.draw(m_meshToInstances);
+		m_collision.draw(m_oobbLines);
+	}
+
+	if (m_texts.size() > 0) {
+		m_hud.draw(m_texts);
+	}
 
 	m_meshToInstances.clear();
 	m_texts.clear();

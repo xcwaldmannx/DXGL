@@ -62,8 +62,13 @@ void CameraManager::update(long double delta) {
         camera.worldMatrix *= rot;
     }
 
-    camera.translation = transform.translation;
-	camera.worldMatrix.setTranslation(camera.translation);
+    if (camera.enableThirdPerson) {
+        camera.worldMatrix.setTranslation(camera.translation + camera.forward() * -camera.thirdPersonDistance);
+    } else {
+	    camera.worldMatrix.setTranslation(camera.translation);
+    }
+
+    camera.rotation = camera.worldMatrix.getRotation();
 
 	Mat4f inverseWorld = camera.worldMatrix;
 	inverseWorld.inverse();

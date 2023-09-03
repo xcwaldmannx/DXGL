@@ -29,6 +29,7 @@ namespace dxgl {
         PxFoundation* m_foundation = nullptr;
         PxPvd* m_pvd = nullptr;
         PxDefaultCpuDispatcher* m_dispatcher = nullptr;
+        PxCudaContextManager* m_cudaContextManager = nullptr;
         PxPhysics* m_physics = nullptr;
         PxScene* m_scene = nullptr;
 

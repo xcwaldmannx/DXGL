@@ -266,7 +266,7 @@ SP_DXGLShaderResourceView SwapChain::getRenderToTexture(ResourceViewSlot slot) {
 
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc{};
 	srvDesc.Format = format;
-	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DMS;
 	srvDesc.Texture2D.MipLevels = 1;
 	srvDesc.Texture2D.MostDetailedMip = 0;
 

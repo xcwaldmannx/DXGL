@@ -277,6 +277,9 @@
     <Filter Include="DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses\HUD">
       <UniqueIdentifier>{0efc0bb5-5530-4ac2-b5fb-87de05368554}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DXGL\Game01">
+      <UniqueIdentifier>{d4168a23-c9e0-4980-9db5-e27a520f283e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ComputeShader.cpp">
@@ -467,6 +470,9 @@
     </ClCompile>
     <ClCompile Include="HUDRenderPass.cpp">
       <Filter>DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Game01.cpp">
+      <Filter>DXGL\Game01</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -709,6 +715,9 @@
     </ClInclude>
     <ClInclude Include="HUDRenderPass.h">
       <Filter>DXGL\DXGLSource\Graphics\Renderer\RenderPass\RenderPasses\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Game01.h">
+      <Filter>DXGL\Game01</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

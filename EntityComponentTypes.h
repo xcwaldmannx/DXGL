@@ -234,6 +234,8 @@ public:
 	Vec3f rotation{};
 	bool trackMouse = false;
 	bool trackEntity = false;
+	bool enableThirdPerson = false;
+	float thirdPersonDistance = 5.0f;
 
 private:
 	bool isActive = false;

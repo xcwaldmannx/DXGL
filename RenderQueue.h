@@ -10,6 +10,8 @@
 #include "CollisionRenderPass.h"
 #include "HUDRenderPass.h"
 
+#include "TextRenderManager.h"
+
 namespace dxgl {
 	class RenderQueue {
 	public:

@@ -206,6 +206,7 @@
     <ClCompile Include="DSConstantBuffer.cpp" />
     <ClCompile Include="DXGLApp.cpp" />
     <ClCompile Include="EntityManager.cpp" />
+    <ClCompile Include="Game01.cpp" />
     <ClCompile Include="HUDRenderPass.cpp" />
     <ClCompile Include="LightingRenderPass.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -272,6 +273,7 @@
     <ClInclude Include="DSConstantBuffer.h" />
     <ClInclude Include="DXGLApp.h" />
     <ClInclude Include="EntityManager.h" />
+    <ClInclude Include="Game01.h" />
     <ClInclude Include="HUDRenderPass.h" />
     <ClInclude Include="LightingRenderPass.h" />
     <ClInclude Include="Mesh.h" />

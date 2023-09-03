@@ -16,7 +16,10 @@ PhysicsManager::PhysicsManager() {
 	bool connected = m_pvd->connect(*transport, PxPvdInstrumentationFlag::eALL);
 	std::cout << "Pvd Connection: " << connected << "\n";
 
-	m_dispatcher = PxDefaultCpuDispatcherCreate(2);
+	m_dispatcher = PxDefaultCpuDispatcherCreate(4);
+
+	PxCudaContextManagerDesc cudaContextManagerDesc;
+	m_cudaContextManager = PxCreateCudaContextManager(*m_foundation, cudaContextManagerDesc, PxGetProfilerCallback());
 
 	PxTolerancesScale tolerance;
 	tolerance.length = 1.0f;
@@ -25,8 +28,10 @@ PhysicsManager::PhysicsManager() {
 	PxSceneDesc sceneDesc(m_physics->getTolerancesScale());
 	sceneDesc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
 	sceneDesc.cpuDispatcher = m_dispatcher;
+	sceneDesc.cudaContextManager = m_cudaContextManager;
+	sceneDesc.broadPhaseType = PxBroadPhaseType::eGPU;
 	sceneDesc.filterShader = testCCDFilterShader;
-	sceneDesc.flags |= PxSceneFlag::eENABLE_CCD;
+	sceneDesc.flags |= PxSceneFlag::eENABLE_CCD | PxSceneFlag::eENABLE_GPU_DYNAMICS;;
 	m_scene = m_physics->createScene(sceneDesc);
 
 	PxPvdSceneClient* client = m_scene->getScenePvdClient();
@@ -145,26 +150,6 @@ PhysicsManager::PhysicsManager() {
 
 				geometries.push_back(new PxTriangleMeshGeometry(triangleMesh, scale));
 			}
-			/*
-			PxTriangleMeshDesc meshDesc;
-			meshDesc.points.count = vertices.size() / 3;
-			meshDesc.points.stride = sizeof(float) * 3;
-			meshDesc.points.data = &vertices[0];
-
-			meshDesc.triangles.count = indices.size() / 3;
-			meshDesc.triangles.stride = sizeof(unsigned int) * 3;
-			meshDesc.triangles.data = &indices[0];
-
-			PxDefaultMemoryOutputStream writeBuffer;
-			PxTriangleMeshCookingResult::Enum result;
-			bool status = PxCookTriangleMesh(cookingParams, meshDesc, writeBuffer, &result);
-
-			PxDefaultMemoryInputData readBuffer(writeBuffer.getData(), writeBuffer.getSize());
-			PxTriangleMesh* triangleMesh = m_physics->createTriangleMesh(readBuffer);
-
-			geometry = new PxTriangleMeshGeometry(triangleMesh, scale);
-			*/
-
 		} else {
 
 			geometry = new PxBoxGeometry(1, 1, 1);
@@ -183,8 +168,6 @@ PhysicsManager::PhysicsManager() {
 			shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
 			shape->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, true);
 		}
-
-
 
 		// create rigidbodies
 

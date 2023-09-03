@@ -83,6 +83,8 @@ SP_InputManager Engine::input() {
 	return m_userInput;
 }
 
+int Engine::m_avgFPS = 0;
+
 void Engine::enableVSync(bool enable) {
 	m_vsyncEnabled = enable;
 }
@@ -135,10 +137,15 @@ void Engine::onUpdate() {
 	if (m_timeOneSecond > 1) {
 		m_avgMs /= m_FPS;
 		std::cout << "FPS: " << m_FPS << ", " << m_avgMs << "ms" << "\n";
+		m_avgFPS = m_FPS;
 		m_FPS = 0;
 		m_avgMs = 0;
 		m_timeOneSecond = 0;
 	}
+}
+
+int Engine::getAverageFPS() {
+	return Engine::m_avgFPS;
 }
 
 void Engine::onDestroy() {
