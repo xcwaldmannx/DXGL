@@ -60,7 +60,7 @@ void Game01::create() {
 		desc.miscAttributes = MISC_ALL;
 		desc.amountMetallic = 0;
 		desc.amountRoughness = 1;
-		resource()->storeMesh(desc, "Game01/Meshes/player.fbx", "player");
+		resource()->storeMesh(desc, "Game01/Meshes/monkey.fbx", "player");
 	}
 
 	{ // flipped cube model (for skybox - add default for skybox rather than loading a model)

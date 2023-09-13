@@ -8,10 +8,10 @@
 int main() {
 	std::cout << "Running..." << std::endl;
 	
-	//DXGLApp dxglApp{};
-	Game01 game{};
+	// DXGLApp app{};
+	Game01 app{};
 	try {
-		while (game.isRunning());
+		while (app.isRunning());
 	} catch (const std::exception& e) {
 		std::cerr << "An exception occurred: " << e.what() << std::endl;
 		std::string wait;

@@ -314,6 +314,7 @@ void DXGLApp::create() {
 		ControllerComponent controller{};
 		controller.speed = 6.0f;
 		controller.addAction('W', ControllerActionFlag::ON_PRESS, [&](governor::EntityId id, long double delta) {
+			auto& trans = entities()->getEntityComponent<TransformComponent>(id);
 			auto& rigidbody = entities()->getEntityComponent<RigidBodyComponent>(id);
 			auto& controller = entities()->getEntityComponent<ControllerComponent>(id);
 			auto& camera = entities()->getEntityComponent<CameraComponent>(id);
@@ -321,9 +322,11 @@ void DXGLApp::create() {
 			Vec3f direction = Vec3f(camera.forward().x, 0, camera.forward().z).normalize();
 
 			rigidbody.applyTransform(direction * controller.speed * delta);
+			camera.translation = trans.translation;
 		});
 
 		controller.addAction('S', ControllerActionFlag::ON_PRESS, [&](governor::EntityId id, long double delta) {
+			auto& trans = entities()->getEntityComponent<TransformComponent>(id);
 			auto& rigidbody = entities()->getEntityComponent<RigidBodyComponent>(id);
 			auto& controller = entities()->getEntityComponent<ControllerComponent>(id);
 			auto& camera = entities()->getEntityComponent<CameraComponent>(id);
@@ -331,9 +334,11 @@ void DXGLApp::create() {
 			Vec3f direction = Vec3f(camera.forward().x, 0, camera.forward().z).normalize();
 
 			rigidbody.applyTransform(direction * -controller.speed * delta);
+			camera.translation = trans.translation;
 		});
 
 		controller.addAction('D', ControllerActionFlag::ON_PRESS, [&](governor::EntityId id, long double delta) {
+			auto& trans = entities()->getEntityComponent<TransformComponent>(id);
 			auto& rigidbody = entities()->getEntityComponent<RigidBodyComponent>(id);
 			auto& controller = entities()->getEntityComponent<ControllerComponent>(id);
 			auto& camera = entities()->getEntityComponent<CameraComponent>(id);
@@ -341,9 +346,11 @@ void DXGLApp::create() {
 			Vec3f direction = Vec3f(camera.right().x, 0, camera.right().z).normalize();
 
 			rigidbody.applyTransform(direction * controller.speed * delta);
+			camera.translation = trans.translation;
 		});
 
 		controller.addAction('A', ControllerActionFlag::ON_PRESS, [&](governor::EntityId id, long double delta) {
+			auto& trans = entities()->getEntityComponent<TransformComponent>(id);
 			auto& rigidbody = entities()->getEntityComponent<RigidBodyComponent>(id);
 			auto& controller = entities()->getEntityComponent<ControllerComponent>(id);
 			auto& camera = entities()->getEntityComponent<CameraComponent>(id);
@@ -351,8 +358,10 @@ void DXGLApp::create() {
 			Vec3f direction = Vec3f(camera.right().x, 0, camera.right().z).normalize();
 
 			rigidbody.applyTransform(direction * -controller.speed * delta);
+			camera.translation = trans.translation;
 		});
 		controller.addAction(VK_SPACE, ControllerActionFlag::ON_PRESS, [&](governor::EntityId id, long double delta) {
+			auto& trans = entities()->getEntityComponent<TransformComponent>(id);
 			auto& rigidbody = entities()->getEntityComponent<RigidBodyComponent>(id);
 			auto& controller = entities()->getEntityComponent<ControllerComponent>(id);
 			auto& camera = entities()->getEntityComponent<CameraComponent>(id);
@@ -360,6 +369,7 @@ void DXGLApp::create() {
 			if (rigidbody.isStationary) {
 				Vec3f direction = Vec3f(0, camera.up().y, 0).normalize();
 				rigidbody.applyVelocity(direction * controller.speed);
+				camera.translation = trans.translation;
 			}
 		});
 		controller.addAction(VK_SHIFT, ControllerActionFlag::ON_PRESS, [&](governor::EntityId id, long double delta) {
