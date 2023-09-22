@@ -219,6 +219,7 @@
     <ClCompile Include="MousePickRenderPass.cpp" />
     <ClCompile Include="PhysicsManager.cpp" />
     <ClCompile Include="PSConstantBuffer.cpp" />
+    <ClCompile Include="SimpleMesh.cpp" />
     <ClCompile Include="SkyboxRenderPass.cpp" />
     <ClCompile Include="TextRenderManager.cpp" />
     <ClCompile Include="VSConstantBuffer.cpp" />
@@ -290,6 +291,7 @@
     <ClInclude Include="PhysicsManager.h" />
     <ClInclude Include="Point3f.h" />
     <ClInclude Include="PSConstantBuffer.h" />
+    <ClInclude Include="SimpleMesh.h" />
     <ClInclude Include="SkyboxRenderPass.h" />
     <ClInclude Include="TextRenderManager.h" />
     <ClInclude Include="VSConstantBuffer.h" />

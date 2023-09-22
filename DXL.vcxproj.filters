@@ -280,6 +280,9 @@
     <Filter Include="DXGL\Game01">
       <UniqueIdentifier>{d4168a23-c9e0-4980-9db5-e27a520f283e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DXGL\DXGLSource\Graphics\Managers\ResourceManager\Resources\Assets\Mesh\SimpleMesh">
+      <UniqueIdentifier>{8daa73db-a4c2-42de-8b5d-757263c85549}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ComputeShader.cpp">
@@ -473,6 +476,9 @@
     </ClCompile>
     <ClCompile Include="Game01.cpp">
       <Filter>DXGL\Game01</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleMesh.cpp">
+      <Filter>DXGL\DXGLSource\Graphics\Managers\ResourceManager\Resources\Assets\Mesh\SimpleMesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -718,6 +724,9 @@
     </ClInclude>
     <ClInclude Include="Game01.h">
       <Filter>DXGL\Game01</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleMesh.h">
+      <Filter>DXGL\DXGLSource\Graphics\Managers\ResourceManager\Resources\Assets\Mesh\SimpleMesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -74,7 +74,7 @@ namespace dxgl {
 		std::chrono::steady_clock::time_point m_lastUpdate{};
 
 		long double m_timeOneSecond = 0;
-		int m_FPS;
+		int m_FPS = 0;
 		static int m_avgFPS;
 		float m_avgMs = 0;
 
